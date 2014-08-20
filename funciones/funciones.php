@@ -3,7 +3,7 @@ date_default_timezone_set('America/Lima');
 //1.- Funcion para conectarse a la base de datos
 function conectarte()
 {
-//mysql_connect("www.sierrasur.gob.pe","psierras_masters","rumpeltinsky") or die("Error:Servidor sin conexion");
+//mysql_connect("www.sierrasur.gob.pe","","") or die("Error:Servidor sin conexion");
 //mysql_select_db("psierras_bd_siir") or die("Error:Base de datos sin conexion & No disponible");
 
 mysql_connect("localhost","root","root") or die("Error:Servidor sin conexion");
