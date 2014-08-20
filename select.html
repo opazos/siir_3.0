@@ -1,0 +1,309 @@
+<!--
+<script language="JavaScript1.2"> 
+var digitos=10 //cantidad de digitos buscados 
+var puntero=0	
+var buffer=new Array(digitos) //declaración del array Buffer 
+var cadena=""	
+
+function buscar_op(obj,objfoco){ 
+   var letra = String.fromCharCode(event.keyCode) 
+   if(puntero >= digitos){ 
+      	 cadena=""; 
+      	 puntero=0; 
+   	} 
+   //si se presiona la tecla ENTER, borro el array de teclas presionadas y salto a otro objeto... 
+   if (event.keyCode == 13){ 
+      	 borrar_buffer(); 
+      	 if(objfoco!=0) objfoco.focus(); //evita foco a otro objeto si objfoco=0 
+   	} 
+   //sino busco la cadena tipeada dentro del combo... 
+   else{ 
+      	buffer[puntero]=letra; 
+      	//guardo en la posicion puntero la letra tipeada 
+      	cadena=cadena+buffer[puntero];	 //armo una cadena con los datos que van ingresando al array 
+      	puntero++;	
+
+       //barro todas las opciones que contiene el combo y las comparo la cadena... 
+      	for (var opcombo=0;opcombo < obj.length;opcombo++){ 
+         	 if(obj[opcombo].text.substr(0,puntero).toLowerCase()==cadena.toLowerCase()){ 
+         	 obj.selectedIndex=opcombo; 
+         	 } 
+      	 } 
+   	} 
+   event.returnValue = false; //invalida la acción de pulsado de tecla para evitar busqueda del primer caracter 
+} 
+
+function borrar_buffer(){ 
+   //inicializa la cadena buscada 
+   	cadena=""; 
+   	puntero=0; 
+} 
+</script> 
+
+<html> 
+<head> 
+<title>Untitled Document</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+</head> 
+<body bgcolor="#FFFFFF" text="#000000"> 
+<table width="544" border="0" cellpadding="0" cellspacing="0"> 
+<tr> 
+<td width="89" height="29"></td> 
+<td width="114"></td> 
+<td width="26"></td> 
+<td width="315"></td> 
+</tr> 
+<tr> 
+<td height="19"></td> 
+<td valign="top"> 
+<select name="combo1" onKeypress=buscar_op(this,text2) onblur=borrar_buffer() onclick=borrar_buffer()> 
+    <option>Argentina</option> 
+    <option>Australia</option> 
+    <option>Bolivia</option> 
+    <option>Brasil</option> 
+    <option>Canada</option> 
+    <option>Colombia</option> 
+    <option>Dinamarca</option> 
+    <option>Estados Unidos</option> 
+    <option>Estonia</option> 
+    <option>Austria</option> 
+    <option>Bulgaria</option> 
+    <option>Chile</option> 
+    <option>España</option> 
+    <option>China</option> 
+    <option>Costa Rica</option> 
+    <option>Croacia</option> 
+    <option>Ecuador</option> 
+</select> 
+</td> 
+<td></td> 
+<td></td> 
+</tr> 
+<tr> 
+<td height="18"></td> 
+<td></td> 
+<td></td> 
+<td></td> 
+</tr> 
+<tr> 
+<td height="28"></td> 
+<td colspan="2" valign="top"> 
+<input type="text" name="text2"> 
+</td> 
+<td></td> 
+</tr> 
+<tr> 
+<td height="58"></td> 
+<td></td> 
+<td></td> 
+<td></td> 
+</tr> 
+</table> 
+</body> 
+</html>
+
+*************************************************************** -->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Autocomplete - Combobox</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <style>
+  .custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+    /* support: IE7 */
+    *height: 1.7em;
+    *top: 0.1em;
+  }
+  .custom-combobox-input {
+    margin: 0;
+    padding: 0.3em;
+  }
+  </style>
+  <script>
+  (function( $ ) {
+    $.widget( "custom.combobox", {
+      _create: function() {
+        this.wrapper = $( "<span>" )
+          .addClass( "custom-combobox" )
+          .insertAfter( this.element );
+ 
+        this.element.hide();
+        this._createAutocomplete();
+        this._createShowAllButton();
+      },
+ 
+      _createAutocomplete: function() {
+        var selected = this.element.children( ":selected" ),
+          value = selected.val() ? selected.text() : "";
+ 
+        this.input = $( "<input>" )
+          .appendTo( this.wrapper )
+          .val( value )
+          .attr( "title", "" )
+          .addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
+          .autocomplete({
+            delay: 0,
+            minLength: 0,
+            source: $.proxy( this, "_source" )
+          })
+          .tooltip({
+            tooltipClass: "ui-state-highlight"
+          });
+ 
+        this._on( this.input, {
+          autocompleteselect: function( event, ui ) {
+            ui.item.option.selected = true;
+            this._trigger( "select", event, {
+              item: ui.item.option
+            });
+          },
+ 
+          autocompletechange: "_removeIfInvalid"
+        });
+      },
+ 
+      _createShowAllButton: function() {
+        var input = this.input,
+          wasOpen = false;
+ 
+        $( "<a>" )
+          .attr( "tabIndex", -1 )
+          .attr( "title", "Show All Items" )
+          .tooltip()
+          .appendTo( this.wrapper )
+          .button({
+            icons: {
+              primary: "ui-icon-triangle-1-s"
+            },
+            text: false
+          })
+          .removeClass( "ui-corner-all" )
+          .addClass( "custom-combobox-toggle ui-corner-right" )
+          .mousedown(function() {
+            wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+          })
+          .click(function() {
+            input.focus();
+ 
+            // Close if already visible
+            if ( wasOpen ) {
+              return;
+            }
+ 
+            // Pass empty string as value to search for, displaying all results
+            input.autocomplete( "search", "" );
+          });
+      },
+ 
+      _source: function( request, response ) {
+        var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+        response( this.element.children( "option" ).map(function() {
+          var text = $( this ).text();
+          if ( this.value && ( !request.term || matcher.test(text) ) )
+            return {
+              label: text,
+              value: text,
+              option: this
+            };
+        }) );
+      },
+ 
+      _removeIfInvalid: function( event, ui ) {
+ 
+        // Selected an item, nothing to do
+        if ( ui.item ) {
+          return;
+        }
+ 
+        // Search for a match (case-insensitive)
+        var value = this.input.val(),
+          valueLowerCase = value.toLowerCase(),
+          valid = false;
+        this.element.children( "option" ).each(function() {
+          if ( $( this ).text().toLowerCase() === valueLowerCase ) {
+            this.selected = valid = true;
+            return false;
+          }
+        });
+ 
+        // Found a match, nothing to do
+        if ( valid ) {
+          return;
+        }
+ 
+        // Remove invalid value
+        this.input
+          .val( "" )
+          .attr( "title", value + " didn't match any item" )
+          .tooltip( "open" );
+        this.element.val( "" );
+        this._delay(function() {
+          this.input.tooltip( "close" ).attr( "title", "" );
+        }, 2500 );
+        this.input.data( "ui-autocomplete" ).term = "";
+      },
+ 
+      _destroy: function() {
+        this.wrapper.remove();
+        this.element.show();
+      }
+    });
+  })( jQuery );
+ 
+  $(function() {
+    $( "#combobox" ).combobox();
+    $( "#toggle" ).click(function() {
+      $( "#combobox" ).toggle();
+    });
+  });
+  </script>
+</head>
+<body>
+ 
+<div class="ui-widget">
+  <label>Your preferred programming language: </label>
+  <select id="combobox">
+    <option value="">Select one...</option>
+    <option value="ActionScript">ActionScript</option>
+    <option value="AppleScript">AppleScript</option>
+    <option value="Asp">Asp</option>
+    <option value="BASIC">BASIC</option>
+    <option value="C">C</option>
+    <option value="C++">C++</option>
+    <option value="Clojure">Clojure</option>
+    <option value="COBOL">COBOL</option>
+    <option value="ColdFusion">ColdFusion</option>
+    <option value="Erlang">Erlang</option>
+    <option value="Fortran">Fortran</option>
+    <option value="Groovy">Groovy</option>
+    <option value="Haskell">Haskell</option>
+    <option value="Java">Java</option>
+    <option value="JavaScript">JavaScript</option>
+    <option value="Lisp">Lisp</option>
+    <option value="Perl">Perl</option>
+    <option value="PHP">PHP</option>
+    <option value="Python">Python</option>
+    <option value="Ruby">Ruby</option>
+    <option value="Scala">Scala</option>
+    <option value="Scheme">Scheme</option>
+  </select>
+</div>
+<button id="toggle">Show underlying select</button>
+ 
+ 
+</body>
+</html>

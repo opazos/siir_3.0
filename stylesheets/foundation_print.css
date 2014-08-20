@@ -1,0 +1,209 @@
+/* Requires: normalize.css */
+/* Global Reset & Standards ---------------------- */
+*, *:before, *:after { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+
+html { font-size: 62.5%; }
+
+body { background: white;  
+/*background: url(../images/sbg.jpg); */
+font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; font-weight: normal; font-style: normal; font-size: 12px; line-height: 1; color: #222222; position: relative; -webkit-font-smoothing: antialiased;}
+
+
+/* Links ---------------------- */
+a img { border: none; }
+
+a { color: #5f4c0b; text-decoration: none; line-height: inherit; }
+
+a:hover { color: #483a08; }
+
+a:focus { color: #483a08; }
+
+p a, p a:visited { line-height: inherit; }
+
+
+/* Base Type Styles Using Modular Scale ---------------------- */
+
+
+p { font-family: inherit; font-weight: normal; font-size: 12px; line-height: 1.6; margin-bottom: 15px; }
+p.lead { font-size: 15px; line-height: 1.6; margin-bottom: 15px; }
+
+aside p { font-size: 11px; line-height: 1.35; font-style: italic; }
+
+h1, h2, h3, h4, h5, h6 { font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; font-weight: bold; font-style: normal; color: #222222; text-rendering: optimizeLegibility; line-height: 1.1; margin-bottom: 12px; margin-top: 12px; }
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small { font-size: 60%; color: #6f6f6f; line-height: 0; }
+
+h1 { font-size: 40px; }
+
+h2 { font-size: 31px; }
+
+h3 { font-size: 25px; }
+
+h4 { font-size: 19px; }
+
+h5 { font-size: 15px; }
+
+h6 { font-size: 12px; }
+
+hr { border: solid #dddddd; border-width: 1px 0 0; clear: both; margin: 22px 0 21px; height: 0; }
+
+.subheader { line-height: 1.3; color: #6f6f6f; font-weight: 300; margin-bottom: 15px; }
+
+em, i { font-style: italic; line-height: inherit; }
+
+strong, b { font-weight: bold; line-height: inherit; }
+
+small { font-size: 60%; line-height: inherit; }
+
+code { font-weight: bold; background: #ffff99; }
+
+
+
+
+form { margin: 0 0 19.41641px; }
+
+.row form .row { margin: 0 -6px; }
+.row form .row .column, .row form .row .columns { padding: 0 6px; }
+.row form .row.collapse { margin: 0; }
+.row form .row.collapse .column, .row form .row.collapse .columns { padding: 0; }
+
+label { font-size: 12px; color: #4d4d4d; cursor: pointer; display: block; font-weight: 500; margin-bottom: 3px; }
+label.right { float: none; text-align: right; }
+label.inline { line-height: 30px; margin: 0 0 12px 0; }
+
+.prefix, .postfix { display: block; position: relative; z-index: 2; text-align: center; width: 100%; padding-top: 0; padding-bottom: 0; height: 30px; line-height: 29px; }
+
+a.button.prefix, a.button.postfix { padding-left: 0; padding-right: 0; text-align: center; }
+
+span.prefix, span.postfix { background: #f2f2f2; border: 1px solid #cccccc; }
+
+.prefix { left: 2px; -moz-border-radius-topleft: 2px; -webkit-border-top-left-radius: 2px; border-top-left-radius: 2px; -moz-border-radius-bottomleft: 2px; -webkit-border-bottom-left-radius: 2px; border-bottom-left-radius: 2px; overflow: hidden; }
+
+.postfix { right: 2px; -moz-border-radius-topright: 2px; -webkit-border-top-right-radius: 2px; border-top-right-radius: 2px; -moz-border-radius-bottomright: 2px; -webkit-border-bottom-right-radius: 2px; border-bottom-right-radius: 2px; }
+
+
+
+
+/* Correct FF custom dropdown height */
+@-moz-document url-prefix() { form.custom div.custom.dropdown a.selector { height: 28px; } }
+
+.lt-ie9 form.custom div.custom.dropdown a.selector { height: 28px; }
+
+/* The Grid ---------------------- */
+.row { width: 940px; max-width: 100%; min-width: 768px; margin: 0 auto; }
+.row .row { width: auto; max-width: none; min-width: 0; margin: 0 -15px; }
+.row.collapse .column, .row.collapse .columns { padding: 0; }
+.row .row { width: auto; max-width: none; min-width: 0; margin: 0 -15px; }
+.row .row.collapse { margin: 0; }
+
+.column, .columns { float: left; min-height: 1px; padding: 0 15px; position: relative; }
+.column.centered, .columns.centered { float: none; margin: 0 auto; }
+
+[class*="column"] + [class*="column"]:last-child { float: right; }
+
+[class*="column"] + [class*="column"].end { float: left; }
+
+.one, .row .one { width: 8.33333%; }
+
+.two, .row .two { width: 16.66667%; }
+
+.three, .row .three { width: 25%; }
+
+.four, .row .four { width: 33.33333%; }
+
+.five, .row .five { width: 41.66667%; }
+
+.six, .row .six { width: 50%; }
+
+.seven, .row .seven { width: 58.33333%; }
+
+.eight, .row .eight { width: 66.66667%; }
+
+.nine, .row .nine { width: 75%; }
+
+.ten, .row .ten { width: 83.33333%; }
+
+.eleven, .row .eleven { width: 91.66667%; }
+
+.twelve, .row .twelve { width: 100%; }
+
+.row .offset-by-one { margin-left: 8.33333%; }
+
+.row .offset-by-two { margin-left: 16.66667%; }
+
+.row .offset-by-three { margin-left: 25%; }
+
+.row .offset-by-four { margin-left: 33.33333%; }
+
+.row .offset-by-five { margin-left: 41.66667%; }
+
+.row .offset-by-six { margin-left: 50%; }
+
+.row .offset-by-seven { margin-left: 58.33333%; }
+
+.row .offset-by-eight { margin-left: 66.66667%; }
+
+.row .offset-by-nine { margin-left: 75%; }
+
+.row .offset-by-ten { margin-left: 83.33333%; }
+
+
+
+
+/* Table of Contents
+
+:: Visibility
+:: Alerts
+:: Labels
+:: Tooltips
+:: Panels
+:: Accordion
+:: Side Nav
+:: Sub Nav
+:: Pagination
+:: Breadcrumbs
+:: Lists
+:: Inline/Link Lists
+:: Keystroke Chars
+:: Image Thumbnails
+:: Video
+:: Tables
+:: Microformats
+:: Progress Bars
+:: Pricing Tables
+
+*/
+/* Tables ---------------------- */
+table { background: #fff; -webkit-border-radius: 3px; -moz-border-radius: 3px; -ms-border-radius: 3px; -o-border-radius: 3px; border-radius: 3px; margin: 0 0 18px; border: 1px solid #dddddd; }
+
+table thead, table tfoot { background: #f5f5f5; }
+
+table thead tr th, table tfoot tr th, table tbody tr td, table tr td, table tfoot tr td { display: table-cell; font-size: 12px; line-height: 18px; text-align: left; }
+
+table thead tr th, table tfoot tr td { padding: 8px 10px 9px; font-size: 12px; font-weight: bold; color: #222; }
+
+table thead tr th:first-child, table tfoot tr td:first-child { border-left: none; }
+
+table thead tr th:last-child, table tfoot tr td:last-child { border-right: none; }
+
+table tbody tr.even, table tbody tr.alt { background: #f9f9f9; }
+
+table tbody tr:nth-child(even) { background: #f9f9f9; }
+
+table tbody tr td { color: #333; padding: 9px 10px; vertical-align: top; border: none; }
+
+
+/* Pricing Tables ---------------------- */
+.pricing-table { border: solid 1px #dddddd; margin-left: 0; margin-bottom: 20px; }
+.pricing-table * { list-style: none; line-height: 1; }
+.pricing-table .title { background-color: #dddddd; padding: 15px 20px; text-align: center; color: #333333; font-weight: bold; font-size: 16px; }
+.pricing-table .price { background-color: #eeeeee; padding: 15px 20px; text-align: center; color: #333333; font-weight: normal; font-size: 20px; }
+.pricing-table .description { background-color: white; padding: 15px; text-align: center; color: #777777; font-size: 12px; font-weight: normal; line-height: 1.4; border-bottom: dotted 1px #dddddd; }
+.pricing-table .bullet-item { background-color: white; padding: 15px; text-align: center; color: #333333; font-size: 14px; font-weight: normal; border-bottom: dotted 1px #dddddd; }
+.pricing-table .cta-button { background-color: whitesmoke; text-align: center; padding: 20px; }
+
+
+
+
+.centrado{ text-align:center;}
+.justificado{ text-align:justify;}
+.derecha{ text-align:right;}
