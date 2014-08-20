@@ -649,11 +649,6 @@ clar_atf_pdn.cod_relacionador='$cod'";
 $result=mysql_query($sql) or die (mysql_error());
 while($f10=mysql_fetch_array($result))
 {
-$fecha_presentacion_pdn=$f10['f_contrato'];
-$mes_pdn=$f10['mes'];
-$f_termino_pdn=dateadd1($fecha_presentacion_pdn,5,$mes_pdn,0,0,0,0);
-
-$num2++
 ?>
 <? include("encabezado.php");?>
 <table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
@@ -679,7 +674,7 @@ $num2++
   <td><strong>Referencia :</strong>CONTRATO <? echo numeracion($row['n_contrato']);?> - PIT – <? echo periodo($row['f_contrato']);?> – <? echo $row['oficina'];?></td>
   </tr> 
   <tr>
-    <td><strong>Fecha de término :</strong><? echo traducefecha($f_termino_pdn);?></td>
+    <td><strong>Fecha de término :</strong><? echo traducefecha($f10['f_termino']);?></td>
   </tr>
 
   <tr>
