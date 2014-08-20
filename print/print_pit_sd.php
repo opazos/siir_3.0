@@ -259,6 +259,7 @@ pit_bd_ficha_pdn.cod_estado_iniciativa<>000";
 
 <!-- ANEXO EN CASO EXISTA PIT -->
 <?php 
+$na=0;
 $sql="SELECT org_ficha_taz.nombre, 
 	pit_bd_ficha_pit.mes, 
 	pit_bd_ficha_pit.f_termino, 
@@ -281,12 +282,13 @@ $total=mysql_num_rows($result);
 
 while($f4=mysql_fetch_array($result))
 {
+	$na++
 ?>
 
 <? include("encabezado.php");?>
 <table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
   <tr>
-    <td class="txt_titulo centrado"><u>ANEXO N° 1</u> </td>
+    <td class="txt_titulo centrado"><u>ANEXO N° <? echo $na;?></u> </td>
   </tr>
   <tr>
     <td class="txt_titulo centrado">Aportes de cofinanciamiento  de los Animadores Territoriales<br>SEGUNDO DESEMBOLSO </td>
@@ -418,14 +420,7 @@ while($f4=mysql_fetch_array($result))
 ?>
 <!--  CASO 2: MRN -->
 <?php 
-if ($total==0)
-{
-$num=0;
-}
-else
-{
-$num=1;
-}
+$nb=$na;
 $sql="SELECT
 org_ficha_organizacion.nombre,
 pit_bd_ficha_mrn.lema,
@@ -454,12 +449,12 @@ clar_atf_mrn_sd.cod_ficha_sd='$cod'";
 $result=mysql_query($sql) or die (mysql_error());
 while($f5=mysql_fetch_array($result))
 {
-$num++
+$nb++
 ?>
 <? include("encabezado.php");?>
 <table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
   <tr>
-    <td class="txt_titulo centrado"><u>ANEXO N° <? echo $num;?></u></td>
+    <td class="txt_titulo centrado"><u>ANEXO N° <? echo $nb;?></u></td>
   </tr>
   <tr class="txt_titulo centrado">
     <td>Aportes de cofinanciamiento de desembolsos del Plan de Gestión de Recursos Naturales <br> SEGUNDO DESEMBOLSO</td>
@@ -617,7 +612,7 @@ $total_mrn=$total_pdss+$total_org;
 
 
 <?
-$num2=$num;
+$nc=$nb;
 
 $sql="SELECT org_ficha_organizacion.nombre, 
   pit_bd_ficha_pdn.denominacion, 
@@ -649,11 +644,12 @@ clar_atf_pdn.cod_relacionador='$cod'";
 $result=mysql_query($sql) or die (mysql_error());
 while($f10=mysql_fetch_array($result))
 {
+	$nc++
 ?>
 <? include("encabezado.php");?>
 <table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
   <tr>
-    <td class="txt_titulo centrado"><u>ANEXO N° <? echo $num2;?></u></td>
+    <td class="txt_titulo centrado"><u>ANEXO N° <? echo $nc;?></u></td>
   </tr>
   <tr class="centrado txt_titulo">
     <td>Aportes de cofinanciamiento de desembolsos del Plan de Negocio<br>SEGUNDO DESEMBOLSO </td>
