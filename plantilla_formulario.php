@@ -3,6 +3,7 @@ require("funciones/sesion.php");
 include("funciones/funciones.php");
 conectarte();
 
+//desde aca se genera la informacion para obtener al personal
 $sql="SELECT * FROM sys_bd_personal WHERE md5(n_documento)='$SES'";
 $result=mysql_query($sql) or die (mysql_error());
 $row=mysql_fetch_array($result);
