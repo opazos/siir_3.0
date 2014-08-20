@@ -6,8 +6,6 @@ conectarte();
 
 $proyecto="<strong>SIERRA SUR II</strong>";
 
-
-
 //Busco la info del contrato
 $sql="SELECT gcac_bd_ruta.cod_ruta, 
 	sys_bd_tipo_iniciativa.codigo_iniciativa, 
@@ -381,16 +379,11 @@ $total=$row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'];
 </table>
 
 
-<table width="90%" border="0" align="center" cellpadding="4" cellspacing="4">
-  <tr>
-    <td>
-    
-    <button type="submit" class="secondary button oculto" onclick="window.print()">Imprimir</button>
-    <a href="../contratos/contrato_ruta.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=imprime" class="secondary button oculto">Finalizar</a>
-    
-    </td>
-  </tr>
-</table>
+<div class="capa">
+<button type="submit" class="secondary button oculto" onclick="window.print()">Imprimir</button>
+<a href="../contratos/contrato_ruta.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=imprime" class="secondary button oculto">Finalizar</a>
+</div>
+
 
 </body>
 </html>

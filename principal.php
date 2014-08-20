@@ -3,7 +3,6 @@ require("funciones/sesion.php");
 include("funciones/funciones.php");
 conectarte();
 
-//Desde aca llamamos a la informacion de usuario
 $sql="SELECT * FROM sys_bd_personal WHERE md5(n_documento)='$SES'";
 $result=mysql_query($sql) or die (mysql_error());
 $row=mysql_fetch_array($result);
