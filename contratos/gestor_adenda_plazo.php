@@ -15,7 +15,7 @@ if ($action==ADD)
 	$n_adenda=$total+1;
 	
 	//2.- Calculo fecha de termino
-	$fecha=$_POST['f_adenda'];
+	$fecha=$_POST['f_inicio'];
 	$mes=$_POST['mes'];
 
 	$fecha_actualizada = dateadd1($fecha,7,0,0,0,0,0); // suma 7 dias a la fecha dada
@@ -55,11 +55,11 @@ elseif($action==EDIT)
 elseif($action==UPDATE)
 {
 	//1.- Calculo fecha de termino
-	$fecha=$_POST['f_adenda'];
+	$fecha=$_POST['f_inicio'];
 	$mes=$_POST['mes'];
 
 	$fecha_actualizada = dateadd1($fecha,7,0,0,0,0,0); // suma 7 dias a la fecha dada
-	$f_termino=dateadd1($fecha,5,$mes,0,0,0,0);
+	$f_termino=dateadd1($fecha,1,$mes,0,0,0,0);
 	
 	if ($f_termino>='2014-09-15')
 	{

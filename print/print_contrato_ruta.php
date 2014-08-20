@@ -37,8 +37,17 @@ $sql="SELECT gcac_bd_ruta.cod_ruta,
 	sys_bd_dependencia.provincia AS prov, 
 	sys_bd_dependencia.ubicacion, 
 	gcac_bd_ruta.cod_tipo_ruta, 
-	gcac_bd_ruta.otro_ruta
+	gcac_bd_ruta.otro_ruta, 
+	gcac_bd_ruta.n_atf, 
+	gcac_bd_ruta.n_solicitud, 
+	sys_bd_subactividad_poa.codigo AS poa, 
+	sys_bd_subactividad_poa.nombre AS describe_poa, 
+	sys_bd_categoria_poa.codigo AS categoria, 
+	sys_bd_fuente_fto.descripcion AS fte_fto
 FROM sys_bd_tipo_iniciativa INNER JOIN gcac_bd_ruta ON sys_bd_tipo_iniciativa.cod_tipo_iniciativa = gcac_bd_ruta.cod_tipo_iniciativa
+	 INNER JOIN sys_bd_subactividad_poa ON sys_bd_subactividad_poa.cod = gcac_bd_ruta.cod_poa
+	 INNER JOIN sys_bd_fuente_fto ON sys_bd_fuente_fto.cod = gcac_bd_ruta.cod_fte_fto
+	 INNER JOIN sys_bd_categoria_poa ON sys_bd_categoria_poa.cod = sys_bd_subactividad_poa.cod_categoria_poa
 	 INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = gcac_bd_ruta.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = gcac_bd_ruta.n_documento_org
 	 INNER JOIN org_ficha_usuario ON org_ficha_usuario.cod_tipo_doc = gcac_bd_ruta.cod_tipo_doc AND org_ficha_usuario.n_documento = gcac_bd_ruta.n_documento
 	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_organizacion.cod_dependencia
@@ -377,6 +386,213 @@ $total=$row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'];
     <td><? echo $row['nombre']." ".$row['paterno']." ".$row['materno'];?><br><? echo $org;?><br>DNI N°: <? echo $row['dni'];?></td>
   </tr>
 </table>
+<!-- Desde aca genero el ATF y la solicitud de desembolso -->
+<H1 class=SaltoDePagina></H1>
+<? include("encabezado.php");?>
+<div class="capa txt_titulo centrado">SOLICITUD DE DESEMBOLSO DE FONDOS N° <? echo numeracion($row['n_solicitud']);?> - <? echo periodo($row['f_contrato']);?> - <?php  echo $row['codigo_iniciativa'];?> – OL <? echo $row['oficina'];?></div>
+<br>
+<table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
+  <tr>
+    <td width="23%" class="txt_titulo">A</td>
+    <td width="1%">:</td>
+    <td width="76%">C.P.C JUAN SALAS ACOSTA </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td width="1%">&nbsp;</td>
+    <td width="76%">ADMINISTRADOR DEL NEC PDSS II </td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">CC</td>
+    <td width="1%">:</td>
+    <td width="76%">Responsable de Componentes </td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">ASUNTO</td>
+    <td width="1%">:</td>
+    <td width="76%">Desembolso para participación  en Diplomado en Desarrollo  Territorial con Identidad  Cultural.</td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">CONTRATO N° </td>
+    <td width="1%">:</td>
+    <td width="76%">CONTRATO Nº <? echo numeracion($row['n_contrato']);?> - <? echo periodo($row['f_contrato']);?> - <?php  echo $row['codigo_iniciativa'];?> – OL <? echo $row['oficina'];?></td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">FECHA</td>
+    <td width="1%">:</td>
+    <td width="76%"><? echo traducefecha($row['f_contrato']);?></td>
+  </tr>
+</table>
+<div class="break" align="center"></div>
+
+<div class="capa justificado" align="center">Con la presente agradeceré se sirva disponer la transferencia de recursos correspondiente al sub-componente de  Valoración y Divulgación de Conocimientos Locales y Activos Culturales de los siguientes participantes:</div>
+<br>
+
+<table width="90%" border="1" align="center" cellpadding="1" cellspacing="1" class="mini">
+  <tr class="centrado txt_titulo">
+    <td width="19%">Organización</td>
+    <td width="20%">Nombre del evento</td>
+    <td width="7%">Tipo de Iniciativa</td>
+    <td width="9%">ATF N° </td>
+    <td width="13%">Monto a Transferir (S/.) </td>
+  </tr>
+  <tr>
+    <td><? echo $row['organizacion'];?></td>
+    <td><? echo $row['ruta'];?></td>
+    <td class="centrado"><? echo $row['codigo_iniciativa'];?></td>
+    <td class="centrado"><? echo numeracion($row['n_atf'])."-".periodo($row['f_contrato']);?></td>
+    <td class="derecha"><? echo number_format($row['aporte_pdss'],2);?></td>
+  </tr>
+  <tr>
+    <td colspan="4">TOTAL</td>
+    <td class="derecha"><? echo number_format($row['aporte_pdss'],2);?></td>
+  </tr>
+</table>
+<br>
+<table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
+  <tr>
+    <td>Se adjunta a la presente la autorización de transferencia de fondos. </td>
+  </tr>
+  <tr>
+    <td><br>
+    Atentamente,</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
+  <tr>
+    <td width="35%">&nbsp;</td>
+    <td width="29%">&nbsp;</td>
+    <td width="36%"><hr></td>
+  </tr>
+  <tr>
+    <td align="center">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td align="center"><? echo $row['nombres']." ".$row['apellidos']."<br> JEFE DE OFICINA LOCAL";?></td>
+  </tr>
+</table>
+<H1 class=SaltoDePagina></H1>
+<? include("encabezado.php");?>
+<div class="capa txt_titulo" align="center">AUTORIZACION DE TRANSFERENCIA DE FONDOS N° <? echo numeracion($row['n_atf']);?>– <? echo periodo($row['f_contrato']);?> - <?php  echo $row['codigo_iniciativa'];?> - OL <? echo $row['oficina'];?></div>
+<table width="30%" border="1" align="center" cellpadding="1" cellspacing="1">
+  <tr>
+    <td align="CENTER" class="txt_titulo">S/. <? echo number_format($row['aporte_pdss'],2);?></td>
+  </tr>
+</table>
+<br>
+<div class="capa" align="justify">En referencia a la Solicitud de Desembolso de Fondos N° <? echo numeracion($row['n_solicitud']);?> - <? echo periodo($row['f_contrato']);?> / OL <? echo $row['oficina'];?>; Por intermedio del presente, habiéndose cumplido los requisitos establecidos por el NEC PDSS II, el Jefe de la Oficina Local de <? echo $row['oficina'];?> autoriza la transferencia de fondos, de acuerdo al siguiente detalle : </div>
+<br>
+
+<table width="90%" border="1" align="center" cellpadding="0" cellspacing="0" class="mini">
+  <tr>
+    <td width="35%" class="txt_titulo">Nombre de la organización</td>
+    <td width="4%" align="center" class="txt_titulo">:</td>
+    <td colspan="2"><? echo $row['organizacion'];?></td>
+  </tr>
+    <td class="txt_titulo">Referencia</td>
+    <td width="4%" align="center" class="txt_titulo">:</td>
+    <td colspan="2">CONTRATO Nº <? echo numeracion($row['n_contrato']);?> - <? echo periodo($row['f_contrato']);?> - <?php  echo $row['tipo_iniciativa'];?> – OL <? echo $row['oficina'];?></td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">Codigo POA </td>
+    <td width="4%" align="center" class="txt_titulo">:</td>
+    <td colspan="2"><? echo $row['poa'];?></td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">Categoria de gasto</td>
+    <td align="center" class="txt_titulo">:</td>
+    <td colspan="2"><? echo $row['categoria'];?></td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">Fuente de Financiamiento </td>
+    <td align="center" class="txt_titulo">:</td>
+    <td colspan=""><? echo $row['fte_fto'];?></td>
+  </tr>
+</table>
+
+<br>
+<div class="capa txt_titulo" align="left">DETALLE DEL DESEMBOLSO</div>
+
+
+<table width="90%" border="1" align="center" cellpadding="0" cellspacing="0" class="mini">
+  <tr class="txt_titulo">
+    <td width="42%" align="center">ACTIVIDADES</td>
+    <td width="7%" align="center">% A DESEMBOLSAR </td>
+    <td width="19%" align="center">MONTO A TRANSFERIR (S/.)</td>
+    <td width="16%" align="center">CODIGO POA</td>
+    <td width="16%" align="center">CATEGORIA DE GASTO</td>
+  </tr>
+  <tr>
+    <td><? echo $row['evento'];?></td>
+    <td class="derecha">100.00</td>
+    <td align="right"><? echo number_format($row['aporte_pdss'],2);?></td>
+    <td align="center"><? echo $row['poa'];?></td>
+    <td align="center"><? echo $row['categoria'];?></td>
+  </tr>
+  <tr class="txt_titulo">
+    <td colspan="2" align="center" class="txt_titulo">TOTAL</td>
+    <td align="right"><? echo number_format($row['aporte_pdss'],2);?></td>
+    <td align="center">-</td>
+    <td align="center">-</td>
+  </tr>
+</table>
+
+<br/>
+<div class="capa txt_titulo">DETALLE DE LA CONTRAPARTIDA DE LA ORGANIZACION</div>
+<table width="90%" border="1" align="center" cellpadding="1" cellspacing="1" class="mini">
+<tr>
+	<td>MONTO DE APORTE</td>
+	<td class="derecha"><? echo number_format($row['aporte_org'],2);?></td>
+</tr>
+
+<tr>
+	<td>%</td>
+	<td class="derecha"><? echo number_format($pp_org,2);?></td>
+</tr>
+
+</table>
+<br></br>
+
+<div class="capa txt_titulo" align="left">EXPEDIENTE QUE SUSTENTA ESTE DESEMBOLSO:  Archivados en la Oficina Local</div>
+
+
+<table width="90%" border="1" align="center" cellpadding="1" cellspacing="1" class="mini">
+  <tr>
+    <td width="82%">Carta de compromiso y ficha de beca </td>
+    <td width="2%" align="center">:</td>
+    <td width="16%" align="center">X</td>
+  </tr>
+  <tr>
+    <td>Copia DNI del responsable del contrato</td>
+    <td width="2%" align="center">:</td>
+    <td width="16%" align="center">X</td>
+  </tr>
+  <tr>
+    <td>Contrato  de donación con Cargo entre Sierra Sur II y  el Becario</td>
+    <td width="2%" align="center">:</td>
+    <td width="16%" align="center">X</td>
+  </tr>
+</table>
+<BR>
+<div class="capa" align="right"><? echo $row['oficina'].", ".traducefecha($row['f_contrato']);?></div>
+<p>&nbsp;</p>
+<table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
+  <tr>
+    <td width="35%">&nbsp;</td>
+    <td width="29%">&nbsp;</td>
+    <td width="36%"><hr></td>
+  </tr>
+  <tr>
+    <td align="center">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td align="center"><? echo $row['nombres']." ".$row['apellidos']."<br> JEFE DE OFICINA LOCAL";?></td>
+  </tr>
+</table>
+
+
+
+
+
 
 
 <div class="capa">
