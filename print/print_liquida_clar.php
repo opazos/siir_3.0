@@ -374,6 +374,14 @@ WHERE clar_bd_ficha_idl_2.cod_clar='".$row['cod_clar']."'";
 $result=mysql_query($sql) or die (mysql_error());
 $r22=mysql_fetch_array($result);
 
+
+//Saldos
+$diferencia_pdss=$r5['aporte']-$row['ejec_pdss']; 
+ $diferencia_org=$r2['aporte']-$row['ejec_org'];
+ $diferencia_mun=$r3['aporte']-$row['ejec_mun'];
+ $diferencia_otr=$r4['aporte']-$row['ejec_otro'];
+ $diferencia_total =$total_presupuesto - $total_ejecutado;
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -393,67 +401,6 @@ $r22=mysql_fetch_array($result);
 </head>
 
 <body>
-<? include("encabezado.php");?>
-<div class="capa txt_titulo centrado"><u>LIQUIDACION Y PERFECCIONAMIENTO DEL CONTRATO PARA REALIZACIÓN DE EVENTOS CLAR</u><br></div>
-
-<table width="90%" border="0" align="center" cellpadding="1" cellspacing="4">
-  <tr>
-    <td width="17%">A</td>
-    <td width="1%">:</td>
-    <td width="82%">JOSÉ MERCEDES SIALER PASCO </td>
-  </tr>
-  <tr class="txt_titulo">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>DIRECTOR EJECUTIVO </td>
-  </tr>
-  <tr>
-    <td>Referencia</td>
-    <td>:</td>
-    <td>Contrato N° <? echo numeracion($row['n_contrato'])."- CLAR -".periodo($row['f_presentacion']);?></td>
-  </tr>
-  <tr>
-    <td>Lugar y Fecha </td>
-    <td>:</td>
-    <td><? echo $row['oficina'].", ".traducefecha($row['f_liquidacion']);?></td>
-  </tr>
-  <tr>
-    <td colspan="3"><hr></td>
-  </tr>
-</table>
-<br>
-<div class="capa justificado">
-<p>En relación al documento de la referencia, informo a su despacho, que la <? echo $row['org'];?>, ha cumplido con sus obligaciones establecidas en el Contrato de Donación Sujeto a Cargo que están sustentadas en los siguientes documentos que se adjuntan:</p>
-  <ol>
-    <li>Informe final de ejecución del evento CLAR</li>
-    <li>........... archivo con documentación en ........... folios.</li>
-  </ol>
-  <p>En virtud de lo cual, esta Jefatura de conformidad al Reglamento de Operaciones, da por LIQUIDADO el Contrato de la referencia por el monto total ejecutado de  S/ <? echo number_format($total_ejecutado,2);?> (<? echo vuelveletra($total_ejecutado);?>)</p>
-  <p>Por lo expuesto, esta jefatura procede al PERFECCIONAMIENTO de la Donación Sujeto a Cargo por el monto de S/. <? echo number_format($row['ejec_pdss'],2);?>. (<? echo vuelveletra($row['ejec_pdss']);?>) correspondiente al aporte del Proyecto de Desarrollo Sierra Sur II </p>
-  <p>Por lo indicado, mucho estimaré disponer la baja contable del contrato en referencia.</p>
-
-  <p><br>
-  </p>
-</div>
-<br></br>
-<div class="capa">Atentamente,</div>
-
-
-
-<p>&nbsp;</p>
-<table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
-  <tr>
-    <td width="35%">&nbsp;</td>
-    <td width="30%" align="center">___________________</td>
-    <td width="35%">&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td align="center"><? echo $r1['nombre']." ".$r1['apellido'];?><br>JEFE DE OFICINA LOCAL</td>
-    <td>&nbsp;</td>
-  </tr>
-</table>
-<H1 class=SaltoDePagina> </H1>
 <? include("encabezado.php");?>
 <div class="capa txt_titulo" align="center"><u>INFORME FINAL</u><BR>
   DE EJECUCIÓN DEL EVENTO CLAR <BR>
@@ -567,68 +514,47 @@ while($fila=mysql_fetch_array($result))
   </tr>
 </table>
 <br>
-<table width="90%" border="1" align="center" cellpadding="1" cellspacing="1" bordercolor="#000000" class="mini">
-  <tr>
-    <td width="57%" align="center"><strong>ENTIDAD</strong></td>
-    <td width="17%" align="center"><strong>MONTO PROGRAMADO (S/.)</strong></td>
-    <td width="15%" align="center"><strong>MONTO EJECUTADO (S/.)</strong></td>
-    <td width="11%" align="center"><strong>%</strong></td>
-  </tr>
+
+ <table width="90%" border="1" align="center" cellpadding="1" cellspacing="1"  class="mini">
+	<tr class="centrado txt_titulo">
+		<td width="40%">ENTIDAD</td>
+		<td width="20%">DESEMBOLSADO (S/.)</td>
+		<td width="20%">EJECUTADO (S/.)</td>
+		<td width="20%">SALDO (S/.)</td>
+	</tr>
   <tr>
     <td>SIERRA SUR II</td>
-    <td align="right"><? echo number_format($r5['aporte'],2);?></td>
-    <td align="right"><? echo number_format($row['ejec_pdss'],2);?></td>
-    <td align="right">
-	<?
-	@$pp1=($row['ejec_pdss']/$r5['aporte'])*100;
-	echo number_format(@$pp1,2);
-	?>
-	</td>
+    <td class="derecha"><? echo number_format($r5['aporte'],2);?></td>
+    <td class="derecha"><? echo number_format($row['ejec_pdss'],2);?></td>
+    <td class="derecha"><?  if ($diferencia_pdss>0) echo number_format($diferencia_pdss,2); else echo "0.00";?></td>
+    
   </tr>
   <tr>
     <td>ORGANIZACION</td>
-    <td align="right"><? echo number_format($r2['aporte'],2);?></td>
-    <td align="right"><? echo number_format($row['ejec_org'],2);?></td>
-    <td align="right">
-	<?
-	@$pp2=($row['ejec_org']/$r2['aporte'])*100;
-	echo number_format(@$pp2,2);
-	?>
-	</td>
+    <td class="derecha"><? echo number_format($r2['aporte'],2);?></td>
+   <td class="derecha"><? echo number_format($row['ejec_org'],2);?></td>
+   <td class="derecha"><?  if ($diferencia_org>0)  echo number_format($diferencia_org,2); else echo "0.00";?></td>
+  
   </tr>
   <tr>
     <td>MUNICIPIO</td>
-    <td align="right"><? echo number_format($r3['aporte'],2);?></td>
-    <td align="right"><? echo number_format($row['ejec_mun'],2);?></td>
-    <td align="right">
-	<?
-	@$pp3=($row['ejec_mun']/$r3['aporte'])*100;
-	echo number_format(@$pp3,2);
-	?>
-	</td>
+    <td class="derecha"><? echo number_format($r3['aporte'],2);?></td>
+    <td class="derecha"><? echo number_format($row['ejec_mun'],2);?></td>
+   <td class="derecha"><?   if ($diferencia_mun>0) echo number_format($diferencia_mun,2); else echo "0.00";?></td>
+  
   </tr>
   <tr>
     <td>OTRO</td>
-    <td align="right"><? echo number_format($r4['aporte'],2);?></td>
-    <td align="right"><? echo number_format($row['ejec_otro'],2);?></td>
-    <td align="right">
-	<?
-	@$pp4=($row['ejec_otro']/$r4['aporte'])*100;
-	echo number_format(@$pp4,2);
-	?>
-	</td>
+    <td class="derecha"><? echo number_format($r4['aporte'],2);?></td>
+    <td class="derecha"><? echo number_format($row['ejec_otro'],2);?></td>
+    <td class="derecha"><?  if ($diferencia_otr>0) echo number_format($diferencia_otr,2); else echo "0.00";?></td>
+
   </tr>
-  <tr>
-    <td><strong>TOTAL</strong></td>
-    <td align="right"><? echo number_format($total_presupuesto,2);?></td>
-    <td align="right"><? echo number_format($total_ejecutado,2);?></td>
-    <td align="right">
-	<?
-	@$pp5=($total_ejecutado/$total_presupuesto)*100;
-	
-	echo number_format(@$pp5,2);
-	?>
-	</td>
+  <tr class="txt_titulo">
+    <td>TOTAL</td>
+    <td class="derecha"><? echo number_format($total_presupuesto,2);?></td>
+    <td class="derecha"><? echo number_format($total_ejecutado,2);?></td>
+    <td class="derecha"><? if ($diferencia_total>0) echo number_format($diferencia_total,2); else echo "0.00";?></td>
   </tr>
 </table>
 <br>
@@ -711,6 +637,121 @@ DE RECURSOS NATURALES<br>
 <p>&nbsp;</p>
 <div class="capa" align="right"><? echo $row['oficina'].", ".traducefecha($row['f_liquidacion']);?></div>
 <H1 class=SaltoDePagina> </H1>
+
+<? include("encabezado.php");?>
+<div class="capa txt_titulo centrado"><u>LIQUIDACION Y PERFECCIONAMIENTO DEL CONTRATO PARA REALIZACIÓN DE EVENTOS CLAR</u><br></div>
+
+<table width="90%" border="0" align="center" cellpadding="1" cellspacing="4">
+  <tr>
+    <td width="17%">A</td>
+    <td width="1%">:</td>
+    <td width="82%">JOSÉ MERCEDES SIALER PASCO </td>
+  </tr>
+  <tr class="txt_titulo">
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>DIRECTOR EJECUTIVO </td>
+  </tr>
+  <tr>
+    <td>Referencia</td>
+    <td>:</td>
+    <td>Contrato N° <? echo numeracion($row['n_contrato'])."- CLAR -".periodo($row['f_presentacion']);?></td>
+  </tr>
+  <tr>
+    <td>Lugar y Fecha </td>
+    <td>:</td>
+    <td><? echo $row['oficina'].", ".traducefecha($row['f_liquidacion']);?></td>
+  </tr>
+  <tr>
+    <td colspan="3"><hr></td>
+  </tr>
+</table>
+<br>
+<div class="capa justificado">
+<p>En relación al documento de la referencia, informo a su despacho, que la <strong><? echo $row['org'];?></strong>, ha cumplido con sus obligaciones establecidas en el Contrato de Donación Sujeto a Cargo que están sustentadas en los siguientes documentos que se adjuntan:</p>
+  <ol>
+    <li>Informe final de ejecución del evento CLAR</li>
+    <li>........... archivo con documentación en ........... folios.</li>
+  </ol>
+  <p>En virtud de lo cual, esta Jefatura de conformidad al Reglamento de Operaciones, da por <strong>LIQUIDADO</strong> el Contrato de la referencia por el monto total ejecutado de  <strong>S/ <? echo number_format($total_ejecutado,2);?> (<? echo vuelveletra($total_ejecutado);?>)</strong>. El mismo que esta conformado de la siguiente manera:</p>
+  <p>
+	  <table width="90%" border="1" align="center" cellpadding="1" cellspacing="1"  class="mini">
+	<tr class="centrado txt_titulo">
+		<td width="40%">ENTIDAD</td>
+		<td width="20%">DESEMBOLSADO (S/.)</td>
+		<td width="20%">EJECUTADO (S/.)</td>
+		<td width="20%">SALDO (S/.)</td>
+	</tr>
+  <tr>
+    <td>SIERRA SUR II</td>
+    <td class="derecha"><? echo number_format($r5['aporte'],2);?></td>
+    <td class="derecha"><? echo number_format($row['ejec_pdss'],2);?></td>
+    <td class="derecha"><?  if ($diferencia_pdss>0) echo number_format($diferencia_pdss,2); else echo "0.00";?></td>
+    
+  </tr>
+  <tr>
+    <td>ORGANIZACION</td>
+    <td class="derecha"><? echo number_format($r2['aporte'],2);?></td>
+   <td class="derecha"><? echo number_format($row['ejec_org'],2);?></td>
+   <td class="derecha"><?  if ($diferencia_org>0)  echo number_format($diferencia_org,2); else echo "0.00";?></td>
+  
+  </tr>
+  <tr>
+    <td>MUNICIPIO</td>
+    <td class="derecha"><? echo number_format($r3['aporte'],2);?></td>
+    <td class="derecha"><? echo number_format($row['ejec_mun'],2);?></td>
+   <td class="derecha"><?   if ($diferencia_mun>0) echo number_format($diferencia_mun,2); else echo "0.00";?></td>
+  
+  </tr>
+  <tr>
+    <td>OTRO</td>
+    <td class="derecha"><? echo number_format($r4['aporte'],2);?></td>
+    <td class="derecha"><? echo number_format($row['ejec_otro'],2);?></td>
+    <td class="derecha"><?  if ($diferencia_otr>0) echo number_format($diferencia_otr,2); else echo "0.00";?></td>
+
+  </tr>
+  <tr class="txt_titulo">
+    <td>TOTAL</td>
+    <td class="derecha"><? echo number_format($total_presupuesto,2);?></td>
+    <td class="derecha"><? echo number_format($total_ejecutado,2);?></td>
+    <td class="derecha"><? if ($diferencia_total>0) echo number_format($diferencia_total,2); else echo "0.00";?></td>
+  </tr>
+</table>
+  </p>
+  <p>Por lo expuesto, 
+  <?php
+   if($diferencia_pdss>0)
+   {
+    echo "y luego de verificar la <strong>DEVOLUCION</strong> del monto de <strong>S/. ".number_format($diferencia_pdss,2)." (".vuelveletra($diferencia_pdss).")</strong>, ";
+   }
+?>
+  
+  esta jefatura procede al <strong>PERFECCIONAMIENTO</strong> de la Donación Sujeto a Cargo por el monto de <strong>S/. <? echo number_format($row['ejec_pdss'],2);?>. (<? echo vuelveletra($row['ejec_pdss']);?>)</strong> correspondiente al aporte del Proyecto de Desarrollo Sierra Sur II </p>
+  <p>Por lo indicado, mucho estimaré disponer la baja contable del contrato en referencia.</p>
+
+  <p><br>
+  </p>
+</div>
+<br></br>
+<div class="capa">Atentamente,</div>
+
+
+
+<p>&nbsp;</p>
+<table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
+  <tr>
+    <td width="35%">&nbsp;</td>
+    <td width="30%" align="center">___________________</td>
+    <td width="35%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td align="center"><? echo $r1['nombre']." ".$r1['apellido'];?><br>JEFE DE OFICINA LOCAL</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<H1 class=SaltoDePagina> </H1>
+
 <? include("encabezado.php");?>
 <div class="capa centrado txt_titulo">CONFORMIDAD PARA LA BAJA CONTABLE DEL CONTRATO PARA LA REALIZACIÓN DE EVENTO CLAR</div>
 <BR>

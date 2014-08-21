@@ -125,6 +125,8 @@ $fila4=mysql_fetch_array($result);
 
 $monto_programado=$fila1['costo']+$fila2['costo']+$fila3['costo']+$fila4['costo'];
 
+$devolucion_proyecto = $fila1['costo']-$row['ejec_pdss']
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -144,68 +146,6 @@ $monto_programado=$fila1['costo']+$fila2['costo']+$fila3['costo']+$fila4['costo'
 </head>
 
 <body>
-<? include("encabezado.php");?>
-<div class="capa txt_titulo" align="center"><u>LIQUIDACION Y PERFECCIONAMIENTO</u><br>GIRA DE APRENDIZAJE E INTERCAMBIO DE CONOCIMIENTOS<br> N° <? echo numeracion($row['n_informe'])." - ".$row['codigo_iniciativa']." - ".periodo($row['f_informe'])." - ".$row['oficina'];?></div>
-
-
-<br>
-<table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
-  <tr>
-    <td width="22%" class="txt_titulo">A</td>
-    <td width="3%" class="txt_titulo">:</td>
-    <td width="75%"><? echo $row['nombre']." ".$row['apellido'];?></td>
-  </tr>
-  <tr>
-    <td class="txt_titulo">&nbsp;</td>
-    <td width="3%" class="txt_titulo">&nbsp;</td>
-    <td width="75%" class="txt_titulo"><? echo $row['cargo'];?></td>
-  </tr>
-  <tr>
-    <td class="txt_titulo">Referencia</td>
-    <td class="txt_titulo">:</td>
-    <td>Contrato N° <? echo numeracion($row['n_contrato']);?>-<? echo $row['codigo_iniciativa'];?>-<? echo periodo($row['f_presentacion']);?>-<? echo $row['oficina'];?></td>
-  </tr>
-  <tr>
-    <td class="txt_titulo">Fecha</td>
-    <td class="txt_titulo">:</td>
-    <td><? echo $row['oficina'];?>, <? echo traducefecha($row['f_informe']);?></td>
-  </tr>
-  <tr>
-    <td colspan="3"><hr></td>
-  </tr>
-</table>
-<br>
-<div class="capa" align="justify">
-<p>
-En relación al documento de la referencia, informo a su despacho, que la organizacion <? echo $row['organizacion'];?>, ha cumplido con sus obligaciones establecidad en el Contrato de Donación Sujeto a Cargo que estan sustentadas en los siguientes documentos que se adjuntan:
-</p>
-<ol>
-	<li>Informe de Ejecución y Liquidación de la Gira de Aprendizaje e intercambio de Conocimientos.</li>
-	<li>Archivo con documentación en ........... folios</li>
-</ol>
-
-<p>En virtud de lo cual, esta Jefatura de conformidad al Reglamento de Operaciones, da por LIQUIDADO el Contrato de la referencia por el monto total ejecutado de  S/ <? echo number_format($monto_total,2);?> (<? echo vuelveletra($monto_total);?>)</p>
-<p>Por lo expuesto, esta jefatura procede al PERFECCIONAMIENTO de la Donación Sujeto a Cargo por el monto de S/. <? echo number_format($row['ejec_pdss'],2);?>. (<? echo vuelveletra($row['ejec_pdss']);?>) correspondiente al aporte del Proyecto de Desarrollo Sierra Sur II </p>
-<p>Por lo indicado, mucho estimaré disponer la baja contable del contrato en referencia.</p>
-</div>
-<br>
-<div class="capa">Atentamente,</div>
-
-
-<p>&nbsp;</p>
-<table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
-  <tr>
-    <td width="35%">&nbsp;</td>
-    <td width="30%" align="center">___________________</td>
-    <td width="35%">&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td align="center"><? echo $row_1['nombre']." ".$row_1['apellido']."<br>".$row_1['descripcion'];?></td>
-    <td>&nbsp;</td>
-  </tr>
-</table>
-<H1 class=SaltoDePagina> </H1>
 <? include("encabezado.php");?>
 <div class="capa txt_titulo" align="center"><u>INFORME DE EJECUCIÓN Y LIQUIDACIÓN DE CONTRATO</u><BR>
   GIRA DE APRENDIZAJE E INTERCAMBIO DE CONOCIMIENTOS<BR></div>
@@ -360,66 +300,170 @@ while($r1=mysql_fetch_array($result))
   </tr>
 </table>
 
-<table width="90%" border="1" align="center" cellpadding="1" cellspacing="1" bordercolor="#000000" class="mini">
-  <tr>
-    <td width="57%" align="center"><strong>ENTIDAD</strong></td>
-    <td width="17%" align="center"><strong>MONTO PROGRAMADO (S/.)</strong></td>
-    <td width="15%" align="center"><strong>MONTO EJECUTADO (S/.)</strong></td>
-    <td width="11%" align="center"><strong>%</strong></td>
+<table width="90%" border="1" align="center" cellpadding="1" cellspacing="1"  class="mini">
+  <tr class="txt_titulo">
+    <td width="40%" align="center">ENTIDAD</td>
+    <td width="20%" align="center">MONTO PROGRAMADO (S/.)</td>
+    <td width="20%" align="center">MONTO EJECUTADO (S/.)</td>
+    <td width="20%" align="center">MONTO DEVUELTO (S/.)</td>
   </tr>
   <tr>
     <td>SIERRA SUR II</td>
     <td align="right"><? echo number_format($fila1['costo'],2);?></td>
     <td align="right"><? echo number_format($row['ejec_pdss'],2);?></td>
-    <td align="right">
-    <?
-	@$pss=($row['ejec_pdss']/$fila1['costo'])*100;
-	echo number_format(@$pss,2);
-	?>
-    </td>
+    <td align="right"><?  echo number_format($fila1['costo']-$row['ejec_pdss'],2);?></td>
   </tr>
   <tr>
     <td>ORGANIZACION</td>
     <td align="right"><? echo number_format($fila2['costo'],2);?></td>
     <td align="right"><? echo number_format($row['ejec_org'],2);?></td>
-    <td align="right"><?
-	@$pog=($row['ejec_org']/$fila2['costo'])*100;
-	echo number_format(@$pog,2);
-	?></td>
+    <td align="right"><? echo number_format($fila2['costo']-$row['ejec_org'],2);?></td>
   </tr>
   <tr>
     <td>MUNICIPIO</td>
     <td align="right"><? echo number_format($fila3['costo'],2);?></td>
     <td align="right"><? echo number_format($row['ejec_mun'],2);?></td>
-    <td align="right">
-	<?
-	@$pmun=($row['ejec_mun']/$fila3['costo'])*100;
-	echo number_format(@$pmun,2);
-	?>
-    </td>
+    <td align="right"><? echo number_format($fila3['costo']-$row['ejec_mun'],2);?></td>
   </tr>
   <tr>
     <td>OTRO</td>
     <td align="right"><? echo number_format($fila4['costo'],2);?></td>
     <td align="right"><? echo number_format($row['ejec_otro'],2);?></td>
-    <td align="right"><?
-	@$potr=($row['ejec_otro']/$fila4['costo'])*100;
-	echo number_format(@$potr,2);
-	?></td>
+    <td align="right"><? echo number_format($fila4['costo']-$row['ejec_otro'],2);?></td>
   </tr>
   <tr>
     <td><strong>TOTAL</strong></td>
     <td align="right"><? echo number_format($monto_programado,2);?></td>
     <td align="right"><? echo number_format($monto_total,2);?></td>
-    <td align="right"><?
-	@$ptol=($monto_total/$monto_programado)*100;
-	echo number_format(@$ptol,2);
-	?></td>
+    <td align="right"><? echo number_format($monto_programado-$monto_total,2);?></td>
   </tr>
 </table>
 <br>
 <div class="capa" align="right"><? echo $row['oficina'].", ".traducefecha($row['f_informe']);?></div>
 <H1 class=SaltoDePagina> </H1>
+<? include("encabezado.php");?>
+<div class="capa txt_titulo" align="center"><u>LIQUIDACION Y PERFECCIONAMIENTO</u><br>GIRA DE APRENDIZAJE E INTERCAMBIO DE CONOCIMIENTOS<br> N° <? echo numeracion($row['n_informe'])." - ".$row['codigo_iniciativa']." - ".periodo($row['f_informe'])." - ".$row['oficina'];?></div>
+
+
+<br>
+<table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
+  <tr>
+    <td width="22%" class="txt_titulo">A</td>
+    <td width="3%" class="txt_titulo">:</td>
+    <td width="75%"><? echo $row['nombre']." ".$row['apellido'];?></td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">&nbsp;</td>
+    <td width="3%" class="txt_titulo">&nbsp;</td>
+    <td width="75%" class="txt_titulo"><? echo $row['cargo'];?></td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">Referencia</td>
+    <td class="txt_titulo">:</td>
+    <td>Contrato N° <? echo numeracion($row['n_contrato']);?>-<? echo $row['codigo_iniciativa'];?>-<? echo periodo($row['f_presentacion']);?>-<? echo $row['oficina'];?></td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">Fecha</td>
+    <td class="txt_titulo">:</td>
+    <td><? echo $row['oficina'];?>, <? echo traducefecha($row['f_informe']);?></td>
+  </tr>
+  <tr>
+    <td colspan="3"><hr></td>
+  </tr>
+</table>
+<br>
+<div class="capa" align="justify">
+<p>
+En relación al documento de la referencia, informo a su despacho, que la organizacion <strong><? echo $row['organizacion'];?></strong>, ha cumplido con sus obligaciones establecidad en el Contrato de Donación Sujeto a Cargo que estan sustentadas en los siguientes documentos que se adjuntan:
+</p>
+<ol>
+	<li>Informe de Ejecución y Liquidación de la Gira de Aprendizaje e intercambio de Conocimientos.</li>
+	<li>Archivo con documentación en ........... folios</li>
+</ol>
+
+<p>En virtud de lo cual, esta Jefatura de conformidad al Reglamento de Operaciones, da por <strong>LIQUIDADO</strong> el Contrato de la referencia por el monto total ejecutado de  <strong>S/ <? echo number_format($monto_programado,2);?> (<? echo vuelveletra($monto_programado);?>).</strong> El mismo que esta conformado de la siguiente manera:</p>
+
+<p>
+<table width="90%" border="1" align="center" cellpadding="1" cellspacing="1"  class="mini">
+  <tr class="txt_titulo">
+    <td width="40%" align="center">ENTIDAD</td>
+    <td width="15%" align="center">DESEMBOLSADO (S/.)</td>
+    <td width="15%" align="center">EJECUTADO (S/.)</td>
+    <td width="15%" align="center">DEVUELTO (S/.)</td>
+    <td width="15%" align="center">SALDOS (S/.)</td>
+  </tr>
+  <tr>
+    <td>SIERRA SUR II</td>
+    <td align="right"><? echo number_format($fila1['costo'],2);?></td>
+    <td align="right"><? echo number_format($row['ejec_pdss'],2);?></td>
+    <td align="right"><?   echo number_format($fila1['costo']-$row['ejec_pdss'],2);?></td>
+    <td align="right"><? echo number_format(0,2);?></td>
+  </tr>
+  <tr>
+    <td>ORGANIZACION</td>
+    <td align="right"><? echo number_format($fila2['costo'],2);?></td>
+    <td align="right"><? echo number_format($row['ejec_org'],2);?></td>
+    <td align="right"><? echo number_format($fila2['costo']-$row['ejec_org'],2);?></td>
+    <td align="right"><? echo number_format(0,2);?></td>
+  </tr>
+  <tr>
+    <td>MUNICIPIO</td>
+    <td align="right"><? echo number_format($fila3['costo'],2);?></td>
+    <td align="right"><? echo number_format($row['ejec_mun'],2);?></td>
+    <td align="right"><? echo number_format($fila3['costo']-$row['ejec_mun'],2);?></td>
+    <td align="right"><? echo number_format(0,2);?></td>
+  </tr>
+  <tr>
+    <td>OTRO</td>
+    <td align="right"><? echo number_format($fila4['costo'],2);?></td>
+    <td align="right"><? echo number_format($row['ejec_otro'],2);?></td>
+    <td align="right"><? echo number_format($fila4['costo']-$row['ejec_otro'],2);?></td>
+    <td align="right"><? echo number_format(0,2);?></td>
+  </tr>
+  <tr>
+    <td><strong>TOTAL</strong></td>
+    <td align="right"><? echo number_format($monto_programado,2);?></td>
+    <td align="right"><? echo number_format($monto_total,2);?></td>
+    <td align="right"><? echo number_format($monto_programado-$monto_total,2);?></td>
+    <td align="right"><? echo number_format(0,2);?></td>
+  </tr>
+</table>
+</p>
+
+<p>Por lo expuesto, 
+
+<?php
+   if($devolucion_proyecto>0)
+   {
+    echo "y luego de verificar la <strong>DEVOLUCION</strong> del monto de <strong>S/. ".number_format($devolucion_proyecto,2)." (".vuelveletra($devolucion_proyecto).")</strong>, ";
+   }
+?>
+
+
+esta jefatura procede al <strong>PERFECCIONAMIENTO</strong> de la Donación Sujeto a Cargo por el monto de <strong>S/. <? echo number_format($row['ejec_pdss'],2);?>. (<? echo vuelveletra($row['ejec_pdss']);?>)</strong> correspondiente al aporte del Proyecto de Desarrollo Sierra Sur II </p>
+<p>Por lo indicado, mucho estimaré disponer la baja contable del contrato en referencia.</p>
+</div>
+<br>
+<div class="capa">Atentamente,</div>
+
+
+<p>&nbsp;</p>
+<table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
+  <tr>
+    <td width="35%">&nbsp;</td>
+    <td width="30%" align="center">___________________</td>
+    <td width="35%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td align="center"><? echo $row_1['nombre']." ".$row_1['apellido']."<br>".$row_1['descripcion'];?></td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<H1 class=SaltoDePagina> </H1>
+
+
+
 <? include("encabezado.php");?>
 
 <div class="capa txt_titulo" align="center">CONFORMIDAD PARA LA BAJA CONTABLE DEL CONTRATO GIRA DE APRENDIZAJE E INTERCAMBIO DE CONOCIMIENTOS</div>
