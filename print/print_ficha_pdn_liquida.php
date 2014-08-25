@@ -1575,14 +1575,20 @@ $r3=mysql_fetch_array($result);
 <?php
 $total_prog_pdss=$row['ag_pdss']+$row['at_pdss']+$row['vg_pdss']+$row['fer_pdss'];
 $total_des_pdss=$r3['total_pdn'];
-$total_ejec_pdss=$row['ejec_at_pdss']+$row['ejec_vg_pdss']+$row['ejec_pf_pdss']+$row['ejec_ag_pdss'];
+$total_ejec_pdss=number_format($row['ejec_at_pdss']+$row['ejec_vg_pdss']+$row['ejec_pf_pdss']+$row['ejec_ag_pdss'],2,'.','');
+
+
 $total_ejec_org=$row['ejec_at_org']+$row['ejec_vg_org']+$row['ejec_pf_org'];
 $total_prog_org=$row['at_org']+$row['vg_org']+$row['fer_org'];
 
 $total_programado=$total_prog_pdss+$total_prog_org;
-$total_ejecutado=$total_ejec_pdss+$total_ejec_org;
+$total_ejecutado=number_format($total_ejec_pdss+$total_ejec_org,2,'.','');
 
 $devolucion=$total_des_pdss-$total_ejec_pdss;
+
+
+
+echo $total_ejecutado;
 
 
 ?>

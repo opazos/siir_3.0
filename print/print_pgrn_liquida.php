@@ -4,55 +4,58 @@ include("../funciones/funciones.php");
 conectarte();
 
 $sql="SELECT pit_bd_ficha_mrn.sector, 
-  pit_bd_ficha_mrn.lema, 
-  pit_bd_ficha_mrn.mes AS meses, 
-  pit_bd_ficha_mrn.f_termino, 
-  pit_bd_ficha_mrn.f_presentacion_2, 
-  org_ficha_organizacion.nombre AS organizacion, 
-  org_ficha_taz.nombre AS pit, 
-  pit_bd_ficha_pit.f_contrato, 
-  pit_bd_ficha_mrn.cif_pdss, 
-  pit_bd_ficha_mrn.at_pdss, 
-  pit_bd_ficha_mrn.vg_pdss, 
-  pit_bd_ficha_mrn.ag_pdss, 
-  pit_bd_ficha_mrn.at_org, 
-  pit_bd_ficha_mrn.vg_org, 
-  pit_bd_mrn_liquida.f_desembolso, 
-  pit_bd_mrn_liquida.n_cheque, 
-  pit_bd_mrn_liquida.ejec_cif_pdss, 
-  pit_bd_mrn_liquida.ejec_at_pdss, 
-  pit_bd_mrn_liquida.ejec_at_org, 
-  pit_bd_mrn_liquida.ejec_vg_pdss, 
-  pit_bd_mrn_liquida.ejec_vg_org, 
-  pit_bd_mrn_liquida.ejec_ag_pdss, 
-  pit_bd_mrn_liquida.hc_soc, 
-  pit_bd_mrn_liquida.just_soc, 
-  pit_bd_mrn_liquida.hc_dir, 
-  pit_bd_mrn_liquida.just_dir, 
-  pit_bd_mrn_liquida.f_liquidacion, 
-  sys_bd_califica.descripcion AS calificacion, 
-  pit_bd_ficha_mrn.n_voucher_2, 
-  pit_bd_ficha_mrn.monto_organizacion_2, 
-  sys_bd_departamento.nombre AS departamento, 
-  sys_bd_provincia.nombre AS provincia, 
-  sys_bd_distrito.nombre AS distrito, 
-  sys_bd_cp.nombre, 
-  pit_bd_ficha_pit.n_contrato, 
-  pit_bd_mrn_liquida.observaciones, 
-  sys_bd_dependencia.nombre AS oficina
+	pit_bd_ficha_mrn.lema, 
+	pit_bd_ficha_mrn.mes AS meses, 
+	pit_bd_ficha_mrn.f_termino, 
+	pit_bd_ficha_mrn.f_presentacion_2, 
+	org_ficha_organizacion.nombre AS organizacion, 
+	org_ficha_taz.nombre AS pit, 
+	pit_bd_ficha_pit.f_contrato, 
+	pit_bd_ficha_mrn.cif_pdss, 
+	pit_bd_ficha_mrn.at_pdss, 
+	pit_bd_ficha_mrn.vg_pdss, 
+	pit_bd_ficha_mrn.ag_pdss, 
+	pit_bd_ficha_mrn.at_org, 
+	pit_bd_ficha_mrn.vg_org, 
+	pit_bd_mrn_liquida.f_desembolso, 
+	pit_bd_mrn_liquida.n_cheque, 
+	pit_bd_mrn_liquida.ejec_cif_pdss, 
+	pit_bd_mrn_liquida.ejec_at_pdss, 
+	pit_bd_mrn_liquida.ejec_at_org, 
+	pit_bd_mrn_liquida.ejec_vg_pdss, 
+	pit_bd_mrn_liquida.ejec_vg_org, 
+	pit_bd_mrn_liquida.ejec_ag_pdss, 
+	pit_bd_mrn_liquida.hc_soc, 
+	pit_bd_mrn_liquida.just_soc, 
+	pit_bd_mrn_liquida.hc_dir, 
+	pit_bd_mrn_liquida.just_dir, 
+	pit_bd_mrn_liquida.f_liquidacion, 
+	sys_bd_califica.descripcion AS calificacion, 
+	pit_bd_ficha_mrn.n_voucher_2, 
+	sys_bd_departamento.nombre AS departamento, 
+	sys_bd_provincia.nombre AS provincia, 
+	sys_bd_distrito.nombre AS distrito, 
+	sys_bd_cp.nombre, 
+	pit_bd_ficha_pit.n_contrato, 
+	pit_bd_mrn_liquida.observaciones, 
+	sys_bd_dependencia.nombre AS oficina, 
+	pit_bd_ficha_mrn.monto_organizacion, 
+	pit_bd_ficha_mrn.monto_organizacion_2
 FROM org_ficha_organizacion INNER JOIN pit_bd_ficha_mrn ON org_ficha_organizacion.cod_tipo_doc = pit_bd_ficha_mrn.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = pit_bd_ficha_mrn.n_documento_org
-   INNER JOIN pit_bd_mrn_liquida ON pit_bd_mrn_liquida.cod_mrn = pit_bd_ficha_mrn.cod_mrn
-   INNER JOIN sys_bd_califica ON sys_bd_califica.cod = pit_bd_mrn_liquida.cod_calificacion
-   INNER JOIN org_ficha_taz ON org_ficha_taz.cod_tipo_doc = org_ficha_organizacion.cod_tipo_doc_taz AND org_ficha_taz.n_documento = org_ficha_organizacion.n_documento_taz
-   INNER JOIN pit_bd_ficha_pit ON pit_bd_ficha_pit.cod_tipo_doc_taz = org_ficha_taz.cod_tipo_doc AND pit_bd_ficha_pit.n_documento_taz = org_ficha_taz.n_documento AND pit_bd_ficha_pit.cod_pit = pit_bd_ficha_mrn.cod_pit
-   INNER JOIN sys_bd_departamento ON sys_bd_departamento.cod = org_ficha_organizacion.cod_dep
-   INNER JOIN sys_bd_provincia ON sys_bd_provincia.cod = org_ficha_organizacion.cod_prov
-   INNER JOIN sys_bd_distrito ON sys_bd_distrito.cod = org_ficha_organizacion.cod_dist
-   LEFT OUTER JOIN sys_bd_cp ON sys_bd_cp.cod = org_ficha_organizacion.cod_cp
-   INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_organizacion.cod_dependencia
+	 INNER JOIN pit_bd_mrn_liquida ON pit_bd_mrn_liquida.cod_mrn = pit_bd_ficha_mrn.cod_mrn
+	 INNER JOIN sys_bd_califica ON sys_bd_califica.cod = pit_bd_mrn_liquida.cod_calificacion
+	 INNER JOIN org_ficha_taz ON org_ficha_taz.cod_tipo_doc = org_ficha_organizacion.cod_tipo_doc_taz AND org_ficha_taz.n_documento = org_ficha_organizacion.n_documento_taz
+	 INNER JOIN pit_bd_ficha_pit ON pit_bd_ficha_pit.cod_tipo_doc_taz = org_ficha_taz.cod_tipo_doc AND pit_bd_ficha_pit.n_documento_taz = org_ficha_taz.n_documento AND pit_bd_ficha_pit.cod_pit = pit_bd_ficha_mrn.cod_pit
+	 INNER JOIN sys_bd_departamento ON sys_bd_departamento.cod = org_ficha_organizacion.cod_dep
+	 INNER JOIN sys_bd_provincia ON sys_bd_provincia.cod = org_ficha_organizacion.cod_prov
+	 INNER JOIN sys_bd_distrito ON sys_bd_distrito.cod = org_ficha_organizacion.cod_dist
+	 LEFT OUTER JOIN sys_bd_cp ON sys_bd_cp.cod = org_ficha_organizacion.cod_cp
+	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_organizacion.cod_dependencia
 WHERE pit_bd_ficha_mrn.cod_mrn='$cod'";
 $result=mysql_query($sql) or die (mysql_error());
 $row=mysql_fetch_array($result);
+
+
 
 
 //2.- Verificamos si este PGRN tiene adenda
@@ -87,7 +90,6 @@ $result=mysql_query($sql) or die (mysql_error());
 $f6=mysql_fetch_array($result);
 
 
-
 $total_cif_pdss=$row['cif_pdss']+$f6['cif_pdss'];
 $total_at_pdss=$row['at_pdss']+$f6['at_pdss'];
 $total_ag_pdss=$row['ag_pdss']+$f6['ag_pdss'];
@@ -103,7 +105,6 @@ $fecha_db = explode("-",$fecha_db);
 $fecha_cambiada = mktime(0,0,0,$fecha_db[1],$fecha_db[2],$fecha_db[0]-25);
 $fecha = date("Y-m-d", $fecha_cambiada);
 $fecha_25 = "'".$fecha."'";
-
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -1869,17 +1870,20 @@ $total_ag_des=$r1['total_ag']+$r2['total_ag']+$f6['ag_pdss'];
 <br/>
 <?php
 
-$total_dep_pdss=$total_cif_pdss+$total_at_pdss+$row['vg_pdss']+$total_ag_pdss;
+
+//Monto Organizaciones
 $total_prog_org=$total_at_org+$row['vg_org'];
-$total_ejec_pdss=$row['ejec_cif_pdss']+$row['ejec_at_pdss']+$row['ejec_vg_pdss']+$row['ejec_ag_pdss'];
-
-$total_mrn_des=$r1['total_primero']+$r2['total_segundo']+$f6['total_pdss'];
-
-$total_dep_org=$total_at_org+$row['vg_org'];
+$total_dep_org=$row['monto_organizacion']+$row['monto_organizacion_2'];
 $total_ejec_org=$row['ejec_at_org']+$row['ejec_vg_org'];
 
-$devolucion=$total_mrn_des-$total_ejec_pdss;
+//Monto Proyectos
+$total_dep_pdss=$total_cif_pdss+$total_at_pdss+$row['vg_pdss']+$total_ag_pdss;
+$total_ejec_pdss=$row['ejec_cif_pdss']+$row['ejec_at_pdss']+$row['ejec_vg_pdss']+$row['ejec_ag_pdss'];
+$total_mrn_des=$r1['total_primero']+$r2['total_segundo']+$f6['total_pdss'];
 
+
+
+$devolucion=$total_mrn_des-$total_ejec_pdss;
 $total_ejec_contrato=$total_ejec_pdss+$total_ejec_org;
 
 ?>
@@ -1887,28 +1891,28 @@ $total_ejec_contrato=$total_ejec_pdss+$total_ejec_org;
   <tr class="txt_titulo centrado">
     <td width="40%">Entidad</td>
     <td width="15%">Programado (S/.)</td>
-    <td width="15%">Desembolsado (S/.)</td>
+    <td width="15%">Desembolsado</td>
     <td width="15%">Ejecutado (S/.)</td>
     <td width="15%">Saldo (S/.)</td>
   </tr>
   <tr>
     <td>NEC PDSS II</td>
     <td class="derecha"><? echo number_format($total_dep_pdss,2);?></td>
-    <td class="derecha"><? echo number_format($total_mrn_des,2);?></td>
+    <td class="derecha"><? echo number_format($total_dep_pdss,2);?></td>
     <td class="derecha"><? echo number_format($total_ejec_pdss,2);?></td>
     <td class="derecha"><? echo number_format($total_mrn_des-$total_ejec_pdss,2);?></td>
   </tr>
   <tr>
     <td>Organización</td>
+    <td class="derecha"><? echo number_format($total_prog_org,2);?></td>
     <td class="derecha"><? echo number_format($total_dep_org,2);?></td>
     <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_ejec_org-$total_ejec_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_dep_org-$total_ejec_org,2);?></td>
   </tr>
   <tr class="txt_titulo">
     <td>TOTALES</td>
-    <td class="derecha"><? echo number_format($total_dep_pdss+$total_dep_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_mrn_des+$total_ejec_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_dep_pdss+$total_prog_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_dep_pdss+$total_dep_org,2);?></td>    
     <td class="derecha"><? echo number_format($total_ejec_pdss+$total_ejec_org,2);?></td>
     <td class="derecha"><? echo number_format($total_mrn_des-$total_ejec_pdss,2);?></td>
   </tr>    
@@ -1925,7 +1929,6 @@ $total_ejec_contrato=$total_ejec_pdss+$total_ejec_org;
     $excusa_2="parcialmente";
   }
 ?>
-
 <!-- Liquidación de iniciativas -->
  <H1 class=SaltoDePagina></H1>
   <? include("encabezado.php");?>
@@ -1997,13 +2000,13 @@ if ($total_ejec_pdss<$total_dep_pdss)
   </tr>
   <tr>
     <td>Organización</td>
+    <td class="derecha"><? echo number_format($total_dep_org,2);?></td>
     <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_ejec_org-$total_ejec_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_dep_org-$total_ejec_org,2);?></td>
   </tr>
   <tr class="txt_titulo">
     <td>TOTALES</td>
-    <td class="derecha"><? echo number_format($total_mrn_des+$total_ejec_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_mrn_des+$total_dep_org,2);?></td>
     <td class="derecha"><? echo number_format($total_ejec_pdss+$total_ejec_org,2);?></td>
     <td class="derecha"><? echo number_format($total_mrn_des-$total_ejec_pdss,2);?></td>
   </tr>    

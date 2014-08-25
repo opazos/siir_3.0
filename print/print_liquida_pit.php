@@ -293,18 +293,17 @@ if($total_des_pdss<>0)
     <table width="90%" border="1" align="center" cellpadding="2" cellspacing="2" class="mini">
   <tr class="centrado txt_titulo">
     <td width="29%" rowspan="2">Concepto</td>
-    <td colspan="4">SIERRA SUR II</td>
+    <td colspan="3">SIERRA SUR II</td>
     <td colspan="3">ORGANIZACION</td>
   </tr>
 
   <tr class="centrado txt_titulo">
-    <td>Monto Depositado (S/.)</td>
-    <td>Monto Ejecutado (S/.)</td>
-    <td>Monto Devuelto</td>
-    <td>% de Ejecucion</td>
-    <td>Monto Programado (S/.)</td>
-    <td>Monto Ejecutado (S/.)</td>
-    <td>% de Ejecución</td>
+    <td>DESEMBOLSADO (S/.)</td>
+    <td>EJECUTADO (S/.)</td>
+    <td>SALDOS (S/.)</td>
+    <td>DESEMBOLSADO (S/.)</td>
+    <td>EJECUTADO (S/.)</td>
+    <td>SALDOS (S/.)</td>
   </tr>
 
   <tr>
@@ -312,10 +311,10 @@ if($total_des_pdss<>0)
     <td class="derecha"><? echo number_format($total_des_pdss,2);?></td>
     <td class="derecha"><? echo number_format($row['ejec_an'],2);?></td>
     <td class="derecha"><? echo number_format($total_des_pdss-$row['ejec_an'],2);?></td>
-    <td class="derecha"><? $ppdss=($row['ejec_an']/$total_des_pdss)*100; echo number_format(@$ppdss,2);?></td>
+
     <td class="derecha"><? echo number_format($total_org,2);?></td>
     <td class="derecha"><? echo number_format($total_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_org - $total_org,2);?></td>
   </tr>
 
   <tr class="txt_titulo">
@@ -323,10 +322,9 @@ if($total_des_pdss<>0)
     <td class="derecha"><? echo number_format($total_des_pdss,2);?></td>
     <td class="derecha"><? echo number_format($row['ejec_an'],2);?></td>
     <td class="derecha"><? echo number_format($total_des_pdss-$row['ejec_an'],2);?></td>
-    <td class="derecha"><? $ppdss=($row['ejec_an']/$total_des_pdss)*100; echo number_format(@$ppdss,2);?></td>
     <td class="derecha"><? echo number_format($total_org,2);?></td>
     <td class="derecha"><? echo number_format($total_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_org,2);?></td>  
+    <td class="derecha"><? echo number_format($total_org - $total_org,2);?></td>
   </tr>
 </table>
   </p>
