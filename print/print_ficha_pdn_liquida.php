@@ -189,6 +189,39 @@ $fecha = date("Y-m-d", $fecha_cambiada);
 $fecha_25 = "'".$fecha."'";
 
 
+
+//Desde aca calculo los montos
+//**** Obtengo el monto depositado tanto en primer como en segundo desembolso
+$sql="SELECT SUM(clar_atf_pdn.monto_1) AS total_at, 
+  SUM(clar_atf_pdn.monto_2) AS total_vg, 
+  SUM(clar_atf_pdn.monto_3) AS total_fer, 
+  SUM(clar_atf_pdn.monto_4) AS total_ag, 
+  SUM(clar_atf_pdn.monto_1+ 
+  clar_atf_pdn.monto_2+ 
+  clar_atf_pdn.monto_3+ 
+  clar_atf_pdn.monto_4) AS total_pdn
+FROM clar_atf_pdn
+WHERE clar_atf_pdn.cod_pdn='$cod'";
+$result=mysql_query($sql) or die (mysql_error());
+$r3=mysql_fetch_array($result);
+
+//Proyecto
+$total_prog_pdss=$row['ag_pdss']+$row['at_pdss']+$row['vg_pdss']+$row['fer_pdss'];
+$total_des_pdss=$r3['total_pdn'];
+$total_ejec_pdss=number_format($row['ejec_at_pdss']+$row['ejec_vg_pdss']+$row['ejec_pf_pdss']+$row['ejec_ag_pdss'],2,'.','');
+
+//Organizacion
+$total_prog_org=$row['at_org']+$row['vg_org']+$row['fer_org'];
+$total_des_org=$row['monto_organizacion']+$row['monto_organizacion_2'];
+$total_ejec_org=$row['ejec_at_org']+$row['ejec_vg_org']+$row['ejec_pf_org'];
+
+
+$total_programado=$total_prog_pdss+$total_prog_org;
+$total_desembolsado=$total_des_pdss + $total_des_org;
+$total_ejecutado=number_format($total_ejec_pdss+$total_ejec_org,2,'.','');
+$devolucion=number_format($total_des_pdss-$total_ejec_pdss,2,'.','');
+
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -249,11 +282,6 @@ $fecha_25 = "'".$fecha."'";
 		<td><? echo $row['cp'];?></td>
 	</tr>	
 </table>
-
-
-
-
-
 <H1 class=SaltoDePagina></H1>
 <? include("encabezado.php");?>
 
@@ -1543,23 +1571,6 @@ while($r2=mysql_fetch_array($result13))
 
 
 <H1 class=SaltoDePagina></H1>
-<?php
-//**** Obtengo el monto depositado tanto en primer como en segundo desembolso
-$sql="SELECT SUM(clar_atf_pdn.monto_1) AS total_at, 
-  SUM(clar_atf_pdn.monto_2) AS total_vg, 
-  SUM(clar_atf_pdn.monto_3) AS total_fer, 
-  SUM(clar_atf_pdn.monto_4) AS total_ag, 
-  SUM(clar_atf_pdn.monto_1+ 
-  clar_atf_pdn.monto_2+ 
-  clar_atf_pdn.monto_3+ 
-  clar_atf_pdn.monto_4) AS total_pdn
-FROM clar_atf_pdn
-WHERE clar_atf_pdn.cod_pdn='$cod'";
-$result=mysql_query($sql) or die (mysql_error());
-$r3=mysql_fetch_array($result);
-
-
-?>
 <div class="capa txt_titulo">VIII.- INFORME ADMINISTRATIVO</div>
 <br/>
 <table width="90%" border="0" align="center" cellpadding="2" cellspacing="2">
@@ -1572,27 +1583,6 @@ $r3=mysql_fetch_array($result);
 </table>
 <div class="capa txt_titulo">8.1 Presupuesto Ejecutado</div>
 <br/>
-<?php
-$total_prog_pdss=$row['ag_pdss']+$row['at_pdss']+$row['vg_pdss']+$row['fer_pdss'];
-$total_des_pdss=$r3['total_pdn'];
-$total_ejec_pdss=number_format($row['ejec_at_pdss']+$row['ejec_vg_pdss']+$row['ejec_pf_pdss']+$row['ejec_ag_pdss'],2,'.','');
-
-
-$total_ejec_org=$row['ejec_at_org']+$row['ejec_vg_org']+$row['ejec_pf_org'];
-$total_prog_org=$row['at_org']+$row['vg_org']+$row['fer_org'];
-
-$total_programado=$total_prog_pdss+$total_prog_org;
-$total_ejecutado=number_format($total_ejec_pdss+$total_ejec_org,2,'.','');
-
-$devolucion=$total_des_pdss-$total_ejec_pdss;
-
-
-
-echo $total_ejecutado;
-
-
-?>
-
 <table width="90%" border="1" align="center" cellpadding="2" cellspacing="2" class="mini">
   <tr class="txt_titulo centrado">
     <td width="40%">Entidad</td>
@@ -1608,15 +1598,15 @@ echo $total_ejecutado;
   </tr>
   <tr>
     <td>Organización</td>
+    <td class="derecha"><? echo number_format($total_des_org,2);?></td>
     <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_ejec_org-$total_ejec_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_des_org-$total_ejec_org,2);?></td>
   </tr>
   <tr class="txt_titulo">
     <td>TOTALES</td>
-    <td class="derecha"><? echo number_format($total_des_pdss+$total_ejec_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_desembolsado,2);?></td>
     <td class="derecha"><? echo number_format($total_ejecutado,2);?></td>
-    <td class="derecha"><? echo number_format($total_des_pdss+$total_ejec_org-$total_ejecutado,2);?></td>
+    <td class="derecha"><? echo number_format($total_desembolsado-$total_ejecutado,2);?></td>
   </tr>    
 </table>
 <br/>
@@ -1709,15 +1699,15 @@ if ($total_ejecutado<$total_programado)
   </tr>
   <tr>
     <td>Organización</td>
+    <td class="derecha"><? echo number_format($total_des_org,2);?></td>
     <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_ejec_org-$total_ejec_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_des_org-$total_ejec_org,2);?></td>
   </tr>
   <tr class="txt_titulo">
     <td>TOTALES</td>
-    <td class="derecha"><? echo number_format($total_des_pdss+$total_ejec_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_desembolsado,2);?></td>
     <td class="derecha"><? echo number_format($total_ejecutado,2);?></td>
-    <td class="derecha"><? echo number_format($total_des_pdss+$total_ejec_org-$total_ejecutado,2);?></td>
+    <td class="derecha"><? echo number_format($total_desembolsado-$total_ejecutado,2);?></td>
   </tr>    
 </table>
 
@@ -1900,7 +1890,6 @@ if ($total_ejecutado<$total_programado)
 ?>
     <p>En virtud de lo cual, esta Jefatura de conformidad al Reglamento de Operaciones, da por <strong>LIQUIDADO</strong>  como una acción parcial el PDN del Contrato de la referencia  por el monto total ejecutado de  <strong>S/. <? echo number_format($total_ejecutado,2);?> (<? echo vuelveletra($total_ejecutado);?> Nuevos Soles)</strong>. El mismo que esta conformado de la siguiente manera:</p>
 
-
 <table width="90%" border="1" align="center" cellpadding="2" cellspacing="2" class="mini">
   <tr class="txt_titulo centrado">
     <td width="40%">Entidad</td>
@@ -1916,15 +1905,15 @@ if ($total_ejecutado<$total_programado)
   </tr>
   <tr>
     <td>Organización</td>
+    <td class="derecha"><? echo number_format($total_des_org,2);?></td>
     <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_ejec_org-$total_ejec_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_des_org-$total_ejec_org,2);?></td>
   </tr>
   <tr class="txt_titulo">
     <td>TOTALES</td>
-    <td class="derecha"><? echo number_format($total_des_pdss+$total_ejec_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_desembolsado,2);?></td>
     <td class="derecha"><? echo number_format($total_ejecutado,2);?></td>
-    <td class="derecha"><? echo number_format($total_des_pdss+$total_ejec_org-$total_ejecutado,2);?></td>
+    <td class="derecha"><? echo number_format($total_desembolsado-$total_ejecutado,2);?></td>
   </tr>    
 </table>
 

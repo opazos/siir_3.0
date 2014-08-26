@@ -1873,7 +1873,7 @@ $total_ag_des=$r1['total_ag']+$r2['total_ag']+$f6['ag_pdss'];
 
 //Monto Organizaciones
 $total_prog_org=$total_at_org+$row['vg_org'];
-$total_dep_org=$row['monto_organizacion']+$row['monto_organizacion_2'];
+$total_dep_org=$row['monto_organizacion']+$row['monto_organizacion_2']+$f6['at_org'];
 $total_ejec_org=$row['ejec_at_org']+$row['ejec_vg_org'];
 
 //Monto Proyectos
