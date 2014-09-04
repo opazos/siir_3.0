@@ -130,6 +130,17 @@ else
 	$tiempo=number_format($meses)." meses";
 }
 
+
+if ($row['cod_tipo_ruta']==5)
+{
+$entidad="al DTR-IC/RIMISP";
+$actividad="El Diplomado";
+}
+else
+{
+$entidad="a la Corporación PROCASUR";
+$actividad="La Ruta de aprendizaje";
+}
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -151,6 +162,137 @@ else
 <body>
 <? include("encabezado.php");?>
 <br>
+<?
+if ($row['cod_tipo_ruta']==5)
+{
+?>
+<div class="capa centrado txt_titulo">
+CONTRATO Nº <? echo numeracion($row['n_contrato']);?> – <? echo $row['codigo_iniciativa'];?>/DIPLOMADO – <? echo periodo($row['f_contrato']);?> – OL <? echo $row['oficina'];?><br>
+DE DONACIÓN SUJETO A CARGO PARA LA PARTICIPACION EN <? echo $denominacion;?>: <? echo $row['ruta'];?>
+</div>
+<br>
+<div class="capa justificado">
+<p>Conste por el presente documento el Contrato de Donación sujeto a Cargo para la participación EN LA  DIPLOMATURA : <? echo $row['ruta'];?>, que celebran, de una parte EL NÚCLEO EJECUTOR CENTRAL DEL PROYECTO DE DESARROLLO SIERRA SUR II con RUC Nº 20456188118, en adelante denominado "SIERRA SUR II", representado por el Jefe de la Oficina Local de  <? echo $row['oficina'];?>. Sr.(a) <? echo $row['nombres']." ".$row['apellidos'];?>, identificado(a) con DNI Nº <? echo $row['dni_jefe'];?>, con domicilio legal en <? echo $row['direccion_oficina'];?> del Distrito de <? echo $row['ubicacion'];?>, de la Provincia de <? echo $row['prov'];?> y Departamento de <? echo $row['dep'];?>; y de otra parte el Sr(a), <? echo $row['nombre']." ".$row['paterno']." ".$row['materno'];?> identificado(a) con DNI. Nº <? echo $row['dni'];?> En adelante denominado "<? echo $org;?>”, en los términos y condiciones establecidos en las cláusulas siguientes:</p>
+<p><strong>CLAUSULA PRIMERA.- ANTECEDENTES</strong>
+	<ol style="list-style:none">
+		<li><strong>1.1.</strong> "<? echo $proyecto;?>" es un ente colectivo de naturaleza temporal que tiene como objetivo promover, dentro de su ámbito de acción, que las familias campesinas y microempresarios incrementen sus ingresos, activos tangibles y valoricen sus conocimientos, organización social y autoestima. Para tal efecto, administra los recursos económicos provenientes del Convenio de Financiación que comprende el Préstamo N° 799 –PE y la Donación N° 1158 – PE, firmado entre la República del Perú y el Fondo Internacional de Desarrollo Agrícola – FIDA, dichos recursos son transferidos a "<? echo $proyecto;?>" a través del Programa AGRORURAL del Ministerio de Agricultura-MINAG.</li>
+		<li><strong>1.2.</strong> En el marco de la estrategia de ejecución de "<? echo $proyecto;?>", se ha establecido el apoyo a iniciativas rurales de inversión que contribuyan al cumplimiento del objetivo del Proyecto, bajo el enfoque de desarrollo territorial rural; para tal efecto, se promueve que las organizaciones rurales participen de eventos de promoción del conocimiento organizados por los municipios y otras instituciones públicas y privadas en el ámbito local, regional, nacional y/o internacional.</li>
+		<li><strong>1.3.</strong> Convenio N° 011-2013 de Cooperación Interinstitucional entre el Proyecto de Desarrollo Sierra Sur II y el Programa de Desarrollo Territorial Rural con Identidad Cultural DTR-IC/RIMISP- Centro Latinoamericano para el Desarrollo Rural de fecha tres de noviembre del 2013; con el objetivo de  potenciar las capacidades de desarrollo de emprendimientos y estrategias territoriales innovadoras para la lucha contra la pobreza a través del proceso de Talentos locales a ofertas formativas  tanto en el Perú  como en otros países de la región impulsadas por el Programa  DRT-IC/RIMISP en conjunto con instituciones de educación superior de primer nivel.</li>
+		<li><strong>1.4.</strong> "<? echo $org;?>", ha sido propuesto por la Oficina local de <? echo $row['oficina'];?> y  evaluado   por personal de la Unidad Ejecutiva de "<? echo $proyecto;?>" para participar en la diplomatura:  "<? echo $row['ruta'];?>", que se desarrollará entre  mayo y agosto  del  2014 en el marco del programa de Diplomatura- modalidad semi-presencial, organizado en  6 módulos que representan 17 semanas de estudios equivalentes a 250 horas, con un módulo inicial a realizarse a través de un Laboratorio Territorial (LABTER) en Arequipa y Valle del Colca, Perú, entre el 5 y 9 de mayo del 2014.</li>
+	</ol>
+</p>
+<p><strong>CLAUSULA SEGUNDA: OBJETO DEL CONTRATO</strong>
+<br/>
+Por el presente contrato "<? echo $proyecto;?>"   transfiere en donación sujeto a cargo, el monto total de <strong>S/. <? echo number_format($row['aporte_pdss'],2);?> (<? echo vuelveletra($row['aporte_pdss']);?> Nuevos Soles)</strong>  a  “<? echo $org;?>". El  Monto será destinado para financiar la participación en el evento  referido en el ítem <strong>1.4</strong> de la Cláusula Primera, según el siguiente cuadro:
+</p>
+<p>
+	<table width="90%" cellpadding="1" cellspacing="1" border="1" class="mini" align="center">
+	<tr class="txt_titulo centrado">
+		<td width="40%">NOMBRE DEL EVENTO</td>
+		<td width="15%">APORTE<BR>SIERRA SUR II (S/.)</td>
+		<td width="15%">APORTE<BR>ENTIDAD COFINANCIADORA (S/.)</td>
+		<td width="15%">APORTE<BR>ORGANIZACION (S/.)</td>
+		<td width="15%">TOTAL</td>
+	</tr>
+	<tr>
+		<td><? echo $row['ruta'];?></td>
+		<td class="derecha"><? echo number_format($row['aporte_pdss'],2);?></td>
+		<td class="derecha"><? echo number_format($row['aporte_otro'],2);?></td>
+		<td class="derecha"><? echo number_format($row['aporte_org'],2);?></td>
+		<td class="derecha"><? echo number_format($row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'],2);?></td>
+	</tr>
+<?
+//calculo de %
+$total=$row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'];
+
+@$pss=$row['aporte_pdss']/$total*100;
+@$porg=$row['aporte_org']/$total*100;
+@$potro=$row['aporte_otro']/$total*100;
+
+?>		
+	<tr>
+		<td class="centrado">%</td>
+		<td class="derecha"><? echo number_format(@$pss,2);?></td>
+		<td class="derecha"><? echo number_format(@$potro,2);?></td>
+		<td class="derecha"><? echo number_format(@$porg,2);?></td>
+		<td class="derecha">100.00</td>
+	</tr>
+</table>
+</p>
+<p>El objetivo de la participación de "<? echo $org;?>" es potenciar sus capacidades de desarrollo en emprendimientos y estrategias territoriales innovadoras para la lucha contra la pobreza y el desarrollo sostenible.</p>
+<p><strong>CLAUSULA TERCERA: PLAZO DEL CONTRATO.</strong>
+<br/>
+El plazo establecido por las partes para la ejecución del presente contrato es de <? echo $tiempo;?>, inicia el <? echo traducefecha($row['f_contrato']);?> y culmina el <? echo traducefecha($f_termino);?>. Este plazo incluye las acciones de liquidación del Contrato y perfeccionamiento de la donación.	
+</p>
+<p><strong>CLAUSULA CUARTA: DE LA TRANSFERENCIA Y DESEMBOLSO DE LOS FONDOS</strong>
+<br/>
+“<? echo $org;?>” autoriza a "<? echo $proyecto;?>" para que transfiera al programa DTRC-IC de RIMISP y la Pontificia Universidad Católica del Perú o a quien indique la mencionada institución en un solo desembolso.</p>
+<p><strong>CLAUSULA QUINTA: OBLIGACIONES DE LAS PARTES</strong>
+	<ol style="list-style:none">
+		<li><strong>5.1 </strong> "<? echo $org;?>" se obliga a:
+		<ol type="a">
+			<li>Participar  en la Diplomatura  según el programa establecido</li>
+			<li>Presentar el informe sobre su participación en el diplomado, incluyendo en material fotográfico en el plazo estipulado en la Cláusula Tercera.</li>
+			<li>Realizar una réplica del aprendizaje obtenido en el diplomado a favor de las organizaciones de su territorio.</li>
+		</ol>
+		</li>
+		<li><strong>5.2 </strong> "<? echo $proyecto;?>" se obliga a:
+		<ol type="a">
+			<li>Efectuar el desembolso que le corresponda, según lo establecido en la cláusula anterior.</li>
+			<li>Mantener informado a "<? echo $org;?>" sobre las coordinaciones previas al diplomado.</li>
+		</ol>
+		</li>
+	</ol>
+</p>
+<p><strong>CLAUSULA SEXTA: DEL CARGO, LIQUIDACIÓN Y PERFECCIONAMIENTO DEL CONTRATO.</strong>
+<br/>	
+"<? echo $proyecto;?>" establece a "<? echo $org;?>" como cargo de la presente donación el cumplimiento del objeto del presente contrato, la responsabilidad y transparencia en el buen manejo de los fondos transferidos y de las obligaciones establecidas en la Cláusula Quinta. El contrato quedará liquidado y la donación perfeccionada con el informe presentado por el Becario y el informe favorable del jefe de la oficina local.
+</p>
+<p><strong>CLAUSULA SEPTIMA: RESOLUCIÓN DEL CONTRATO.</strong>
+<br/>
+El presente Contrato se resolverá automáticamente, por:
+<ol type="a">
+	<li>Incumplimiento de las obligaciones establecidas en el presente contrato por alguna de las partes.</li>
+	<li>Incumplimiento de "EL BECARIO” en participación y el desarrollo del Diplomado</li>
+	<li>Mutuo acuerdo de las partes.</li>
+</ol>
+</p>
+<p><strong>CLAUSULA OCTAVA: DE LAS SANCIONES.</strong>
+<br/>
+Conllevan sanciones en la aplicación del presente Contrato:
+<ol type="a">
+	<li>En caso de resolución por incumplimiento de alguna de las partes, la parte agraviada iniciará las acciones penales y/o civiles a que haber lugar. Si la parte agraviada es "<? echo $proyecto;?>", éste se reserva el derecho de comunicar por cualquier medio de tal hecho a la sociedad civil del ámbito de su acción.</li>
+	<li>En caso que "<? echo $org;?>" no cumpla con participar a tiempo completo durante el Diplomado, deberá remitir un informe a "<? echo $org;?>" explicando las causas que limitaron su participación.</li>
+</ol>	
+</p>
+<p><strong>CLAUSULA NOVENA: SITUACIONES NO PREVISTAS</strong>
+<br/>
+En caso de ocurrir situaciones no previstas en el presente Contrato o que, estando previstas, escapen al control directo de alguna de las partes, mediante acuerdo mutuo se determinarán las medidas correctivas y serán expresados en una , Adenda u otro instrumento, según el caso lo amerite.
+</p>
+<p><strong>CLAUSULA DECIMA: COMPETENCIA TERRITORIAL y JURISDICCIONAL</strong>
+<br/>
+Para efectos de cualquier controversia que se genere con motivo de la celebración y ejecución de este contrato, las partes se someten a la competencia territorial de los jueces, tribunales y/o Jurisdicción Arbitral de la ciudad de AREQUIPA, en razón a que la Unidad Ejecutora de "<? echo $proyecto;?>" se encuentra ubicada en el distrito de Quequeña de la provincia de Arequipa.
+</p>
+<p><strong>CLAUSULA DECIMO PRIMERA: DOMICILIO</strong>
+	<br/>
+	Para la validez de todas las comunicaciones y notificaciones a las partes, con motivo de la ejecución de este contrato, ambas señalan como sus respectivos domicilios los indicados en la introducción de este documento. El cambio de domicilio de cualquiera de las partes surtirá efecto desde la fecha de comunicación de dicho cambio a la otra parte, por cualquier medio escrito.
+</p>
+<p><strong>CLAUSULA DECIMO SEGUNDA: APLICACIÓN SUPLETORIA DE LA LEY</strong>
+	<br/>
+	En lo no previsto por las partes en el presente contrato, ambas se someten a lo establecido por las normas del Código Civil y demás del sistema jurídico que resulten aplicables.
+</p>
+<p>En fe de lo acordado, suscribimos el presente contrato en tres ejemplares, en la localidad de <? echo $row['ubicacion'];?>  el <? echo traducefecha($row['f_contrato']);?></p>
+
+</div>
+
+
+
+
+<?
+}
+else
+{
+?>
 <div class="capa centrado txt_titulo">
 CONTRATO Nº <? echo numeracion($row['n_contrato']);?> – <? echo $row['codigo_iniciativa'];?>/<? if($tipo_ruta==5) echo "DIPLOMADO"; else echo "RUTA";?> – <? echo periodo($row['f_contrato']);?> – OL <? echo $row['oficina'];?><br>
 DE DONACIÓN SUJETO A CARGO PARA LA PARTICIPACION EN <? echo $denominacion;?>: <? echo $row['ruta'];?>
@@ -302,7 +444,7 @@ $total=$row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'];
 <br>
 <div class="capa justificado txt_titulo">CLAUSULA CUARTA: DE LA TRANSFERENCIA Y DESEMBOLSO DE LOS FONDOS</div>
 <br>
-<div class="capa justificado">“<? echo $org;?>” autoriza a "<? echo $proyecto;?>"  para que transfiera a la Corporación PROCASUR o a quien indique  la mencionada  institución   en un solo  desembolso.</div>
+<div class="capa justificado">“<? echo $org;?>” autoriza a "<? echo $proyecto;?>"  para que transfiera <? echo $entidad;?> o a quien indique  la mencionada  institución   en un solo  desembolso.</div>
 <br>
 <div class="capa justificado txt_titulo">CLAUSULA QUINTA: OBLIGACIONES DE LAS PARTES</div>
 <br>
@@ -311,12 +453,21 @@ $total=$row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'];
 	<td width="5%" valign="top">5.1</td>
 	<td width="95%" class="justificado">"<? echo $org;?>" se obliga a:<br>
 	<ol type="a">
-	<li>Participar a tiempo completo durante la Ruta de Aprendizaje.</li>
-	<li>Presentar el informe sobre su participación en la Ruta de Aprendizaje, incluyendo en material fotográfico en el plazo estipulado en la Cláusula Tercera.</li>
-	<li>Realizar una réplica del aprendizaje obtenido en la ruta a favor de las organizaciones de su territorio.</li>  
-
-		</ol>
-		
+	<?php
+	if ($row['cod_tipo_ruta']==5)
+	{
+		echo "<li>Participar  en la Diplomatura  según el programa establecido</li>";
+		echo "<li>Presentar el informe sobre su participación en el diplomado, incluyendo en material fotográfico en el plazo estipulado en la Cláusula Tercera.</li>";
+		echo "<li>Realizar una réplica del aprendizaje obtenido en el diplomado a favor de las organizaciones de su territorio.</li>";
+	}
+	else
+	{
+		echo "<li>Participar a tiempo completo durante la Ruta de Aprendizaje.</li>";
+		echo "<li>Presentar el informe sobre su participación en la Ruta de Aprendizaje, incluyendo en material fotográfico en el plazo estipulado en la Cláusula Tercera.</li>";
+		echo "<li>Realizar una réplica del aprendizaje obtenido en la ruta a favor de las organizaciones de su territorio.</li>";
+	}
+	?>
+	</ol>
 	</td>
 </tr>
 
@@ -324,8 +475,8 @@ $total=$row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'];
 	<td valign="top">5.2</td>
 	<td>"<? echo $proyecto;?>" se obliga a:<br>
 		<ol type="a">
-			<li>Efectuar el desembolso que le corresponda, ante la Corporación PROCASUR  según lo establecido en la cláusula anterior.</li>
-			<li>Mantener  informado a EL RUTERO sobre las coordinaciones  previas a la ruta.</li> 
+			<li>Efectuar el desembolso que le corresponda, ante <? echo $entidad;?> según lo establecido en la cláusula anterior.</li>
+			<li>Mantener  informado a <? echo $org;?>  sobre las coordinaciones  previas a la ruta.</li> 
 		</ol>
 	</td>
 </tr>
@@ -333,14 +484,14 @@ $total=$row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'];
 <br>
 <div class="justificado capa txt_titulo">CLAUSULA SEXTA: DEL CARGO, LIQUIDACIÓN Y PERFECCIONAMIENTO DEL CONTRATO.</div>
 <br>
-<div class="justificado capa">"<? echo $proyecto;?>" establece a "<? echo $org;?>" como cargo de la presente donación el cumplimiento del objeto del presente contrato, la responsabilidad y transparencia en el buen manejo de los fondos transferidos y de las obligaciones establecidas en la Cláusula Quinta. El contrato quedará liquidado y la donación perfeccionada con el informe presentado por el Rutero  y el informe favorable del jefe de la oficina  local.</div>
+<div class="justificado capa">"<? echo $proyecto;?>" establece a "<? echo $org;?>" como cargo de la presente donación el cumplimiento del objeto del presente contrato, la responsabilidad y transparencia en el buen manejo de los fondos transferidos y de las obligaciones establecidas en la Cláusula Quinta. El contrato quedará liquidado y la donación perfeccionada con el informe presentado por <? echo $org;?> y el informe favorable del jefe de la oficina  local.</div>
 <br>
 <div class="capa justificado txt_titulo">CLAUSULA SEPTIMA: RESOLUCIÓN DEL CONTRATO.</div>
 <br>
 <div class="capa justificado">El presente Contrato se resolverá automáticamente, por:<br>
 	<ol type="a">
 		<li>Incumplimiento de las obligaciones establecidas en el presente contrato por alguna de las partes.</li>
-		<li>Incumplimiento de "<? echo $org;?>” en el desarrollo de la Ruta de Aprendizaje.</li>   
+		<li>Incumplimiento de "<? echo $org;?>” en el desarrollo de <? echo $actividad;?>.</li>   
 		<li>Mutuo acuerdo de las partes.</li>
 	</ol>
 </div>
@@ -350,7 +501,7 @@ $total=$row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'];
 <div class="capa justificado">Conllevan sanciones en la aplicación del presente Contrato:<br>
 	<ol type="a">
 		<li>En caso de resolución por incumplimiento de alguna de las partes, la parte agraviada iniciará las acciones penales y/o civiles a que haber lugar. Si la parte agraviada es "<? echo $proyecto;?>", éste se reserva el derecho de comunicar por cualquier medio de tal hecho a la sociedad civil del ámbito de su acción.</li>
-		<li>En caso que  "<? echo $org;?>" no cumpla con participar a tiempo completo durante la Ruta de Aprendizaje, deberá remitir un informe a SIERRA SUR II explicando las causas que limitaron su participación.</li>
+		<li>En caso que  "<? echo $org;?>" no cumpla con participar a tiempo completo durante <? echo $actividad;?>, deberá remitir un informe a "<? echo $proyecto;?>" explicando las causas que limitaron su participación.</li>
 
 	</ol>
 </div>
@@ -372,6 +523,9 @@ $total=$row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'];
 <div class="capa justificado">En lo no previsto por las partes en el presente contrato, ambas se someten a lo establecido por las normas del Código Civil y demás del sistema jurídico que resulten aplicables.</div>
 <p><br></p>
 <div class="capa justificado">En fe de lo acordado, suscribimos el presente contrato en tres ejemplares, en la localidad de <? echo $row['ubicacion'];?>  el <? echo traducefecha($row['f_contrato']);?></div>
+<?
+}
+?>
 <p><br></p>
 <p><br></p>
 <table width="90%" border="0" align="center" cellpadding="4" cellspacing="4"  class="centrado txt_titulo">
@@ -386,6 +540,7 @@ $total=$row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'];
     <td><? echo $row['nombre']." ".$row['paterno']." ".$row['materno'];?><br><? echo $org;?><br>DNI N°: <? echo $row['dni'];?></td>
   </tr>
 </table>
+
 <!-- Desde aca genero el ATF y la solicitud de desembolso -->
 <H1 class=SaltoDePagina></H1>
 <? include("encabezado.php");?>

@@ -106,11 +106,7 @@ $diferencia_total=$monto_programado-$monto_total;
 	  <td>:</td>
 	  <td><? echo $row['lugar'];?></td>
   </tr>
-    <tr>
-	  <td>Nº Participantes</td>
-	  <td>:</td>
-	  <td><? echo $row['participantes'];?></td>
-  </tr>
+
 
   <tr>
     <td colspan="3" class="txt_titulo">II.- RESULTADOS Y COMENTARIOS</td>

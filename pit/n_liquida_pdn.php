@@ -56,13 +56,13 @@ $row=mysql_fetch_array($result);
 <ul class="tabs-content">
 <li class="active" id="simple1Tab">
 <div class="row collapse">
-<form name="form5" method="post" class="custom" action="gestor_liquida_pdn.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&action=ADD" onsubmit="return checkSubmit();">
+<form name="form5" method="post" action="gestor_liquida_pdn.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&action=ADD" onsubmit="return checkSubmit();">
 
 <div class="row">
   <div class="twelve columns"><h6>I.- Datos de la iniciativa a liquidar</h6></div>
   <div class="two columns">Iniciativa a liquidar</div>
   <div class="ten columns">
-  <select name="iniciativa" class="large">
+  <select name="iniciativa" class="hyjack">
     <option value="" selected="selected">Seleccionar</option>
     <?
     $sql="SELECT pit_bd_ficha_pdn.cod_pdn, 
@@ -88,11 +88,12 @@ $row=mysql_fetch_array($result);
     ?>
   </select>    
   </div>
+  <div class="twelve columns"><hr/></div>
   <div class="two columns">Fecha de liquidación</div>
   <div class="four columns"><input type="date" name="f_liquidacion" class="required date seven" placeholder="aaaa-mm-dd" maxlength="10" value="<? echo $fecha_hoy;?>"></div>
   <div class="two columns">Calificación de la iniciativa</div>
   <div class="four columns">
-    <select name="calificacion" class="mini">
+    <select name="calificacion" class="large">
     <option value="" selected="selected">Seleccionar</option>
     <option value="1">MALA</option>
     <option value="2">REGULAR</option>

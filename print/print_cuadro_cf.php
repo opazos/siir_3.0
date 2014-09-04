@@ -20,11 +20,13 @@ $sql="SELECT bd_cfinal.nombre,
 	sys_bd_subactividad_poa.codigo AS poa, 
 	sys_bd_subactividad_poa.nombre AS describe_poa, 
 	sys_bd_categoria_poa.codigo AS categoria, 
-	bd_cfinal.n_solicitud, 
+	bd_cfinal.n_solicitud_a, 
 	sys_bd_fuente_fto.descripcion AS fte_fto, 
 	bd_cfinal.departamento, 
 	sys_bd_personal.nombre AS nombres, 
-	sys_bd_personal.apellido AS apellidos
+	sys_bd_personal.apellido AS apellidos, 
+	bd_cfinal.n_solicitud_b, 
+	bd_cfinal.n_solicitud_c
 FROM sys_bd_dependencia INNER JOIN bd_cfinal ON sys_bd_dependencia.cod_dependencia = bd_cfinal.cod_dependencia
 	 INNER JOIN sys_bd_personal ON sys_bd_personal.n_documento = sys_bd_dependencia.dni_representante
 	 INNER JOIN sys_bd_nivel_cf ON sys_bd_nivel_cf.cod_nivel = bd_cfinal.cod_nivel
@@ -38,6 +40,19 @@ $r1=mysql_fetch_array($result);
 $max_gan_a=$r1['max_gan_a'];
 $max_gan_b=$r1['max_gan_b'];
 $max_gan_c=$r1['max_gan_c'];
+
+if ($tipo==1)
+{
+	$solicitud=$r1['n_solicitud_a'];
+}
+elseif($tipo==2)
+{
+	$solicitud=$r1['n_solicitud_b'];
+}
+elseif($tipo==3)
+{
+	$solicitud=$r1['n_solicitud_c'];
+}
 
 ?>
 <!DOCTYPE HTML>
@@ -204,7 +219,7 @@ while($f2=mysql_fetch_array($result))
 <!-- Solicitud de desembolso -->
 <H1 class=SaltoDePagina> </H1>
 <? include("encabezado.php");?>
-<div class="capa txt_titulo" align="center"><u>SOLICITUD DE DESEMBOLSO DE FONDOS N° <? echo numeracion($r1['n_solicitud']);?> - <? echo periodo($r1['f_concurso']);?> / OL <? echo $r1['oficina'];?></u></div>
+<div class="capa txt_titulo" align="center"><u>SOLICITUD DE DESEMBOLSO DE FONDOS N° <? echo numeracion($solicitud);?> - <? echo periodo($r1['f_concurso']);?> / OL <? echo $r1['oficina'];?></u></div>
 <br>
 <table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
   <tr>
@@ -422,7 +437,7 @@ A "<? echo $f4['org'];?>" POR HABER OBTENIDO EL <? echo numeracion($f4['puesto']
   </tr>
 </table>
 <br>
-<div class="capa" align="justify">En referencia a la Solicitud de Desembolso de Fondos N° <? echo numeracion($r1['n_solicitud']);?> - <? echo periodo($r1['f_concurso']);?> / OL <? echo $r1['oficina'];?>; Por intermedio del presente, habiéndose cumplido los requisitos establecidos por el NEC PDSS II, el Jefe de la Oficina Local de <? echo $r1['oficina'];?> autoriza la transferencia de fondos, de acuerdo al siguiente detalle : </div>
+<div class="capa" align="justify">En referencia a la Solicitud de Desembolso de Fondos N° <? echo numeracion($solicitud);?> - <? echo periodo($r1['f_concurso']);?> / OL <? echo $r1['oficina'];?>; Por intermedio del presente, habiéndose cumplido los requisitos establecidos por el NEC PDSS II, el Jefe de la Oficina Local de <? echo $r1['oficina'];?> autoriza la transferencia de fondos, de acuerdo al siguiente detalle : </div>
 <br>
 
 <table width="90%" border="1" align="center" cellpadding="0" cellspacing="0" class="mini">

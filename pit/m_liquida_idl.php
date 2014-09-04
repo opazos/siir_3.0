@@ -89,7 +89,7 @@ $row1=mysql_fetch_array($result);
 	
 	<div class="twelve columns"><br/></div>
 	<div class="two columns">Fecha de presentacion del informe final</div>
-	<div class="ten columns"><input type="date" name="f_presentacion" class="three required date" placeholder="aaaa-mm-dd" maxlength="10"  value="<? echo $row1['f_desembolso'];?>"></div>	
+	<div class="ten columns"><input type="date" name="f_presentacion" class="three required date" placeholder="aaaa-mm-dd" maxlength="10"  value="<? echo $row1['f_presentacion'];?>"></div>	
 	<div class="twelve columns"><h6>II.- Información de avance fisico financiero de la IDL</h6></div>
 	
 	<div class="two columns">Nº de Cheque/CO con que se entrego desembolso</div>
@@ -102,7 +102,7 @@ $row1=mysql_fetch_array($result);
 	<div class="two columns">Monto ejecutado Municipio (S/.)</div>
 	<div class="four columns"><input type="text" name="total2" class="required number five" value="<? echo $row1['ejec_org'];?>"></div>
 
-	<div class="twelve columns">En caso la obra presente retrasos, o si desea añadir un comentario. Agregarlo a continuación</div>
+	<div class="twelve columns">En caso de que lo ejecutado difiera de lo programado, especificar el motivo</div>
 	<div class="twelve columns">
 		<textarea name="comentario1" rows="5"><? echo $row1['just_ejec'];?></textarea>
 	</div>

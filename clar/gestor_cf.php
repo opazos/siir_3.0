@@ -11,7 +11,7 @@ $row=mysql_fetch_array($result);
 if ($action==ADD)
 {
 	//1.- Ingresamos la información 
-	$sql="INSERT INTO bd_cfinal VALUES('',UPPER('".$_POST['nombre']."'),'".$_POST['f_concurso']."','".$row['cod_dependencia']."',UPPER('".$_POST['departamento']."'),UPPER('".$_POST['provincia']."'),UPPER('".$_POST['distrito']."'),'".$_POST['nivel']."','".$_POST['max_cat_a']."','".$_POST['max_cat_b']."','".$_POST['max_cat_c']."','".$_POST['premio_flat']."','".$_POST['premio_concurso']."','".$_POST['aporte_otro']."','".$_POST['premio_otro']."','".$_POST['poa']."','".$_POST['fte_fto']."','0')";
+	$sql="INSERT INTO bd_cfinal VALUES('',UPPER('".$_POST['nombre']."'),'".$_POST['f_concurso']."','".$row['cod_dependencia']."',UPPER('".$_POST['departamento']."'),UPPER('".$_POST['provincia']."'),UPPER('".$_POST['distrito']."'),'".$_POST['nivel']."','".$_POST['max_cat_a']."','".$_POST['max_cat_b']."','".$_POST['max_cat_c']."','".$_POST['premio_flat']."','".$_POST['premio_concurso']."','".$_POST['aporte_otro']."','".$_POST['premio_otro']."','".$_POST['poa']."','".$_POST['fte_fto']."','0','0','0')";
 	$result=mysql_query($sql) or die (mysql_error());
 
 	//2.- Obtengo el ultimo codigo generado
@@ -268,18 +268,18 @@ elseif($action==DELETE_CAL_PUBLIC)
 	//5.- Redireccionamos
 	echo "<script>window.location ='modulo_cal_public.php?SES=$SES&anio=$anio&cod=$cod&tipo=$tipo'</script>";			
 }
-elseif($action==PREMIA_CF)
+elseif($action==PREMIA_CF and $tipo==1)
 {
 	//1.- Verifico que la solicitud exista
 	$sql="SELECT bd_cfinal.cod_concurso, 
-	bd_cfinal.n_solicitud
+	bd_cfinal.n_solicitud_a
 	FROM bd_cfinal
 	WHERE bd_cfinal.cod_concurso='$cod'";
 	$result=mysql_query($sql) or die (mysql_error());
 	$r2=mysql_fetch_array($result);
 
 	//a.- Si la solicitud es igual a 0 entonces debemos generarla
-	if ($r2['n_solicitud']==0)
+	if ($r2['n_solicitud_a']==0)
 	{
 		//1.- Busco la numeracion de solicitud
 		$sql="SELECT sys_bd_numera_dependencia.cod, 
@@ -298,7 +298,7 @@ elseif($action==PREMIA_CF)
 		$result=mysql_query($sql) or die (mysql_error());
 
 		//3.- Guardo el número de solicitud
-		$sql="UPDATE bd_cfinal SET n_solicitud='$n_solicitud' WHERE cod_concurso='$cod'";
+		$sql="UPDATE bd_cfinal SET n_solicitud_a='$n_solicitud' WHERE cod_concurso='$cod'";
 		$result=mysql_query($sql) or die (mysql_error());
 	}
 	//b.- Si la atf es igual a 0 entonces debemos generarlas
@@ -335,8 +335,151 @@ elseif($action==PREMIA_CF)
 			$result=mysql_query($sql) or die (mysql_error());
 		}	
 	}
-
 	//4.- Redirecciono a la impresión
 		echo "<script>window.location ='../print/print_cuadro_cf.php?SES=$SES&anio=$anio&cod=$cod&tipo=$tipo'</script>";		
 }
+elseif($action==PREMIA_CF and $tipo==2)
+{
+	//1.- Verifico que la solicitud exista
+	$sql="SELECT bd_cfinal.cod_concurso, 
+	bd_cfinal.n_solicitud_b
+	FROM bd_cfinal
+	WHERE bd_cfinal.cod_concurso='$cod'";
+	$result=mysql_query($sql) or die (mysql_error());
+	$r2=mysql_fetch_array($result);
+
+	//a.- Si la solicitud es igual a 0 entonces debemos generarla
+	if ($r2['n_solicitud_b']==0)
+	{
+		//1.- Busco la numeracion de solicitud
+		$sql="SELECT sys_bd_numera_dependencia.cod, 
+		sys_bd_numera_dependencia.n_solicitud_iniciativa, 
+		sys_bd_numera_dependencia.n_atf_iniciativa
+		FROM sys_bd_numera_dependencia
+		WHERE sys_bd_numera_dependencia.cod_dependencia='".$row['cod_dependencia']."' AND
+		sys_bd_numera_dependencia.periodo='$anio'";
+		$result=mysql_query($sql) or die (mysql_error());
+		$r1=mysql_fetch_array($result);
+
+		$n_solicitud=$r1['n_solicitud_iniciativa']+1;
+
+		//2.- Actualizo la numeracion de la solicitud
+		$sql="UPDATE sys_bd_numera_dependencia SET n_solicitud_iniciativa='$n_solicitud' WHERE cod='".$r1['cod']."'";
+		$result=mysql_query($sql) or die (mysql_error());
+
+		//3.- Guardo el número de solicitud
+		$sql="UPDATE bd_cfinal SET n_solicitud_b='$n_solicitud' WHERE cod_concurso='$cod'";
+		$result=mysql_query($sql) or die (mysql_error());
+	}
+	//b.- Si la atf es igual a 0 entonces debemos generarlas
+	if ($_POST['tiene_atf']==0)
+	{
+		//1.- Busco la numeracion de atf
+		$sql="SELECT sys_bd_numera_dependencia.cod, 
+		sys_bd_numera_dependencia.n_atf_iniciativa
+		FROM sys_bd_numera_dependencia
+		WHERE sys_bd_numera_dependencia.cod_dependencia='".$row['cod_dependencia']."' AND
+		sys_bd_numera_dependencia.periodo='$anio'";
+		$result=mysql_query($sql) or die (mysql_error());
+		$r2=mysql_fetch_array($result);
+
+		$n_atf=$_POST['n_atf'];
+
+		//2.- Actualizo la numeracion de la atf
+		$sql="UPDATE sys_bd_numera_dependencia SET n_atf_iniciativa='$n_atf' WHERE cod='".$r2['cod']."'";
+		$result=mysql_query($sql) or die (mysql_error());
+
+		//3.- Guardamos el detalle
+		foreach ($atf as $cad => $a) 
+		{
+			$sql="UPDATE bd_ficha_cfinal SET puesto='".$_POST['puesto'][$cad]."',premio='".$_POST['premio'][$cad]."',n_atf='".$_POST['atf'][$cad]."' WHERE cod_participante='$cad'";
+			$result=mysql_query($sql) or die (mysql_error());
+		}
+	}
+	//c.- Si la atf ya existe entonces guardamos solo los datos de premio
+	else
+	{
+		foreach ($atf as $cad => $a) 
+		{
+			$sql="UPDATE bd_ficha_cfinal SET puesto='".$_POST['puesto'][$cad]."',premio='".$_POST['premio'][$cad]."' WHERE cod_participante='$cad'";
+			$result=mysql_query($sql) or die (mysql_error());
+		}	
+	}
+	//4.- Redirecciono a la impresión
+		echo "<script>window.location ='../print/print_cuadro_cf.php?SES=$SES&anio=$anio&cod=$cod&tipo=$tipo'</script>";		
+}
+elseif($action==PREMIA_CF and $tipo==3)
+{
+	//1.- Verifico que la solicitud exista
+	$sql="SELECT bd_cfinal.cod_concurso, 
+	bd_cfinal.n_solicitud_c
+	FROM bd_cfinal
+	WHERE bd_cfinal.cod_concurso='$cod'";
+	$result=mysql_query($sql) or die (mysql_error());
+	$r2=mysql_fetch_array($result);
+
+	//a.- Si la solicitud es igual a 0 entonces debemos generarla
+	if ($r2['n_solicitud_c']==0)
+	{
+		//1.- Busco la numeracion de solicitud
+		$sql="SELECT sys_bd_numera_dependencia.cod, 
+		sys_bd_numera_dependencia.n_solicitud_iniciativa, 
+		sys_bd_numera_dependencia.n_atf_iniciativa
+		FROM sys_bd_numera_dependencia
+		WHERE sys_bd_numera_dependencia.cod_dependencia='".$row['cod_dependencia']."' AND
+		sys_bd_numera_dependencia.periodo='$anio'";
+		$result=mysql_query($sql) or die (mysql_error());
+		$r1=mysql_fetch_array($result);
+
+		$n_solicitud=$r1['n_solicitud_iniciativa']+1;
+
+		//2.- Actualizo la numeracion de la solicitud
+		$sql="UPDATE sys_bd_numera_dependencia SET n_solicitud_iniciativa='$n_solicitud' WHERE cod='".$r1['cod']."'";
+		$result=mysql_query($sql) or die (mysql_error());
+
+		//3.- Guardo el número de solicitud
+		$sql="UPDATE bd_cfinal SET n_solicitud_c='$n_solicitud' WHERE cod_concurso='$cod'";
+		$result=mysql_query($sql) or die (mysql_error());
+	}
+	//b.- Si la atf es igual a 0 entonces debemos generarlas
+	if ($_POST['tiene_atf']==0)
+	{
+		//1.- Busco la numeracion de atf
+		$sql="SELECT sys_bd_numera_dependencia.cod, 
+		sys_bd_numera_dependencia.n_atf_iniciativa
+		FROM sys_bd_numera_dependencia
+		WHERE sys_bd_numera_dependencia.cod_dependencia='".$row['cod_dependencia']."' AND
+		sys_bd_numera_dependencia.periodo='$anio'";
+		$result=mysql_query($sql) or die (mysql_error());
+		$r2=mysql_fetch_array($result);
+
+		$n_atf=$_POST['n_atf'];
+
+		//2.- Actualizo la numeracion de la atf
+		$sql="UPDATE sys_bd_numera_dependencia SET n_atf_iniciativa='$n_atf' WHERE cod='".$r2['cod']."'";
+		$result=mysql_query($sql) or die (mysql_error());
+
+		//3.- Guardamos el detalle
+		foreach ($atf as $cad => $a) 
+		{
+			$sql="UPDATE bd_ficha_cfinal SET puesto='".$_POST['puesto'][$cad]."',premio='".$_POST['premio'][$cad]."',n_atf='".$_POST['atf'][$cad]."' WHERE cod_participante='$cad'";
+			$result=mysql_query($sql) or die (mysql_error());
+		}
+	}
+	//c.- Si la atf ya existe entonces guardamos solo los datos de premio
+	else
+	{
+		foreach ($atf as $cad => $a) 
+		{
+			$sql="UPDATE bd_ficha_cfinal SET puesto='".$_POST['puesto'][$cad]."',premio='".$_POST['premio'][$cad]."' WHERE cod_participante='$cad'";
+			$result=mysql_query($sql) or die (mysql_error());
+		}	
+	}
+	//4.- Redirecciono a la impresión
+		echo "<script>window.location ='../print/print_cuadro_cf.php?SES=$SES&anio=$anio&cod=$cod&tipo=$tipo'</script>";		
+}
+
+
+
+
 ?>

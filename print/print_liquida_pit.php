@@ -328,8 +328,9 @@ if($total_des_pdss<>0)
   </tr>
 </table>
   </p>
-
-	<p>Por lo expuesto, solicito a usted que, previa conformidad del Responsable del Componente y del Administrador, tenga a bien proceder al <strong>PERFECCIONAMIENTO</strong> de donación sujeto a cargo por el monto de <strong>S/. <? echo number_format($total_des_pdss,2);?> (<? echo vuelveletra($total_des_pdss);?>)</strong>, correspondientes al aporte del Proyecto de Desarrollo Sierra Sur II.</p>	
+  
+ <p>Por lo expuesto, esta jefatura procede al <strong>PERFECCIONAMIENTO</strong> de la Donación Sujeto a Cargo  por el monto de <strong>S/. <? echo number_format($total_des_pdss,2);?> (<? echo vuelveletra($total_des_pdss);?>) Nuevos Soles)</strong> correspondiente al aporte del Proyecto de Desarrollo Sierra Sur II.</p>
+    <p>Por lo indicado, mucho estimaré disponer la baja contable  por el monto  indicado en el contrato en referencia.  </p>
 </div>
 
 <br>
@@ -441,6 +442,72 @@ if($total_des_pdss<>0)
 </table>
 
 
+<H1 class=SaltoDePagina> </H1>
+<?
+}
+else
+{
+?>
+<? include("encabezado.php");?>
+<div class="capa txt_titulo" align="center"><u>LIQUIDACION Y PERFECCIONAMIENTO DE CONTRATO DEL PLAN DE INVERSION TERRITORIAL SIN ANIMADOR TERRITORIAL</u></div>
+
+<br>
+<table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
+  <tr>
+    <td width="22%" class="txt_titulo">A</td>
+    <td width="3%" class="txt_titulo">:</td>
+    <td width="75%" class="txt_titulo">ING. JOSÉ MERCEDES SIALER PASCO</td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">&nbsp;</td>
+    <td width="3%" class="txt_titulo">&nbsp;</td>
+    <td width="75%" class="txt_titulo">DIRECTOR EJECUTIVO DEL NEC PROYECTO DE DESARROLLO SIERRA SUR II</td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">Referencia</td>
+    <td class="txt_titulo">:</td>
+    <td>Contrato N° <? echo numeracion($row['n_contrato']);?>-<? echo $row['codigo_iniciativa'];?>-<? echo periodo($row['f_contrato']);?>-<? echo $row['oficina'];?></td>
+  </tr>
+  <tr>
+    <td class="txt_titulo">Fecha</td>
+    <td class="txt_titulo">:</td>
+    <td><? echo $row['oficina'];?>, <? echo traducefecha($row['f_liquidacion']);?></td>
+  </tr>
+  <tr>
+    <td colspan="3"><hr></td>
+  </tr>
+</table>
+<br>
+
+<div class="capa justificado">
+	
+	<p>En relación al documento de la referencia, informo a su despacho, que la organización <strong><? echo $row['nombre'];?></strong>, ha cumplido con sus obligaciones establecidas en el Contrato de Donación Sujeto a Cargo que están sustentadas en los siguientes documentos que se adjuntan:</p>
+	
+	<ol>
+		<li><strong>1</strong> Informe Final de Resultados y Liquidación del Plan de Inversión Territorial.</li>
+		<li><strong><? echo number_format($iniciativa_pdn);?></strong> Informe Final de Resultados y Liquidación del Plan de Negocios.</li>
+		<li> ........ Archivo con documentación en ........ folios.</li>
+	</ol>
+
+	<p>En virtud de lo cual, esta Jefatura de conformidad al Reglamento de Operaciones, da por <strong>LIQUIDADO</strong> el contrato de la referencia, cuyos montos se encuentran en cada iniciativa del Plan de Negocio conformantes del Plan de inversión territorial.</p>
+</div>	
+
+<div class="capa">Atentamente,</div>
+
+
+<p>&nbsp;</p>
+<table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
+  <tr>
+    <td width="35%">&nbsp;</td>
+    <td width="30%" align="center">___________________</td>
+    <td width="35%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td align="center"><? echo $row['nombres']." ".$row['apellidos']."<br>".$row['cargo'];?></td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
 <H1 class=SaltoDePagina> </H1>
 <?
 }
@@ -589,7 +656,7 @@ if($total_des_pdss==0)
 
 <table width="90%" border="0" align="center" cellpadding="1" cellspacing="1">
   <tr>
-    <td width="25%">1.1.- Nombre de la Organización</td>
+    <td width="25%"><strong>1.1.- Nombre de la Organización</strong></td>
     <td colspan="3" width="75%"><? echo $row['nombre'];?></td>
   </tr>
   <tr>
@@ -687,7 +754,7 @@ if($total_des_pdss==0)
     </td>
   </tr>  
   <tr>
-    <td valign="top">Resultados obtenidos</td>
+    <td valign="top">Resultados alcanzados :</td>
     <td colspan="3" class="justificado">
       <? echo $row['resultado'];?>
     </td>
@@ -867,7 +934,7 @@ while($f4=mysql_fetch_array($result))
 
 </table>
 
-<div class="capa txt_titulo"><p>2.2. Actividades desarrolladas y resultados alcanzados</p></div>
+<div class="capa txt_titulo"><p>2.1. Detalle de los Animadores Territoriales</p></div>
 <?
 $sql="SELECT ficha_ag_oferente.n_documento, 
   ficha_ag_oferente.nombre, 
@@ -933,7 +1000,7 @@ while($f5=mysql_fetch_array($result))
     <td width="34%"><? echo $f5['especialidad'];?></td>
   </tr>
   <tr>
-    <td colspan="4" class="txt_titulo">2.2.1 Vigencia del contrato de Animador Territorial</td>
+    <td colspan="4" class="txt_titulo">2.1.1 Vigencia del contrato de Animador Territorial</td>
   </tr>
   <tr>
     <td>Desde</td>

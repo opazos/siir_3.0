@@ -167,7 +167,7 @@ $saldo=$total_programado-$r2['aporte_pdss'];
   <div class="two columns">Si hubo cambios indicar los motivos</div>
   <div class="four columns"><textarea name="just_dir"><? echo $f1['just_dir'];?></textarea></div>
 
-  <div class="twelve columns"><h6>II.- Resultados obtenidos en el Territorio</h6></div>
+  <div class="twelve columns"><h6>II.- Resultados obtenidos en el Territorio (Resumir resultados de los Animadores Territoriales)</h6></div>
   <div class="twelve columns"><textarea name="resultado" rows="10" cols="80" style="width: 100%"><? echo $f1['resultado'];?></textarea></div>
 
   <div class="twelve columns"><h6>III.- Sobre el mapa territorial</h6></div>
@@ -213,14 +213,12 @@ $saldo=$total_programado-$r2['aporte_pdss'];
   <div class="two columns">Fecha de addenda</div>
   <div class="four columns"><input type="date" name="f_adenda" class="seven" disabled="disabled" value="<? echo $r3['f_adenda'];?>"></div>
 
-
   <div class="two columns">Presupuesto programado (S/.)</div>
   <div class="four columns"><input type="text" name="monto_programado" class="seven number" disabled="disabled" value="<? echo $total_programado;?>"></div>
   <div class="two columns">Presupuesto ejecutado</div>
   <div class="four columns"><input type="text" name="monto_ejecutado" class="seven number" readonly="readonly" value="<? echo $r2['aporte_pdss'];?>"> <input type="hidden" name="saldo" value="<? echo $saldo;?>"></div>
 
 </div>
-
 
 <br/>
 
@@ -229,23 +227,12 @@ $saldo=$total_programado-$r2['aporte_pdss'];
 <a href="pit_liquida.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=imprime" class="secondary button">Finalizar</a>
 </div>
 
-
-
-
-
-
-
-	
 </form>
 </div>
 </li>
 </ul>
 </div>
 </div>
-
-
-
-
 
     </div>
 

@@ -5,28 +5,35 @@ conectarte();
 
 $sql="SELECT (pit_bd_idl_sd.ejec_idl+ 
   pit_bd_idl_sd.ejec_org) AS monto_ejecutado, 
-  org_ficha_organizacion.n_documento, 
-  org_ficha_organizacion.nombre, 
-  pit_bd_idl_sd.f_presentacion, 
-  pit_bd_ficha_idl.denominacion, 
-  pit_bd_ficha_idl.n_contrato, 
-  pit_bd_ficha_idl.f_contrato, 
-  (pit_bd_ficha_idl.aporte_pdss+ 
+	org_ficha_organizacion.n_documento, 
+	org_ficha_organizacion.nombre, 
+	pit_bd_idl_sd.f_presentacion, 
+	pit_bd_ficha_idl.denominacion, 
+	pit_bd_ficha_idl.n_contrato, 
+	pit_bd_ficha_idl.f_contrato, 
+	(pit_bd_ficha_idl.aporte_pdss+ 
   pit_bd_ficha_idl.aporte_org+ 
   pit_bd_ficha_idl.aporte_otro) AS monto_contrato, 
-  sys_bd_dependencia.nombre AS oficina, 
-  sys_bd_personal.nombre AS nombres, 
-  sys_bd_personal.apellido AS apellidos, 
-  sys_bd_personal.n_documento AS dni, 
-  (pit_bd_idl_sd.ejec_idl+ 
+	sys_bd_dependencia.nombre AS oficina, 
+	sys_bd_personal.nombre AS nombres, 
+	sys_bd_personal.apellido AS apellidos, 
+	sys_bd_personal.n_documento AS dni, 
+	(pit_bd_idl_sd.ejec_idl+ 
   pit_bd_idl_sd.ejec_org) AS ejec_contrato, 
-  pit_bd_idl_sd.ejec_idl, 
-  pit_bd_idl_sd.ejec_org, 
-  pit_bd_ficha_idl.cod_ficha_idl
+	pit_bd_idl_sd.ejec_idl, 
+	pit_bd_idl_sd.ejec_org, 
+	pit_bd_ficha_idl.cod_ficha_idl, 
+	pit_bd_idl_sd.cumple_plazo, 
+	pit_bd_idl_sd.just_plazo, 
+	pit_bd_idl_sd.calif_1, 
+	pit_bd_idl_sd.calif_2, 
+	pit_bd_idl_sd.calif_3, 
+	pit_bd_idl_sd.just_ejec, 
+	pit_bd_idl_sd.pp_avance
 FROM pit_bd_ficha_idl INNER JOIN pit_bd_idl_sd ON pit_bd_ficha_idl.cod_ficha_idl = pit_bd_idl_sd.cod_idl
-   INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = pit_bd_ficha_idl.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = pit_bd_ficha_idl.n_documento_org
-   INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_organizacion.cod_dependencia
-   INNER JOIN sys_bd_personal ON sys_bd_personal.n_documento = sys_bd_dependencia.dni_representante
+	 INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = pit_bd_ficha_idl.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = pit_bd_ficha_idl.n_documento_org
+	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_organizacion.cod_dependencia
+	 INNER JOIN sys_bd_personal ON sys_bd_personal.n_documento = sys_bd_dependencia.dni_representante
 WHERE pit_bd_idl_sd.cod_ficha_sd='$cod'";
 $result=mysql_query($sql) or die (mysql_error());
 $row=mysql_fetch_array($result);
@@ -203,9 +210,9 @@ else
 <div class="capa">
 <p class="txt_titulo">7.- Detalles de la ejecución de la Inversion de Desarrollo Local</p>
 <p>La ejecución de la IDL se desarrollo en el Plazo previsto?</p>
-<p><? if ($r1['cumple_plazo']==1) echo "Si, la IDL se desarrollo dentro del plazo previsto."; else echo "No, no se cumplieron los plazos.";?></p>
+<p><? if ($r1['cumple_plazo']==0) echo "Si, la IDL se desarrollo dentro del plazo previsto."; else echo "No, no se cumplieron los plazos.";?></p>
 <?
-if ($r1['cumple_plazo']<>1)
+if ($r1['cumple_plazo']<>0)
 {
 ?>
 <p class="txt_titulo">En caso de presentar retrasos en su ejecución, indicar los motivos</p>
@@ -361,6 +368,10 @@ while($f1=mysql_fetch_array($result))
   <td class="derecha"><? echo number_format($r1['total_programado']-$r1['total_ejecutado'],2);?></td>
 </tr>
 </table>
+
+<div class="capa txt_titulo"><p>Comentarios u Observaciones</p>
+<p><?php echo $r1['just_ejec'];?></p>
+</div>
 
 
 <div class="capa txt_titulo"><p>12.- Calificación de la Oficina Local</p>

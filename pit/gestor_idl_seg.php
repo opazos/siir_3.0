@@ -54,7 +54,7 @@ echo "<script>window.location ='m_liquida_idl.php?SES=$SES&anio=$anio&id=$codigo
 elseif($action==UPDATE_LIQUIDA)
 {
 	//1.- Actualizo
-	$sql="UPDATE pit_bd_idl_sd SET f_desembolso='".$_POST['f_desembolso']."',f_presentacion='".$_POST['f_presentacion']."',n_cheque='".$_POST['n_cheque']."',ejec_idl='".$_POST['total1']."',ejec_org='".$_POST['total2']."',pp_avance='".$_POST['nivel']."',cumple_plazo='".$_POST['retraso']."',just_plazo=UPPER('".$_POST['comentario1']."'),calif_1='".$_POST['calif_1']."',calif_2='".$_POST['calif_2']."',calif_3='".$_POST['calif_3']."',just_ejec=UPPER('".$_POST['comentario']."') WHERE cod_ficha_sd='$id'";
+	$sql="UPDATE pit_bd_idl_sd SET f_desembolso='".$_POST['f_desembolso']."',f_presentacion='".$_POST['f_presentacion']."',n_cheque='".$_POST['n_cheque']."',ejec_idl='".$_POST['total1']."',ejec_org='".$_POST['total2']."',pp_avance='".$_POST['nivel']."',cumple_plazo='".$_POST['retraso']."',just_plazo=UPPER('".$_POST['comentario']."'),calif_1='".$_POST['calif_1']."',calif_2='".$_POST['calif_2']."',calif_3='".$_POST['calif_3']."',just_ejec=UPPER('".$_POST['comentario1']."') WHERE cod_ficha_sd='$id'";
 	$result=mysql_query($sql) or die (mysql_error());
 	
 	//2.- Redirecciono

@@ -55,6 +55,7 @@ $r1=mysql_fetch_array($result);
 <!-- Iniciamos el contenido -->
 <div class="row">
  <div class="twelve columns">
+ 
        
 <!-- Contenedores -->
 <dl class="tabs">

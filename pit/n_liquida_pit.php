@@ -120,7 +120,7 @@ $row=mysql_fetch_array($result);
   <div class="two columns">Si hubo cambios indicar los motivos</div>
   <div class="four columns"><textarea name="just_dir"></textarea></div>
 
-  <div class="twelve columns"><h6>II.- Resultados obtenidos en el Territorio</h6></div>
+  <div class="twelve columns"><h6>II.- Resultados obtenidos en el Territorio (Resumir resultados de los Animadores Territoriales)</h6></div>
   <div class="twelve columns"><textarea id="elm1" name="resultado" rows="10" cols="80" style="width: 100%"></textarea></div>
 
   <div class="twelve columns"><h6>III.- Sobre el mapa territorial</h6></div>

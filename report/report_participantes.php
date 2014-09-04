@@ -41,13 +41,15 @@ $row=mysql_fetch_array($result);
 	
 	<thead>
 		<tr class="txt_titulo centrado">
-			<td colspan="20">REPORTE CONSOLIDADO DE PARTICIPANTES DE INICIATIVAS DE PLANES DE NEGOCIO Y PLANES DE GESTIÓN - OFICINA LOCAL DE <? echo $row['oficina'];?></td>
+			<td colspan="25">REPORTE CONSOLIDADO DE PARTICIPANTES DE INICIATIVAS DE PLANES DE NEGOCIO Y PLANES DE GESTIÓN - OFICINA LOCAL DE <? echo $row['oficina'];?></td>
 		</tr>
 	
 		<tr class="txt_titulo">
 			<th>Nº</th>
 			<th>DNI</th>
-			<th>NOMBRES Y APELLIDOS COMPLETOS</th>
+			<th>NOMBRES</th>
+			<th>PATERNO</th>
+			<th>MATERNO</th>
 			<th>FECHA NAC.</th>
 			<th>SEXO</th>
 			<th>JEFE DE FAMILIA</th>
@@ -63,6 +65,9 @@ $row=mysql_fetch_array($result);
 			<th>PROVINCIA</th>
 			<th>DISTRITO</th>
 			<th>QUINTIL</th>
+			<th>UBIGEO</th>
+			<th>CENTRO POBLADO</th>
+			<th>CATEGORIA</th>
 			<th>OFICINA LOCAL</th>
 			<th>ESTADO INICIATIVA</th>
 		</tr>
@@ -92,9 +97,13 @@ if ($row['cod_dependencia']==001)
 	sys_bd_departamento.nombre AS departamento, 
 	sys_bd_provincia.nombre AS provincia, 
 	sys_bd_distrito.nombre AS distrito, 
-	sys_bd_distrito.nivel_pobreza
+	sys_bd_distrito.nivel_pobreza, 
+	sys_bd_distrito.ubigeo, 
+	sys_bd_cp.nombre AS cp, 
+	sys_bd_cp.cod_categoria
 FROM pit_bd_ficha_mrn INNER JOIN pit_bd_user_iniciativa ON pit_bd_ficha_mrn.cod_mrn = pit_bd_user_iniciativa.cod_iniciativa AND pit_bd_ficha_mrn.cod_tipo_iniciativa = pit_bd_user_iniciativa.cod_tipo_iniciativa
 	 INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = pit_bd_ficha_mrn.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = pit_bd_ficha_mrn.n_documento_org
+	 LEFT OUTER JOIN sys_bd_cp ON sys_bd_cp.cod = org_ficha_organizacion.cod_cp
 	 INNER JOIN sys_bd_departamento ON sys_bd_departamento.cod = org_ficha_organizacion.cod_dep
 	 INNER JOIN sys_bd_provincia ON sys_bd_provincia.cod = org_ficha_organizacion.cod_prov
 	 INNER JOIN sys_bd_distrito ON sys_bd_distrito.cod = org_ficha_organizacion.cod_dist
@@ -104,6 +113,10 @@ FROM pit_bd_ficha_mrn INNER JOIN pit_bd_user_iniciativa ON pit_bd_ficha_mrn.cod_
 	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_organizacion.cod_dependencia
 	 INNER JOIN sys_bd_tipo_org ON sys_bd_tipo_org.cod_tipo_org = org_ficha_organizacion.cod_tipo_org
 	 INNER JOIN org_ficha_usuario ON org_ficha_usuario.cod_tipo_doc = pit_bd_user_iniciativa.cod_tipo_doc AND org_ficha_usuario.n_documento = pit_bd_user_iniciativa.n_documento AND org_ficha_organizacion.cod_tipo_doc = org_ficha_usuario.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = org_ficha_usuario.n_documento_org
+WHERE pit_bd_ficha_mrn.cod_estado_iniciativa<>000 AND
+pit_bd_ficha_mrn.cod_estado_iniciativa<>001 AND
+pit_bd_ficha_mrn.cod_estado_iniciativa<>002 AND
+pit_bd_ficha_mrn.cod_estado_iniciativa<>003
 ORDER BY pit_bd_user_iniciativa.n_documento ASC";
 }
 else
@@ -127,9 +140,13 @@ else
 	sys_bd_departamento.nombre AS departamento, 
 	sys_bd_provincia.nombre AS provincia, 
 	sys_bd_distrito.nombre AS distrito, 
-	sys_bd_distrito.nivel_pobreza
+	sys_bd_distrito.nivel_pobreza, 
+	sys_bd_distrito.ubigeo, 
+	sys_bd_cp.nombre AS cp, 
+	sys_bd_cp.cod_categoria
 FROM pit_bd_ficha_mrn INNER JOIN pit_bd_user_iniciativa ON pit_bd_ficha_mrn.cod_mrn = pit_bd_user_iniciativa.cod_iniciativa AND pit_bd_ficha_mrn.cod_tipo_iniciativa = pit_bd_user_iniciativa.cod_tipo_iniciativa
 	 INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = pit_bd_ficha_mrn.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = pit_bd_ficha_mrn.n_documento_org
+	 LEFT OUTER JOIN sys_bd_cp ON sys_bd_cp.cod = org_ficha_organizacion.cod_cp
 	 INNER JOIN sys_bd_departamento ON sys_bd_departamento.cod = org_ficha_organizacion.cod_dep
 	 INNER JOIN sys_bd_provincia ON sys_bd_provincia.cod = org_ficha_organizacion.cod_prov
 	 INNER JOIN sys_bd_distrito ON sys_bd_distrito.cod = org_ficha_organizacion.cod_dist
@@ -139,7 +156,11 @@ FROM pit_bd_ficha_mrn INNER JOIN pit_bd_user_iniciativa ON pit_bd_ficha_mrn.cod_
 	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_organizacion.cod_dependencia
 	 INNER JOIN sys_bd_tipo_org ON sys_bd_tipo_org.cod_tipo_org = org_ficha_organizacion.cod_tipo_org
 	 INNER JOIN org_ficha_usuario ON org_ficha_usuario.cod_tipo_doc = pit_bd_user_iniciativa.cod_tipo_doc AND org_ficha_usuario.n_documento = pit_bd_user_iniciativa.n_documento AND org_ficha_organizacion.cod_tipo_doc = org_ficha_usuario.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = org_ficha_usuario.n_documento_org
-WHERE org_ficha_organizacion.cod_dependencia='".$row['cod_dependencia']."'
+WHERE org_ficha_organizacion.cod_dependencia='".$row['cod_dependencia']."' AND
+pit_bd_ficha_mrn.cod_estado_iniciativa<>000 AND
+pit_bd_ficha_mrn.cod_estado_iniciativa<>001 AND
+pit_bd_ficha_mrn.cod_estado_iniciativa<>002 AND
+pit_bd_ficha_mrn.cod_estado_iniciativa<>003
 ORDER BY pit_bd_user_iniciativa.n_documento ASC";
 }
 $result=mysql_query($sql) or die (mysql_error());
@@ -149,8 +170,10 @@ while($f1=mysql_fetch_array($result))
 ?>	
 		<tr>
 			<td class="centrado"><? echo $num;?></td>
-			<td class="centrado">'<? echo $f1['dni'];?>'</td>
-			<td><? echo $f1['nombre']." ".$f1['paterno']." ".$f1['materno'];?></td>
+			<td class="centrado">'<? echo $f1['dni'];?></td>
+			<td class="centrado"><? echo $f1['nombre'];?></td>
+			<td class="centrado"><? echo $f1['paterno'];?></td>
+			<td class="centrado"><? echo $f1['materno'];?></td>
 			<td class="centrado"><? echo fecha_normal($f1['f_nacimiento']);?></td>
 			<td class="centrado"><? if ($f1['sexo']==1) echo "M"; else echo "F";?></td>
 			<td class="centrado"><? if ($f1['titular']==1) echo "SI"; else echo "NO";?></td>
@@ -166,6 +189,9 @@ while($f1=mysql_fetch_array($result))
 			<td class="centrado"><? echo $f1['provincia'];?></td>
 			<td class="centrado"><? echo $f1['distrito'];?></td>
 			<td class="centrado"><? echo $f1['nivel_pobreza'];?></td>
+			<td class="centrado"><? echo $f1['ubigeo'];?></td>
+			<td class="centrado"><? echo $f1['cp'];?></td>
+			<td class="centrado"><? echo $f1['cod_categoria'];?></td>
 			<td class="centrado"><? echo $f1['oficina'];?></td>
 			<td><? echo $f1['estado_iniciativa'];?></td>
 		</tr>
@@ -196,10 +222,14 @@ if ($row['cod_dependencia']==1)
 	sys_bd_departamento.nombre AS departamento, 
 	sys_bd_provincia.nombre AS provincia, 
 	sys_bd_distrito.nombre AS distrito, 
-	sys_bd_distrito.nivel_pobreza
+	sys_bd_distrito.nivel_pobreza, 
+	sys_bd_distrito.ubigeo, 
+	sys_bd_cp.nombre AS cp, 
+	sys_bd_cp.cod_categoria
 FROM pit_bd_ficha_pdn INNER JOIN pit_bd_user_iniciativa ON pit_bd_ficha_pdn.cod_pdn = pit_bd_user_iniciativa.cod_iniciativa AND pit_bd_ficha_pdn.cod_tipo_iniciativa = pit_bd_user_iniciativa.cod_tipo_iniciativa
 	 INNER JOIN org_ficha_usuario ON org_ficha_usuario.cod_tipo_doc = pit_bd_user_iniciativa.cod_tipo_doc AND org_ficha_usuario.n_documento = pit_bd_user_iniciativa.n_documento
 	 INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = pit_bd_ficha_pdn.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = pit_bd_ficha_pdn.n_documento_org AND org_ficha_usuario.cod_tipo_doc_org = org_ficha_organizacion.cod_tipo_doc AND org_ficha_usuario.n_documento_org = org_ficha_organizacion.n_documento
+	 LEFT OUTER JOIN sys_bd_cp ON sys_bd_cp.cod = org_ficha_organizacion.cod_cp
 	 INNER JOIN sys_bd_departamento ON sys_bd_departamento.cod = org_ficha_organizacion.cod_dep
 	 INNER JOIN sys_bd_provincia ON sys_bd_provincia.cod = org_ficha_organizacion.cod_prov
 	 INNER JOIN sys_bd_distrito ON sys_bd_distrito.cod = org_ficha_organizacion.cod_dist
@@ -209,6 +239,10 @@ FROM pit_bd_ficha_pdn INNER JOIN pit_bd_user_iniciativa ON pit_bd_ficha_pdn.cod_
 	 INNER JOIN sys_bd_tipo_doc ON sys_bd_tipo_doc.cod_tipo_doc = org_ficha_organizacion.cod_tipo_doc
 	 INNER JOIN sys_bd_tipo_org ON sys_bd_tipo_org.cod_tipo_org = org_ficha_organizacion.cod_tipo_org
 	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_organizacion.cod_dependencia
+WHERE pit_bd_ficha_pdn.cod_estado_iniciativa<>000 AND
+pit_bd_ficha_pdn.cod_estado_iniciativa<>001 AND
+pit_bd_ficha_pdn.cod_estado_iniciativa<>002 AND
+pit_bd_ficha_pdn.cod_estado_iniciativa<>003
 ORDER BY pit_bd_user_iniciativa.n_documento ASC";
 }
 else
@@ -233,10 +267,14 @@ else
 	sys_bd_departamento.nombre AS departamento, 
 	sys_bd_provincia.nombre AS provincia, 
 	sys_bd_distrito.nombre AS distrito, 
-	sys_bd_distrito.nivel_pobreza
+	sys_bd_distrito.nivel_pobreza, 
+	sys_bd_distrito.ubigeo, 
+	sys_bd_cp.nombre AS cp, 
+	sys_bd_cp.cod_categoria
 FROM pit_bd_ficha_pdn INNER JOIN pit_bd_user_iniciativa ON pit_bd_ficha_pdn.cod_pdn = pit_bd_user_iniciativa.cod_iniciativa AND pit_bd_ficha_pdn.cod_tipo_iniciativa = pit_bd_user_iniciativa.cod_tipo_iniciativa
 	 INNER JOIN org_ficha_usuario ON org_ficha_usuario.cod_tipo_doc = pit_bd_user_iniciativa.cod_tipo_doc AND org_ficha_usuario.n_documento = pit_bd_user_iniciativa.n_documento
 	 INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = pit_bd_ficha_pdn.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = pit_bd_ficha_pdn.n_documento_org AND org_ficha_usuario.cod_tipo_doc_org = org_ficha_organizacion.cod_tipo_doc AND org_ficha_usuario.n_documento_org = org_ficha_organizacion.n_documento
+	 LEFT OUTER JOIN sys_bd_cp ON sys_bd_cp.cod = org_ficha_organizacion.cod_cp
 	 INNER JOIN sys_bd_departamento ON sys_bd_departamento.cod = org_ficha_organizacion.cod_dep
 	 INNER JOIN sys_bd_provincia ON sys_bd_provincia.cod = org_ficha_organizacion.cod_prov
 	 INNER JOIN sys_bd_distrito ON sys_bd_distrito.cod = org_ficha_organizacion.cod_dist
@@ -246,7 +284,11 @@ FROM pit_bd_ficha_pdn INNER JOIN pit_bd_user_iniciativa ON pit_bd_ficha_pdn.cod_
 	 INNER JOIN sys_bd_tipo_doc ON sys_bd_tipo_doc.cod_tipo_doc = org_ficha_organizacion.cod_tipo_doc
 	 INNER JOIN sys_bd_tipo_org ON sys_bd_tipo_org.cod_tipo_org = org_ficha_organizacion.cod_tipo_org
 	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_organizacion.cod_dependencia
-WHERE org_ficha_organizacion.cod_dependencia='".$row['cod_dependencia']."'
+WHERE org_ficha_organizacion.cod_dependencia='".$row['cod_dependencia']."' AND
+pit_bd_ficha_pdn.cod_estado_iniciativa<>000 AND
+pit_bd_ficha_pdn.cod_estado_iniciativa<>001 AND
+pit_bd_ficha_pdn.cod_estado_iniciativa<>002 AND
+pit_bd_ficha_pdn.cod_estado_iniciativa<>003
 ORDER BY pit_bd_user_iniciativa.n_documento ASC";
 }
 $result=mysql_query($sql) or die (mysql_error());
@@ -256,8 +298,10 @@ while($f2=mysql_fetch_array($result))
 ?>	
 		<tr>
 			<td class="centrado"><? echo $numa;?></td>
-			<td class="centrado">'<? echo $f2['dni'];?>'</td>
-			<td><? echo $f2['nombre']." ".$f2['paterno']." ".$f2['materno'];?></td>
+			<td class="centrado">'<? echo $f2['dni'];?></td>
+			<td class="centrado"><? echo $f2['nombre'];?></td>
+			<td class="centrado"><? echo $f2['paterno'];?></td>
+			<td class="centrado"><? echo $f2['materno'];?></td>
 			<td class="centrado"><? echo fecha_normal($f2['f_nacimiento']);?></td>
 			<td class="centrado"><? if ($f2['sexo']==1) echo "M"; else echo "F";?></td>
 			<td class="centrado"><? if ($f2['titular']==1) echo "SI"; else echo "NO";?></td>
@@ -273,6 +317,9 @@ while($f2=mysql_fetch_array($result))
 			<td class="centrado"><? echo $f2['provincia'];?></td>
 			<td class="centrado"><? echo $f2['distrito'];?></td>
 			<td class="centrado"><? echo $f2['nivel_pobreza'];?></td>
+			<td class="centrado"><? echo $f2['ubigeo'];?></td>
+			<td class="centrado"><? echo $f2['cp'];?></td>
+			<td class="centrado"><? echo $f2['cod_categoria'];?></td>
 			<td class="centrado"><? echo $f2['oficina'];?></td>
 			<td><? echo $f2['estado_iniciativa'];?></td>
 		</tr>	
