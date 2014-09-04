@@ -99,7 +99,7 @@ $saldo=$total_programado-$r2['aporte_pdss'];
        
 <!-- Contenedores -->
 <dl class="tabs">
-<dd  class="active"><a href="">Liquidacion de Contratos PIT</a></dd>
+<dd  class="active"><a href="">Liquidación de Contratos PIT</a></dd>
 </dl>
 <!-- Termino contenedores -->
 <ul class="tabs-content">
