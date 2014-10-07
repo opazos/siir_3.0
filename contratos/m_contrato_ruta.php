@@ -205,6 +205,29 @@ Edicion de contrato de Ruta de aprendizaje
 	<div class="four columns"><input type="text" name="aporte_org" class="required number seven" value="<? echo $r1['aporte_org'];?>"></div>	
 	<div class="two columns">Aporte Otros (S/.)</div>
 	<div class="four columns"><input type="text" name="aporte_otro" class="required number seven" value="<? echo $r1['aporte_otro'];?>"></div>
+	<div class="six columns"><br/></div>
+	<div class="twelve columns"><h6>Banco y número de cuenta</h6></div>
+	<div class="two columns">Número de cuenta</div>
+	<div class="four columns"><input type="text" name="n_cuenta" class="required  ten" value="<? echo $r1['n_cuenta'];?>"></div>
+	<div class="two columns">Banco</div>
+	<div class="four columns">
+		<select name="ifi" class="large">
+			<option value="" selected="selected">Seleccionar</option>
+			<?php
+			$sql="SELECT * FROM sys_bd_ifi ORDER BY descripcion ASC";
+			$result=mysql_query($sql) or die (mysql_error());
+			while($r2=mysql_fetch_array($result))
+			{
+			?>
+			<option value="<? echo $r2['cod_ifi'];?>" <? if ($r1['cod_ifi']==$r2['cod_ifi']) echo "selected";?>><? echo $r2['descripcion'];?></option>
+			<?php
+			}
+			?>
+		</select>
+	</div>
+
+	
+	
 	<div class="twelve columns"><br/></div>
 	<div class="two columns">Afectación presupuestal</div>
 	<div class="ten columns">

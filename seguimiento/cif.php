@@ -46,42 +46,44 @@ $row=mysql_fetch_array($result);
 <!-- Iniciamos el contenido -->
 
 <div class="row">
-<div class="three panel columns">
- <ul class="nav-bar vertical">
- <li class="has-flyout"><a href="">Módulo CIF</a>
- <ul class="flyout">
-	 <li><a href="n_cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>">Registrar CIF</a></li>
-	 <li><a href="cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=edit">Modificar CIF</a></li>
-	 <li><a href="cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=delete">Eliminar CIF</a></li>
-	 <li><a href="cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=imprime">Imprimir fichas de calificación</a></li>
- </ul>
- </li>
- <li class="has-flyout"><a href="">Modulo Calificación</a>
- <ul class="flyout">
- 	<li><a href="cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=calif">Calificar</a></li>
- 	<li><a href="cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=imprime_calif">Imprimir calificación</li>
- </ul>
- </li>
-</div>
+	<div class="three panel columns">
+		<ul class="nav-bar vertical">
+			<li class="has-flyout"><a href="">Módulo CIF</a>
+				<ul class="flyout">
+					<li><a href="n_cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>">Registrar CIF</a></li>
+					<li><a href="cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=edit">Modificar CIF</a></li>
+					<li><a href="cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=delete">Eliminar CIF</a></li>
+					<li><a href="cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=imprime">Imprimir fichas de calificación</a></li>
+				</ul>
+			</li>
+			<li class="has-flyout"><a href="">Modulo Calificación</a>
+				<ul class="flyout">
+					<li><a href="cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=calif">Registrar calificaciones</a></li>
+					<li><a href="cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=calif_lento">Registrar calificaciones (Para Internet Lento)</a></li>
+					<li><a href="cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&modo=imprime_calif">Imprimir calificación</a></li>
+				 </ul>
+			 </li>
+		 </u>
+	</div>
+
 
     <div class="nine columns">
       <div class="panel">
         <div class="row">
         
-        <div class="twelve columns">
-	        <!-- aca pego el contenido -->
-	        <? include("../plugins/buscar/buscador.html");?>
-
-
-<table class="responsive" id="lista">
+<div class="twelve columns">
+ <!-- aca pego el contenido -->
+  <? include("../plugins/buscar/buscador.html");?>
+	       
+<table id="lista">
 <thead>
 	<tr>
-		<th><h5><small>Nº</small></h5></th>
-		<th><h5><small>Nombre de la organizacion</small></h5></th>
-		<th><h5><small>Nº de concurso</small></h5></th>
-		<th><h5><small>Actividad 1</small></h5></th>
-		<th><h5><small>Actividad 2</small></h5></th>
-		<th><h5><small>Actividad 3</small></h5></th>
+		<th><small>N.</small></th>
+		<th><small>Nombre de la organización</small></th>
+		<th><small>N. de concurso</small></th>
+		<th><small>Actividad 1</small></th>
+		<th><small>Actividad 2</small></th>
+		<th><small>Actividad 3</small></th>
 		<th><br/></th>
 	</tr>
 </thead>	
@@ -96,7 +98,8 @@ $sql="SELECT cif_bd_concurso.cod_concurso_cif,
 	cif_bd_concurso.actividad_3 AS act3, 
 	act1.descripcion AS actividad1, 
 	act2.descripcion AS actividad2, 
-	act3.descripcion AS actividad3
+	act3.descripcion AS actividad3, 
+	pit_bd_ficha_mrn.sector
 FROM pit_bd_ficha_mrn INNER JOIN cif_bd_concurso ON pit_bd_ficha_mrn.cod_mrn = cif_bd_concurso.cod_mrn
 	 LEFT OUTER JOIN sys_bd_actividad_mrn act1 ON act1.cod = cif_bd_concurso.actividad_1
 	 LEFT OUTER JOIN sys_bd_actividad_mrn act2 ON act2.cod = cif_bd_concurso.actividad_2
@@ -111,7 +114,7 @@ while($fila=mysql_fetch_array($result))
 ?>
 	<tr>
 		<td><h6><small><? echo $num;?></small></h6></td>
-		<td><h6><small><? echo $fila['nombre'];?></small></h6></td>
+		<td><h6><small><? echo $fila['nombre']." ".$fila['sector'];?></small></h6></td>
 		<td><h6><small><? echo $fila['n_concurso'];?></small></h6></td>
 		<td><h6><small><? echo $fila['actividad1'];?></small></h6></td>
 		<td><h6><small><? echo $fila['actividad2'];?></small></h6></td>
@@ -140,6 +143,12 @@ while($fila=mysql_fetch_array($result))
 			{
 			?>
 			<a href="n_calif_cif_2.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&cod=<? echo $fila['cod_concurso_cif'];?>" class="tiny button">Calificar</a>
+			<?php	
+			}
+			elseif($modo==calif_lento)
+			{
+			?>
+			<a href="n_calif_cif.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&cod=<? echo $fila['cod_concurso_cif'];?>" class="tiny button">Calificar</a>
 			<?php	
 			}
 			elseif($modo==imprime_calif)

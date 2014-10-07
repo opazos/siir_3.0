@@ -119,7 +119,8 @@ $row=mysql_fetch_array($result);
 	org_ficha_organizacion.n_documento, 
 	org_ficha_organizacion.nombre, 
 	sys_bd_estado_iniciativa.descripcion AS estado, 
-	pit_bd_mrn_liquida.cod_mrn
+	pit_bd_mrn_liquida.cod_mrn, 
+	pit_bd_ficha_mrn.sector
 FROM pit_bd_ficha_mrn INNER JOIN pit_bd_mrn_liquida ON pit_bd_ficha_mrn.cod_mrn = pit_bd_mrn_liquida.cod_mrn
 	 INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = pit_bd_ficha_mrn.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = pit_bd_ficha_mrn.n_documento_org
 	 INNER JOIN sys_bd_estado_iniciativa ON sys_bd_estado_iniciativa.cod_estado_iniciativa = pit_bd_ficha_mrn.cod_estado_iniciativa
@@ -134,7 +135,7 @@ ORDER BY org_ficha_organizacion.nombre ASC";
 	        	<tr>
 		        	<td><? echo $num;?></td>
 		        	<td><? echo $fila['n_documento'];?></td>
-		        	<td><? echo $fila['nombre'];?></td>
+		        	<td><? echo $fila['nombre']." ".$fila['sector'];?></td>
 		        	<td><? echo fecha_normal($fila['f_liquidacion']);?></td>
 		        	<td><? echo $fila['estado'];?></td>
 		        	<td>

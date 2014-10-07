@@ -90,6 +90,96 @@ $row=mysql_fetch_array($result);
 		<td>ESTADO</td>
 	</tr>
 	
+	
+<!-- Eventos CLAR -->	
+<?php
+if ($row['cod_dependencia']==001)
+{
+$sql="SELECT clar_bd_evento_clar.cod_clar, 
+	clar_bd_evento_clar.n_contrato, 
+	clar_bd_evento_clar.f_presentacion, 
+	SUM(clar_bd_ficha_presupuesto.costo_total) AS aporte_pdss, 
+	sys_bd_dependencia.nombre AS oficina, 
+	clar_bd_evento_clar.n_atf, 
+	clar_bd_evento_clar.estado, 
+	sys_bd_tipo_doc.descripcion AS tipo_doc, 
+	org_ficha_organizacion.n_documento, 
+	org_ficha_organizacion.nombre, 
+	clar_bd_ficha_contratante.n_cuenta, 
+	sys_bd_ifi.descripcion AS ifi
+FROM clar_bd_ficha_presupuesto INNER JOIN clar_bd_evento_clar ON clar_bd_ficha_presupuesto.cod_clar = clar_bd_evento_clar.cod_clar
+	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = clar_bd_evento_clar.cod_dependencia
+	 LEFT OUTER JOIN clar_bd_ficha_contratante ON clar_bd_ficha_contratante.cod_clar = clar_bd_evento_clar.cod_clar
+	 INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = clar_bd_ficha_contratante.cod_tipo_doc AND org_ficha_organizacion.n_documento = clar_bd_ficha_contratante.n_documento
+	 INNER JOIN sys_bd_ifi ON sys_bd_ifi.cod_ifi = clar_bd_ficha_contratante.cod_ifi
+	 INNER JOIN sys_bd_tipo_doc ON sys_bd_tipo_doc.cod_tipo_doc = org_ficha_organizacion.cod_tipo_doc
+WHERE clar_bd_evento_clar.n_contrato<>0 AND
+clar_bd_evento_clar.f_presentacion  BETWEEN '$anio-01-01'AND '$anio-12-31' 
+GROUP BY clar_bd_evento_clar.cod_clar
+ORDER BY clar_bd_evento_clar.cod_dependencia ASC, clar_bd_evento_clar.f_presentacion ASC, clar_bd_evento_clar.n_contrato ASC";
+}
+else
+{
+$sql="SELECT clar_bd_evento_clar.cod_clar, 
+	clar_bd_evento_clar.n_contrato, 
+	clar_bd_evento_clar.f_presentacion, 
+	SUM(clar_bd_ficha_presupuesto.costo_total) AS aporte_pdss, 
+	sys_bd_dependencia.nombre AS oficina, 
+	clar_bd_evento_clar.n_atf, 
+	clar_bd_evento_clar.estado, 
+	sys_bd_tipo_doc.descripcion AS tipo_doc, 
+	org_ficha_organizacion.n_documento, 
+	org_ficha_organizacion.nombre, 
+	clar_bd_ficha_contratante.n_cuenta, 
+	sys_bd_ifi.descripcion AS ifi
+FROM clar_bd_ficha_presupuesto INNER JOIN clar_bd_evento_clar ON clar_bd_ficha_presupuesto.cod_clar = clar_bd_evento_clar.cod_clar
+	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = clar_bd_evento_clar.cod_dependencia
+	 LEFT OUTER JOIN clar_bd_ficha_contratante ON clar_bd_ficha_contratante.cod_clar = clar_bd_evento_clar.cod_clar
+	 INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = clar_bd_ficha_contratante.cod_tipo_doc AND org_ficha_organizacion.n_documento = clar_bd_ficha_contratante.n_documento
+	 INNER JOIN sys_bd_ifi ON sys_bd_ifi.cod_ifi = clar_bd_ficha_contratante.cod_ifi
+	 INNER JOIN sys_bd_tipo_doc ON sys_bd_tipo_doc.cod_tipo_doc = org_ficha_organizacion.cod_tipo_doc
+WHERE clar_bd_evento_clar.n_contrato<>0 AND
+clar_bd_evento_clar.f_presentacion  BETWEEN '$anio-01-01'AND '$anio-12-31' AND
+clar_bd_evento_clar.cod_dependencia='".$row['cod_dependencia']."'
+GROUP BY clar_bd_evento_clar.cod_clar
+ORDER BY clar_bd_evento_clar.cod_dependencia ASC, clar_bd_evento_clar.f_presentacion ASC, clar_bd_evento_clar.n_contrato ASC";
+}
+$result=mysql_query($sql) or die (mysql_error());
+while($r1=mysql_fetch_array($result))
+{
+?>
+	<tr>
+		<td class="centrado">CLAR</td>
+		<td class="centrado">PRIMERO</td>
+		<td class="centrado"><? echo numeracion($r1['n_contrato'])."-".periodo($r1['f_presentacion']);?></td>
+		<td class="centrado"><? echo fecha_normal($r1['f_presentacion']);?></td>
+		<td class="centrado">-</td>
+		<td class="centrado">-</td>
+		<td class="derecha"><? echo number_format($r1[aporte_pdss],2);?></td>
+		<td class="derecha">0.00</td>
+		<td class="derecha"><? echo number_format($r1[aporte_pdss],2);?></td>
+		<td class="centrado"><? echo $r1['tipo_doc'];?></td>
+		<td class="centrado"><? echo $r1['n_documento'];?></td>
+		<td><? echo $r1['nombre'];?></td>
+		<td class="centrado"><? echo $r1['oficina'];?></td>
+		<td class="centrado"><? echo numeracion($r1['n_atf']);?></td>
+		<td class="centrado"><?echo numeracion($r1['n_atf']);?></td>
+		<td class="derecha"><? echo number_format($r1[aporte_pdss],2);?></td>
+		<td class="derecha">0.00</td>
+		<td class="centrado"><? echo $r1['n_cuenta'];?></td>
+		<td class="centrado"><? echo $r1['ifi'];?></td>
+		<td class="centrado">-</td>
+		<td class="centrado">-</td>
+		<td class="centrado">-</td>
+		<td class="centrado">-</td>
+		<td>-</td>
+		<td class="centrado">-</td>
+		<td class="centrado">-</td>
+		<td class="centrado">-</td>
+	</tr>
+<?php
+}
+?>	
 <!-- PIT - Primer desembolso -->	
 <?
 if ($row['cod_dependencia']==001)

@@ -30,6 +30,10 @@ elseif($tipo==UPDATE)
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
   <meta charset="utf-8" />
+  <!-- con esto no podran dar click atras -->  
+  <meta http-equiv="Expires" content="0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+
 
   <!-- Set the viewport width to device width for mobile -->
   <meta name="viewport" content="width=device-width" />
@@ -48,10 +52,21 @@ elseif($tipo==UPDATE)
   <script src="javascripts/btn_envia.js"></script>
   <script src="rtables/javascripts/jquery.min.js"></script>
   <script src="rtables/responsive-tables.js"></script>
+  
+  
+  <!-- con este codigo deshabilito el click atras -->
+  <script type="text/javascript">
+  {
+  if(history.forward(1))
+  location.replace(history.forward(1))
+  }
+  </script>
+  
     <!-- Included CSS Files (Compressed) -->
   <!--
   <link rel="stylesheet" href="stylesheets/foundation.min.css">
 -->  
+
 </head>
 <body>
 <? include("menu.php");?>

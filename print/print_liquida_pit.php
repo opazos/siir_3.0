@@ -179,12 +179,13 @@ $var_menor=mysql_num_rows($result);
 
 //****** Busco Informacion de addendas
 $sql="SELECT pit_bd_ficha_adenda.n_adenda, 
-  pit_bd_ficha_adenda.f_adenda, 
-  pit_bd_ficha_adenda.f_inicio, 
-  pit_bd_ficha_adenda.meses, 
-  pit_bd_ficha_adenda.f_termino
+	pit_bd_ficha_adenda.f_adenda, 
+	pit_bd_ficha_adenda.f_inicio, 
+	pit_bd_ficha_adenda.meses, 
+	pit_bd_ficha_adenda.f_termino
 FROM pit_bd_ficha_adenda
-WHERE pit_bd_ficha_adenda.cod_pit='".$row['cod_pit']."'";
+WHERE pit_bd_ficha_adenda.cod_pit='".$row['cod_pit']."'
+ORDER BY pit_bd_ficha_adenda.f_termino DESC";
 $result=mysql_query($sql) or die (mysql_error());
 $r3=mysql_fetch_array($result);
 $total_adenda=mysql_num_rows($result);
@@ -210,7 +211,19 @@ WHERE clar_atf_pit_sd.cod_pit='".$row['cod_pit']."'";
 $result=mysql_query($sql) or die (mysql_error());
 $r7=mysql_fetch_array($result);
 
+
+//Monto Org
+$sql="SELECT SUM(ficha_animador.aporte_org) AS aporte_org, 
+	SUM(ficha_animador.aporte_otro) AS aporte_otro
+FROM ficha_animador
+WHERE ficha_animador.cod_iniciativa='".$row['cod_pit']."'";
+$result=mysql_query($sql) or die (mysql_error());
+$r5=mysql_fetch_array($result);
+
+
+
 $total_des_pdss=$r6['monto_desembolsado']+$r7['monto_desembolsado']+$r4['aporte_pdss'];
+$ejecutado_org=$r5['aporte_org'];
 
 
 
@@ -281,7 +294,7 @@ if($total_des_pdss<>0)
 	<p>En relación al documento de la referencia, informo a su despacho, que la organización <strong><? echo $row['nombre'];?></strong>, ha cumplido con sus obligaciones establecidas en el Contrato de Donación Sujeto a Cargo que están sustentadas en los siguientes documentos que se adjuntan:</p>
 	
 	<ol>
-		<li><strong>1</strong> Informe Final de Resultados y Liquidación del Plan de Inversión Territorial.</li>
+		<li><strong>1</strong> Informe Final de Resultados y Liquidación del Plan de Inversión Territorial ........ folios.</li>
 		<li><strong><? echo number_format($r2['iniciativa']);?></strong> Informe Final de Resultados y Liquidación del Plan de Gestión de Recursos Naturales.</li>
 		<li><strong><? echo number_format($iniciativa_pdn);?></strong> Informe Final de Resultados y Liquidación del Plan de Negocios.</li>
 		<li> ........ Archivo con documentación en ........ folios.</li>
@@ -313,8 +326,8 @@ if($total_des_pdss<>0)
     <td class="derecha"><? echo number_format($total_des_pdss-$row['ejec_an'],2);?></td>
 
     <td class="derecha"><? echo number_format($total_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_org - $total_org,2);?></td>
+    <td class="derecha"><? echo number_format($ejecutado_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_org - $ejecutado_org,2);?></td>
   </tr>
 
   <tr class="txt_titulo">
@@ -323,8 +336,8 @@ if($total_des_pdss<>0)
     <td class="derecha"><? echo number_format($row['ejec_an'],2);?></td>
     <td class="derecha"><? echo number_format($total_des_pdss-$row['ejec_an'],2);?></td>
     <td class="derecha"><? echo number_format($total_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_org - $total_org,2);?></td>
+    <td class="derecha"><? echo number_format($ejecutado_org,2);?></td>
+    <td class="derecha"><? echo number_format($total_org - $ejecutado_org,2);?></td>
   </tr>
 </table>
   </p>
@@ -484,7 +497,7 @@ else
 	<p>En relación al documento de la referencia, informo a su despacho, que la organización <strong><? echo $row['nombre'];?></strong>, ha cumplido con sus obligaciones establecidas en el Contrato de Donación Sujeto a Cargo que están sustentadas en los siguientes documentos que se adjuntan:</p>
 	
 	<ol>
-		<li><strong>1</strong> Informe Final de Resultados y Liquidación del Plan de Inversión Territorial.</li>
+		<li><strong>1</strong> Informe Final de Resultados y Liquidación del Plan de Inversión Territorial con .................... folios.</li>
 		<li><strong><? echo number_format($iniciativa_pdn);?></strong> Informe Final de Resultados y Liquidación del Plan de Negocios.</li>
 		<li> ........ Archivo con documentación en ........ folios.</li>
 	</ol>
@@ -1127,8 +1140,8 @@ while($f5=mysql_fetch_array($result))
     <td class="derecha"><? echo number_format($total_des_pdss-$row['ejec_an'],2);?></td>
     <td class="derecha"><? $ppdss=($row['ejec_an']/$total_des_pdss)*100; echo number_format(@$ppdss,2);?></td>
     <td class="derecha"><? echo number_format($total_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_org,2);?></td>
+    <td class="derecha"><? echo number_format($r5['aporte_org'],2);?></td>
+    <td class="derecha"><?  $pporg=($r5['aporte_org']/$total_org)*100;echo number_format(@$pporg,2);?></td>
   </tr>
 
   <tr class="txt_titulo">
@@ -1138,8 +1151,8 @@ while($f5=mysql_fetch_array($result))
     <td class="derecha"><? echo number_format($total_des_pdss-$row['ejec_an'],2);?></td>
     <td class="derecha"><? $ppdss=($row['ejec_an']/$total_des_pdss)*100; echo number_format(@$ppdss,2);?></td>
     <td class="derecha"><? echo number_format($total_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_org,2);?></td>
-    <td class="derecha"><? echo number_format($total_org,2);?></td>  
+    <td class="derecha"><? echo number_format($r5['aporte_org'],2);?></td>
+    <td class="derecha"><?  $pporg=($r5['aporte_org']/$total_org)*100;echo number_format(@$pporg,2);?></td>
   </tr>
 </table>
 <br/>

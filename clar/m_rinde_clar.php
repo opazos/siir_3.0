@@ -129,6 +129,14 @@ $row=mysql_fetch_array($result);
 	?>
 </select>
 </div>
+<div class="two columns">Recibio fondos de la administración</div>
+<div class="ten columns">
+	<select name="recibio">
+		<option value="" selected="selected">Seleccionar</option>
+		<option value="1">Si</option>
+		<option value="0">No</option>
+	</select>
+</div>
 
 <div class="twelve columns"><h6>II.- Resultados Alcanzados</h6></div>
 

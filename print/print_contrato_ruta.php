@@ -43,8 +43,11 @@ $sql="SELECT gcac_bd_ruta.cod_ruta,
 	sys_bd_subactividad_poa.codigo AS poa, 
 	sys_bd_subactividad_poa.nombre AS describe_poa, 
 	sys_bd_categoria_poa.codigo AS categoria, 
-	sys_bd_fuente_fto.descripcion AS fte_fto
+	sys_bd_fuente_fto.descripcion AS fte_fto, 
+	gcac_bd_ruta.n_cuenta, 
+	sys_bd_ifi.descripcion AS ifi
 FROM sys_bd_tipo_iniciativa INNER JOIN gcac_bd_ruta ON sys_bd_tipo_iniciativa.cod_tipo_iniciativa = gcac_bd_ruta.cod_tipo_iniciativa
+	 LEFT JOIN sys_bd_ifi ON sys_bd_ifi.cod_ifi = gcac_bd_ruta.cod_ifi
 	 INNER JOIN sys_bd_subactividad_poa ON sys_bd_subactividad_poa.cod = gcac_bd_ruta.cod_poa
 	 INNER JOIN sys_bd_fuente_fto ON sys_bd_fuente_fto.cod = gcac_bd_ruta.cod_fte_fto
 	 INNER JOIN sys_bd_categoria_poa ON sys_bd_categoria_poa.cod = sys_bd_subactividad_poa.cod_categoria_poa
@@ -585,21 +588,25 @@ $total=$row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'];
 
 <table width="90%" border="1" align="center" cellpadding="1" cellspacing="1" class="mini">
   <tr class="centrado txt_titulo">
-    <td width="19%">Organización</td>
+    <td width="20%">Organización</td>
     <td width="20%">Nombre del evento</td>
-    <td width="7%">Tipo de Iniciativa</td>
-    <td width="9%">ATF N° </td>
-    <td width="13%">Monto a Transferir (S/.) </td>
+    <td >Tipo de Iniciativa</td>
+    <td >IFI</td>
+    <td >N. Cuenta</td>
+    <td >ATF N° </td>
+    <td >Monto a Transferir (S/.) </td>
   </tr>
   <tr>
     <td><? echo $row['organizacion'];?></td>
     <td><? echo $row['ruta'];?></td>
     <td class="centrado"><? echo $row['codigo_iniciativa'];?></td>
+    <td class="centrado"><? echo $row['ifi'];?></td>
+    <td class="centrado"><? echo $row['n_cuenta'];?></td>
     <td class="centrado"><? echo numeracion($row['n_atf'])."-".periodo($row['f_contrato']);?></td>
     <td class="derecha"><? echo number_format($row['aporte_pdss'],2);?></td>
   </tr>
   <tr>
-    <td colspan="4">TOTAL</td>
+    <td colspan="6">TOTAL</td>
     <td class="derecha"><? echo number_format($row['aporte_pdss'],2);?></td>
   </tr>
 </table>
@@ -661,8 +668,22 @@ $total=$row['aporte_pdss']+$row['aporte_org']+$row['aporte_otro'];
   <tr>
     <td class="txt_titulo">Fuente de Financiamiento </td>
     <td align="center" class="txt_titulo">:</td>
-    <td colspan=""><? echo $row['fte_fto'];?></td>
+    <td colspan="2"><? echo $row['fte_fto'];?></td>
   </tr>
+  
+  <tr>
+    <td class="txt_titulo">Número de cuenta</td>
+    <td align="center" class="txt_titulo">:</td>
+    <td colspan="2"><? echo $row['n_cuenta'];?> </td>
+  </tr>
+
+  <tr>
+    <td class="txt_titulo">Entidad financiera</td>
+    <td align="center" class="txt_titulo">:</td>
+    <td colspan="2"><? echo $row['ifi'];?></td>
+  </tr>
+
+  
 </table>
 
 <br>

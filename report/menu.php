@@ -48,6 +48,10 @@ $i1=mysql_fetch_array($result);
 			<li><a href="report_contratos.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>">Contratos firmados con Iniciativas</a></li>
 			<li class="divider"></li>
 			<li><a href="report_iniciativas.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>">Estado situacional de iniciativas</a></li>
+			<li class="divider"></li>
+			<li><a href="report_aporte.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>">Aporte de terceros</a></li>
+			<li class="divider"></li>
+			<li><a href="report_liquida.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>">Reporte de Liquidaciones</a></li>
 
 	    </ul>
         </li>

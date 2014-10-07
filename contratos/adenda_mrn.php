@@ -145,7 +145,8 @@ $row=mysql_fetch_array($result);
 		pit_adenda_mrn.ag_pdss+ 
 		pit_adenda_mrn.at_pdss) AS aporte_pdss, 
 		pit_adenda_mrn.at_org AS aporte_org, 
-		pit_adenda_mrn.cod_iniciativa
+		pit_adenda_mrn.cod_iniciativa, 
+		pit_bd_ficha_mrn.sector
 		FROM pit_bd_ficha_mrn INNER JOIN pit_adenda_mrn ON pit_bd_ficha_mrn.cod_mrn = pit_adenda_mrn.cod_mrn
 		INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = pit_bd_ficha_mrn.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = pit_bd_ficha_mrn.n_documento_org
 		WHERE pit_adenda_mrn.cod_adenda='$cod'";
@@ -155,7 +156,7 @@ $row=mysql_fetch_array($result);
 	?>
 		<tr>
 			<td><? echo $fila['n_documento'];?></td>
-			<td><? echo $fila['nombre'];?></td>
+			<td><? echo $fila['nombre']." ".$fila['sector'];?></td>
 			<td><? echo number_format($fila['aporte_pdss'],2);?></td>
 			<td><? echo number_format($fila['aporte_org'],2);?></td>
 			<td>

@@ -310,7 +310,7 @@ $pp_ejecutado_pdss=($total_ejecutado_pdss/$total_contrato_pdss)*100;
 	<tfoot>	
 		<tr>
 			<td>TOTALES</td>
-			<td><? echo number_format($f5['aporte_pdss'],2);?></td>
+			<td><? echo number_format($f5['aporte_pdss']+$f6['ag_pdss']+$f6['at_pdss']+$f6['cif_pdss'],2);?></td>
 			<td><? echo number_format($cif+$sat_pdss+$vg_pdss+$ag_pdss,2);?></td>
 			<td><? echo number_format($f5['aporte_org'],2);?></td>
 			<td><? echo number_format($sat_org+$vg_org,2);?></td>

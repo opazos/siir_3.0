@@ -108,7 +108,8 @@ if ($tipo_pdn<>0)
   pit_bd_ficha_adenda_pdn.meses, 
   pit_bd_ficha_adenda_pdn.f_termino
   FROM pit_bd_ficha_adenda_pdn
-  WHERE pit_bd_ficha_adenda_pdn.cod_pdn='$cod'";  
+  WHERE pit_bd_ficha_adenda_pdn.cod_pdn='$cod'
+  ORDER BY pit_bd_ficha_adenda_pdn.f_termino DESC";  
 }
 //******* SI ES UN PDN QUE PERTENECE A UN PIT
 elseif($tipo_pdn==0 and $total_ampliacion==0)
@@ -119,7 +120,8 @@ elseif($tipo_pdn==0 and $total_ampliacion==0)
   pit_bd_ficha_adenda.meses, 
   pit_bd_ficha_adenda.f_termino
 FROM pit_bd_ficha_adenda
-WHERE pit_bd_ficha_adenda.cod_pit='".$row2['cod_pit']."'";
+WHERE pit_bd_ficha_adenda.cod_pit='".$row2['cod_pit']."'
+ORDER BY pit_bd_ficha_adenda.f_termino DESC";
 }
 //******* SI ES UNA AMPLIACION
 else
@@ -130,7 +132,8 @@ else
   pit_bd_ficha_adenda.meses, 
   pit_bd_ficha_adenda.f_termino
 FROM pit_bd_ficha_adenda
-WHERE pit_bd_ficha_adenda.cod_pit='".$row3['cod_pit']."'";  
+WHERE pit_bd_ficha_adenda.cod_pit='".$row3['cod_pit']."'
+ORDER BY pit_bd_ficha_adenda.f_termino DESC";  
 }
 
 $result=mysql_query($sql) or die (mysql_error());
@@ -176,8 +179,6 @@ $mes=$row['mes'];
 $fecha_actualizada = dateadd1($fecha,7,0,0,0,0,0); // suma 7 dias a la fecha dada
 $f_termino=dateadd1($fecha,5,$mes,0,0,0,0);  
 
-
-
 $salto="<div class='twelve columns'><br/></div>	";
 
 //Obtengo la fecha actual - 30 años
@@ -187,6 +188,36 @@ $fecha_db = explode("-",$fecha_db);
 $fecha_cambiada = mktime(0,0,0,$fecha_db[1],$fecha_db[2],$fecha_db[0]-25);
 $fecha = date("Y-m-d", $fecha_cambiada);
 $fecha_25 = "'".$fecha."'";
+
+
+//**** Obtengo los aportes de otros -
+//SAT
+$sql="SELECT SUM(ficha_sat.aporte_otro) AS aporte_otro
+FROM pit_bd_ficha_pdn INNER JOIN ficha_sat ON pit_bd_ficha_pdn.cod_pdn = ficha_sat.cod_iniciativa AND pit_bd_ficha_pdn.cod_tipo_iniciativa = ficha_sat.cod_tipo_iniciativa
+WHERE pit_bd_ficha_pdn.cod_pdn='$cod'";
+$result=mysql_query($sql) or die (mysql_error());
+$r4=mysql_fetch_array($result);
+//AG
+$sql="SELECT SUM(ficha_aag.aporte_otro) AS aporte_otro
+FROM pit_bd_ficha_pdn INNER JOIN ficha_aag ON pit_bd_ficha_pdn.cod_pdn = ficha_aag.cod_iniciativa AND pit_bd_ficha_pdn.cod_tipo_iniciativa = ficha_aag.cod_tipo_iniciativa
+WHERE pit_bd_ficha_pdn.cod_pdn='$cod'";
+$result=mysql_query($sql) or die (mysql_error());
+$r5=mysql_fetch_array($result);
+//VG
+$sql="SELECT SUM(ficha_vg.aporte_otro) AS aporte_otro
+FROM pit_bd_ficha_pdn INNER JOIN ficha_vg ON pit_bd_ficha_pdn.cod_pdn = ficha_vg.cod_iniciativa AND pit_bd_ficha_pdn.cod_tipo_iniciativa = ficha_vg.cod_tipo_iniciativa
+WHERE pit_bd_ficha_pdn.cod_pdn='$cod'";
+$result=mysql_query($sql) or die (mysql_error());
+$r6=mysql_fetch_array($result);
+//PF
+$sql="SELECT SUM(ficha_pf.aporte_otro) AS aporte_otro
+FROM pit_bd_ficha_pdn INNER JOIN ficha_pf ON pit_bd_ficha_pdn.cod_pdn = ficha_pf.cod_iniciativa AND pit_bd_ficha_pdn.cod_tipo_iniciativa = ficha_pf.cod_tipo_iniciativa
+WHERE pit_bd_ficha_pdn.cod_pdn='$cod'";
+$result=mysql_query($sql) or die (mysql_error());
+$r7=mysql_fetch_array($result);
+
+
+
 
 
 
@@ -209,6 +240,7 @@ $r3=mysql_fetch_array($result);
 $total_prog_pdss=$row['ag_pdss']+$row['at_pdss']+$row['vg_pdss']+$row['fer_pdss'];
 $total_des_pdss=$r3['total_pdn'];
 $total_ejec_pdss=number_format($row['ejec_at_pdss']+$row['ejec_vg_pdss']+$row['ejec_pf_pdss']+$row['ejec_ag_pdss'],2,'.','');
+$total_ejec_otro=$r4['aporte_otro']+$r5['aporte_otro']+$r6['aporte_otro']+$r7['aporte_otro'];
 
 //Organizacion
 $total_prog_org=$row['at_org']+$row['vg_org']+$row['fer_org'];
@@ -217,8 +249,8 @@ $total_ejec_org=$row['ejec_at_org']+$row['ejec_vg_org']+$row['ejec_pf_org'];
 
 
 $total_programado=$total_prog_pdss+$total_prog_org;
-$total_desembolsado=$total_des_pdss + $total_des_org;
-$total_ejecutado=number_format($total_ejec_pdss+$total_ejec_org,2,'.','');
+$total_desembolsado=$total_des_pdss + $total_des_org+$total_ejec_otro;
+$total_ejecutado=number_format($total_ejec_pdss+$total_ejec_org+$total_ejec_otro,2,'.','');
 $devolucion=number_format($total_des_pdss-$total_ejec_pdss,2,'.','');
 
 
@@ -1602,6 +1634,12 @@ while($r2=mysql_fetch_array($result13))
     <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
     <td class="derecha"><? echo number_format($total_des_org-$total_ejec_org,2);?></td>
   </tr>
+  <tr>
+  	<td>Otros aportes</td>
+  	<td class="derecha"><? echo number_format($total_ejec_otro,2);?></td>
+  	<td class="derecha"><? echo number_format($total_ejec_otro,2);?></td>
+  	<td class="derecha"><? echo number_format(0,2);?></td>
+  </tr>
   <tr class="txt_titulo">
     <td>TOTALES</td>
     <td class="derecha"><? echo number_format($total_desembolsado,2);?></td>
@@ -1702,6 +1740,12 @@ if ($total_ejecutado<$total_programado)
     <td class="derecha"><? echo number_format($total_des_org,2);?></td>
     <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
     <td class="derecha"><? echo number_format($total_des_org-$total_ejec_org,2);?></td>
+  </tr>
+  <tr>
+  	<td>Otros aportes</td>
+  	<td class="derecha"><? echo number_format($total_ejec_otro,2);?></td>
+  	<td class="derecha"><? echo number_format($total_ejec_otro,2);?></td>
+  	<td class="derecha"><? echo number_format(0,2);?></td>
   </tr>
   <tr class="txt_titulo">
     <td>TOTALES</td>
@@ -1908,6 +1952,12 @@ if ($total_ejecutado<$total_programado)
     <td class="derecha"><? echo number_format($total_des_org,2);?></td>
     <td class="derecha"><? echo number_format($total_ejec_org,2);?></td>
     <td class="derecha"><? echo number_format($total_des_org-$total_ejec_org,2);?></td>
+  </tr>
+  <tr>
+  	<td>Otros aportes</td>
+  	<td class="derecha"><? echo number_format($total_ejec_otro,2);?></td>
+  	<td class="derecha"><? echo number_format($total_ejec_otro,2);?></td>
+  	<td class="derecha"><? echo number_format(0,2);?></td>
   </tr>
   <tr class="txt_titulo">
     <td>TOTALES</td>

@@ -23,8 +23,23 @@ $correo_jefe=$r1['correo'];
 
 if ($action==UPDATE_PRIMERO)
 {
+//Calculamos la fecha de termino
+	$fecha=$_POST['f_presentacion'];
+	$mes=$_POST['mes'];
+
+	$fecha_actualizada = dateadd1($fecha,7,0,0,0,0,0); // suma 7 dias a la fecha dada
+	$f_termino=dateadd1($fecha,5,$mes,0,0,0,0);
+	
+	if ($f_termino>='2014-09-15')
+	{
+		$f_termino='2014-09-15';
+	}
+	else
+	{
+		$f_termino=$f_termino;
+	}	
 //1.- Actualizamos
-$sql="UPDATE pit_bd_ficha_mrn SET f_presentacion='".$_POST['f_presentacion']."',mes='".$_POST['mes']."',n_cuenta='".$_POST['n_cuenta']."',cod_ifi='".$_POST['ifi']."',n_voucher='".$_POST['n_voucher']."',monto_organizacion='".$_POST['monto_org']."' WHERE cod_mrn='$id'";
+$sql="UPDATE pit_bd_ficha_mrn SET f_presentacion='".$_POST['f_presentacion']."',mes='".$_POST['mes']."',f_termino='$f_termino',n_cuenta='".$_POST['n_cuenta']."',cod_ifi='".$_POST['ifi']."',n_voucher='".$_POST['n_voucher']."',monto_organizacion='".$_POST['monto_org']."' WHERE cod_mrn='$id'";
 $result=mysql_query($sql) or die (mysql_error());
 
 if ($_POST['codigo']==002)
@@ -136,7 +151,8 @@ elseif($action==UPDATE_ESTADO)
 	sys_bd_personal
 	INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = sys_bd_personal.cod_dependencia
 	WHERE
-	md5(sys_bd_personal.n_documento)='$SES'";
+	md5(sys_bd_personal.n_documento)='$SES'"
+	;
 	$result=mysql_query($sql) or die (mysql_error());
 	$r2=mysql_fetch_array($result);
 	

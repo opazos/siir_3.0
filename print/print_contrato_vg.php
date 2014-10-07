@@ -228,6 +228,12 @@ DE DONACIÓN SUJETO A CARGO PARA LA PARTICIPACION EN UNA PASANTIA
 <div class="capa txt_titulo" align="center">AUTORIZACION DE TRANSFERENCIA DE FONDOS N° <? echo numeracion($row['n_atf']);?> –  <? echo periodo($row['f_contrato']);?> - <? echo $row['oficina'];?><BR>
 A "<? echo $org;?>" PARA EL COFINANCIAMIENTO DE PASANTIA</div>
 <br>
+<table width="30%" border="1" align="center" cellpadding="1" cellspacing="1">
+  <tr>
+    <td align="CENTER" class="txt_titulo">S/. <? echo number_format($row['aporte_pdss'],2);?></td>
+  </tr>
+</table>
+<br>
 <table width="90%" border="1" align="center" cellpadding="0" cellspacing="0" class="mini">
   <tr>
     <td width="35%" class="txt_titulo"><? echo $org;?></td>

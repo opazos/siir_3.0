@@ -52,5 +52,12 @@ $result=mysql_query($sql) or die (mysql_error());
 
 echo "<script>window.location ='vg_pdn.php?SES=$SES&anio=$anio&modo=edit'</script>";
 }
+elseif($action==DELETE_ASISTENTE)
+{
+	$sql="DELETE FROM ficha_participante_vg WHERE n_documento='$id' AND cod_visita='$cod'";
+	$result=mysql_query($sql) or die (mysql_error());
+	
+	echo "<script>window.location ='n_vg_pdn.php?SES=$SES&anio=$anio&cod=$cod&modo=asistente'</script>";
+}
 
 ?>

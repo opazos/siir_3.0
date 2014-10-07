@@ -161,7 +161,7 @@ while($fila=mysql_fetch_array($result))
 			        <tr>
 				        <td><? echo $num;?></td>
 				        <td><? echo $fila['n_documento'];?></td>
-				        <td><? echo $fila['nombre'];?></td>
+				        <td><? echo $fila['nombre']." ".$fila['sector'];?></td>
 				        <td><? echo $fila['mes'];?></td>
 				        <td><? echo $fila['estado'];?></td>
 				        <td>
@@ -172,7 +172,7 @@ while($fila=mysql_fetch_array($result))
 				        <a href="m_mrn.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&id=<? echo $fila['cod_mrn'];?>" class="small primary button">Editar</a>
 				        <?
 				        }
-				        elseif($modo==segundo_edit and $fila['cod_estado_iniciativa']=='008')
+				        elseif($modo==segundo_edit and $fila['cod_estado_iniciativa']<>'002' and $fila['cod_estado_iniciativa']<>'005')
 				        {
 				        ?>
 				        <a href="m_mrn_segundo.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&id=<? echo $fila['cod_mrn'];?>" class="small primary button">Editar</a>

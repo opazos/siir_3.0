@@ -111,4 +111,11 @@ foreach($contactos as $cud=>$b1)
 		echo "<script>window.location ='n_pf_pdn.php?SES=$SES&anio=$anio&cod=$codigo&modo=asistente'</script>";
 
 }
+elseif($action==DELETE_ASISTENTE)
+{
+	$sql="DELETE FROM ficha_participante_pf WHERE n_documento='$id' AND cod_feria='$cod'";
+	$result=mysql_query($sql) or die (mysql_error());
+	
+	echo "<script>window.location ='n_pf_pdn.php?SES=$SES&anio=$anio&cod=$cod&modo=asistente'</script>";
+}
 ?>

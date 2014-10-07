@@ -145,7 +145,7 @@ while($fila=mysql_fetch_array($result))
 		<td><select name="cumplimiento[<? echo $cad;?>]"><option value="" selected="selected">Seleccionar</option><option value="1" <? if($fila['cumple_plazo']==1) echo "selected";?>>Si</option><option value="2" <? if($fila['cumple_plazo']==2) echo "selected";?>>No</option></select></td>
 		<td><input type="text" name="avance[<? echo $cad;?>]" class="required number twelve" value="<? echo $fila['avance'];?>"></td>
 		<td><input type="text" name="comentario[<? echo $cad;?>]" class="twelve" value="<? echo $fila['comentario'];?>"></td>
-		<td><a href="gestor_idl.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&id=<? echo $id;?>&cod=<? echo $fila['cod_actividad'];?>&action=DELETE_ACT"><img src="../images/Delete.png" border="0" width="20" height="20"></a></td>
+		<td><a href="gestor_idl.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&id=<? echo $id;?>&cod=<? echo $fila['cod_actividad'];?>&action=DELETE_ACT" class="tiny alert button">Quitar</a></td>
 	</tr>
 <?
 }

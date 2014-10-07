@@ -191,7 +191,8 @@ else
 		<?
 		$sql="SELECT pit_bd_ficha_mrn.cod_mrn, 
 		org_ficha_organizacion.n_documento, 
-		org_ficha_organizacion.nombre
+		org_ficha_organizacion.nombre, 
+		pit_bd_ficha_mrn.sector
 		FROM org_ficha_organizacion INNER JOIN pit_bd_ficha_mrn ON org_ficha_organizacion.cod_tipo_doc = pit_bd_ficha_mrn.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = pit_bd_ficha_mrn.n_documento_org
 		WHERE pit_bd_ficha_mrn.cod_estado_iniciativa<>000 AND
 		pit_bd_ficha_mrn.cod_estado_iniciativa<>001 AND
@@ -202,7 +203,7 @@ else
 		while($fila=mysql_fetch_array($result))
 		{
 		?>
-		<option value="<? echo $fila['cod_mrn'];?>"><? echo $fila['nombre'];?></option>
+		<option value="<? echo $fila['cod_mrn'];?>"><? echo $fila['nombre'] ." ".$fila['sector'];?></option>
 		<?
 		}
 		?>

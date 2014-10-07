@@ -20,7 +20,9 @@ $sql="SELECT bd_cfinal.nombre,
     sys_bd_subactividad_poa.codigo AS poa, 
     sys_bd_subactividad_poa.nombre AS describe_poa, 
     sys_bd_categoria_poa.codigo AS categoria, 
-    bd_cfinal.n_solicitud, 
+    bd_cfinal.n_solicitud_a, 
+    bd_cfinal.n_solicitud_b,
+    bd_cfinal.n_solicitud_c,  
     sys_bd_fuente_fto.descripcion AS fte_fto, 
     bd_cfinal.departamento, 
     sys_bd_personal.nombre AS nombres, 
@@ -96,7 +98,7 @@ FROM pit_bd_ficha_pit INNER JOIN bd_ficha_cfinal ON pit_bd_ficha_pit.cod_pit = b
      LEFT JOIN org_ficha_usuario ON org_ficha_usuario.n_documento = org_ficha_taz.presidente AND org_ficha_usuario.cod_tipo_doc_org = org_ficha_taz.cod_tipo_doc AND org_ficha_usuario.n_documento_org = org_ficha_taz.n_documento
      INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_taz.cod_dependencia
 WHERE bd_ficha_cfinal.cod_concurso='$cod' AND
-bd_ficha_cfinal.cod_categoria=1
+bd_ficha_cfinal.cod_categoria=1 
 ORDER BY bd_ficha_cfinal.puntaje DESC";
     $result=mysql_query($sql) or die (mysql_error());
     while($f1=mysql_fetch_array($result))
@@ -235,22 +237,23 @@ while($f4=mysql_fetch_array($result))
 <ul>
 <?php
     $sql="SELECT bd_ficha_cfinal.cod_participante, 
-    bd_ficha_cfinal.puntaje, 
-    bd_ficha_cfinal.puesto, 
-    bd_ficha_cfinal.premio, 
-    org_ficha_taz.nombre AS org, 
-    sys_bd_dependencia.nombre AS oficina, 
-    bd_ficha_cfinal.n_atf, 
-    pit_bd_ficha_pit.n_cuenta, 
-    sys_bd_ifi.descripcion AS banco, 
-    org_ficha_taz.n_documento
+	bd_ficha_cfinal.puntaje, 
+	bd_ficha_cfinal.puesto, 
+	bd_ficha_cfinal.premio, 
+	org_ficha_taz.nombre AS org, 
+	sys_bd_dependencia.nombre AS oficina, 
+	bd_ficha_cfinal.n_atf, 
+	pit_bd_ficha_pit.n_cuenta, 
+	sys_bd_ifi.descripcion AS banco, 
+	org_ficha_taz.n_documento
 FROM pit_bd_ficha_pit INNER JOIN bd_ficha_cfinal ON pit_bd_ficha_pit.cod_pit = bd_ficha_cfinal.cod_iniciativa AND pit_bd_ficha_pit.cod_tipo_iniciativa = bd_ficha_cfinal.cod_tipo_iniciativa
-     INNER JOIN org_ficha_taz ON org_ficha_taz.cod_tipo_doc = pit_bd_ficha_pit.cod_tipo_doc_taz AND org_ficha_taz.n_documento = pit_bd_ficha_pit.n_documento_taz
-     INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_taz.cod_dependencia
-     INNER JOIN sys_bd_ifi ON sys_bd_ifi.cod_ifi = pit_bd_ficha_pit.cod_ifi
+	 INNER JOIN org_ficha_taz ON org_ficha_taz.cod_tipo_doc = pit_bd_ficha_pit.cod_tipo_doc_taz AND org_ficha_taz.n_documento = pit_bd_ficha_pit.n_documento_taz
+	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_taz.cod_dependencia
+	 INNER JOIN sys_bd_ifi ON sys_bd_ifi.cod_ifi = pit_bd_ficha_pit.cod_ifi
 WHERE bd_ficha_cfinal.cod_concurso='$cod' AND
-bd_ficha_cfinal.cod_categoria=1
-ORDER BY bd_ficha_cfinal.puesto ASC LIMIT 0,$max_gan_a";
+bd_ficha_cfinal.cod_categoria=1 AND
+bd_ficha_cfinal.puesto<>0
+ORDER BY bd_ficha_cfinal.puesto ASC";
 $result=mysql_query($sql) or die (mysql_error());
 while($f5=mysql_fetch_array($result))
 {
@@ -263,22 +266,23 @@ while($f5=mysql_fetch_array($result))
 <ul>
 <?php
     $sql="SELECT bd_ficha_cfinal.cod_participante, 
-    bd_ficha_cfinal.puntaje, 
-    bd_ficha_cfinal.puesto, 
-    bd_ficha_cfinal.premio, 
-    org_ficha_taz.nombre AS org, 
-    sys_bd_dependencia.nombre AS oficina, 
-    bd_ficha_cfinal.n_atf, 
-    pit_bd_ficha_pit.n_cuenta, 
-    sys_bd_ifi.descripcion AS banco, 
-    org_ficha_taz.n_documento
+	bd_ficha_cfinal.puntaje, 
+	bd_ficha_cfinal.puesto, 
+	bd_ficha_cfinal.premio, 
+	org_ficha_taz.nombre AS org, 
+	sys_bd_dependencia.nombre AS oficina, 
+	bd_ficha_cfinal.n_atf, 
+	pit_bd_ficha_pit.n_cuenta, 
+	sys_bd_ifi.descripcion AS banco, 
+	org_ficha_taz.n_documento
 FROM pit_bd_ficha_pit INNER JOIN bd_ficha_cfinal ON pit_bd_ficha_pit.cod_pit = bd_ficha_cfinal.cod_iniciativa AND pit_bd_ficha_pit.cod_tipo_iniciativa = bd_ficha_cfinal.cod_tipo_iniciativa
-     INNER JOIN org_ficha_taz ON org_ficha_taz.cod_tipo_doc = pit_bd_ficha_pit.cod_tipo_doc_taz AND org_ficha_taz.n_documento = pit_bd_ficha_pit.n_documento_taz
-     INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_taz.cod_dependencia
-     INNER JOIN sys_bd_ifi ON sys_bd_ifi.cod_ifi = pit_bd_ficha_pit.cod_ifi
+	 INNER JOIN org_ficha_taz ON org_ficha_taz.cod_tipo_doc = pit_bd_ficha_pit.cod_tipo_doc_taz AND org_ficha_taz.n_documento = pit_bd_ficha_pit.n_documento_taz
+	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_taz.cod_dependencia
+	 INNER JOIN sys_bd_ifi ON sys_bd_ifi.cod_ifi = pit_bd_ficha_pit.cod_ifi
 WHERE bd_ficha_cfinal.cod_concurso='$cod' AND
-bd_ficha_cfinal.cod_categoria=2
-ORDER BY bd_ficha_cfinal.puesto ASC LIMIT 0,$max_gan_b";
+bd_ficha_cfinal.cod_categoria=2 AND
+bd_ficha_cfinal.puesto<>0
+ORDER BY bd_ficha_cfinal.puesto ASC";
 $result=mysql_query($sql) or die (mysql_error());
 while($f6=mysql_fetch_array($result))
 {
@@ -291,22 +295,23 @@ while($f6=mysql_fetch_array($result))
 <ul>
 <?php
     $sql="SELECT bd_ficha_cfinal.cod_participante, 
-    bd_ficha_cfinal.puntaje, 
-    bd_ficha_cfinal.puesto, 
-    bd_ficha_cfinal.premio, 
-    org_ficha_organizacion.nombre AS org, 
-    sys_bd_dependencia.nombre AS oficina, 
-    org_ficha_organizacion.n_documento, 
-    bd_ficha_cfinal.n_atf, 
-    pit_bd_ficha_pdn.n_cuenta, 
-    sys_bd_ifi.descripcion AS banco
+	bd_ficha_cfinal.puntaje, 
+	bd_ficha_cfinal.puesto, 
+	bd_ficha_cfinal.premio, 
+	org_ficha_organizacion.nombre AS org, 
+	sys_bd_dependencia.nombre AS oficina, 
+	org_ficha_organizacion.n_documento, 
+	bd_ficha_cfinal.n_atf, 
+	pit_bd_ficha_pdn.n_cuenta, 
+	sys_bd_ifi.descripcion AS banco
 FROM pit_bd_ficha_pdn INNER JOIN bd_ficha_cfinal ON pit_bd_ficha_pdn.cod_pdn = bd_ficha_cfinal.cod_iniciativa AND pit_bd_ficha_pdn.cod_tipo_iniciativa = bd_ficha_cfinal.cod_tipo_iniciativa
-     INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = pit_bd_ficha_pdn.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = pit_bd_ficha_pdn.n_documento_org
-     INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_organizacion.cod_dependencia
-     INNER JOIN sys_bd_ifi ON sys_bd_ifi.cod_ifi = pit_bd_ficha_pdn.cod_ifi
+	 INNER JOIN org_ficha_organizacion ON org_ficha_organizacion.cod_tipo_doc = pit_bd_ficha_pdn.cod_tipo_doc_org AND org_ficha_organizacion.n_documento = pit_bd_ficha_pdn.n_documento_org
+	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = org_ficha_organizacion.cod_dependencia
+	 INNER JOIN sys_bd_ifi ON sys_bd_ifi.cod_ifi = pit_bd_ficha_pdn.cod_ifi
 WHERE bd_ficha_cfinal.cod_concurso='$cod' AND
-bd_ficha_cfinal.cod_categoria=3
-ORDER BY bd_ficha_cfinal.puesto ASC LIMIT 0,$max_gan_c";
+bd_ficha_cfinal.cod_categoria=3 AND
+bd_ficha_cfinal.puesto<>0
+ORDER BY bd_ficha_cfinal.puesto ASC";
 $result=mysql_query($sql) or die (mysql_error());
 while($f7=mysql_fetch_array($result))
 {

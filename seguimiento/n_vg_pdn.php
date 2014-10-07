@@ -81,6 +81,7 @@ if ($modo==asistente)
 			<th>DNI</th>
 			<th class="ten">Nombres y apellidos completos</th>
 			<th>Asistió?</th>
+			<th><br/></th>
 		</tr>
 		<?
 		$num=0;
@@ -106,6 +107,16 @@ ORDER BY org_ficha_usuario.nombre ASC";
 			<td><? echo $f1['dni'];?></td>
 			<td><? echo $f1['nombre']." ".$f1['paterno']." ".$f1['materno'];?></td>
 			<td><input type="checkbox" name="campos[]" value="<? echo $f1['dni'];?>" <? if ($f1['n_documento']<>NULL) echo "checked";?>></td>
+			<td>
+			<? 
+			if ($f1['n_documento']<>NULL) 
+			{
+			?>
+			<a href="gestor_vg_pdn.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&cod=<? echo $cod;?>&id=<? echo $f1['dni'];?>&action=DELETE_ASISTENTE" class="tiny alert button">Desvincular</a>
+			<?
+			}
+			?>
+			</td>
 		</tr>
 		<?
 		}

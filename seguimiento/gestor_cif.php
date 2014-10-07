@@ -306,17 +306,17 @@ elseif($action==ADD_FICHA_1)
 	}
 
 	//A.- Probemos esta salida para cuando los registros son mayores a 100
+		
 	if($total>90)
 	{
-		//1.- Registro todos los usuarios tengan dato o no
-		for ($i=0; $i<=$total ; $i++) 
+		//1.- realizo un insert para los nuevos registros
+		for ($i=0; $i<=$total; $i++) 
 		{ 
 			if($_POST['dni'][$i])
 			{
-				$sql="INSERT INTO cif_bd_ficha_cif VALUES('','$cod','008','".$_POST['dni'][$i]."','".$_POST['actividad'][$i]."','".$_POST['cantidad1a'][$i]."','".$_POST['valor1a'][$i]."','".$_POST['cantidad2a'][$i]."','".$_POST['valor2a'][$i]."','".$_POST['puntajea'][$i]."','".$_POST['puestoa'][$i]."','".$_POST['premio_pdssa'][$i]."','".$_POST['premio_otroa'][$i]."')";
-				$result=mysql_query($sql) or die (mysql_error());
+			$sql="INSERT INTO cif_bd_ficha_cif VALUES('','$cod','008','".$_POST['dni'][$i]."','".$_POST['actividad'][$i]."','".$_POST['cantidad1a'][$i]."','".$_POST['valor1a'][$i]."','".$_POST['cantidad2a'][$i]."','".$_POST['valor2a'][$i]."','".$_POST['puntajea'][$i]."','".$_POST['puestoa'][$i]."','".$_POST['premio_pdssa'][$i]."','".$_POST['premio_otroa'][$i]."')";
+			$result=mysql_query($sql) or die (mysql_error());
 			}
-			
 		}
 		//2.- Actualizo los registros existentes
 		foreach ($cantidad1as as $cad => $a) 
@@ -324,8 +324,8 @@ elseif($action==ADD_FICHA_1)
 			$sql="UPDATE cif_bd_ficha_cif SET meta_1='".$_POST['cantidad1as'][$cad]."',valor_1='".$_POST['valor1as'][$cad]."',meta_2='".$_POST['cantidad2as'][$cad]."',valor_2='".$_POST['valor2as'][$cad]."',puntaje='".$_POST['puntajeas'][$cad]."',puesto='".$_POST['puestoas'][$cad]."',premio_pdss='".$_POST['premio_pdssas'][$cad]."',premio_otro='".$_POST['premio_otroas'][$cad]."' WHERE cod_ficha_cif='$cad'";
 			$result=mysql_query($sql) or die (mysql_error());
 		}		
-
 	}
+	
 	else
 	{
 		//1.- realizo un insert para los nuevos registros
@@ -343,7 +343,7 @@ elseif($action==ADD_FICHA_1)
 			$sql="UPDATE cif_bd_ficha_cif SET meta_1='".$_POST['cantidad1as'][$cad]."',valor_1='".$_POST['valor1as'][$cad]."',meta_2='".$_POST['cantidad2as'][$cad]."',valor_2='".$_POST['valor2as'][$cad]."',puntaje='".$_POST['puntajeas'][$cad]."',puesto='".$_POST['puestoas'][$cad]."',premio_pdss='".$_POST['premio_pdssas'][$cad]."',premio_otro='".$_POST['premio_otroas'][$cad]."' WHERE cod_ficha_cif='$cad'";
 			$result=mysql_query($sql) or die (mysql_error());
 		}		
-	}
+	}	
 
 	//3.- redirecciono
 	echo "<script>window.location ='n_calif_cif_2.php?SES=$SES&anio=$anio&cod=$cod$tab'</script>";

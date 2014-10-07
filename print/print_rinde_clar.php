@@ -21,44 +21,41 @@ $cod=$cod;
 
 
 //1.- Obtengo los datos del Evento CLAR
-$sql="SELECT
-clar_bd_evento_clar.cod_clar,
-sys_bd_tipo_iniciativa.codigo_iniciativa,
-clar_bd_evento_clar.nombre AS evento,
-clar_bd_evento_clar.f_evento,
-sys_bd_departamento.nombre AS departamento,
-sys_bd_provincia.nombre AS provincia,
-sys_bd_distrito.nombre AS distrito,
-clar_bd_evento_clar.lugar,
-sys_bd_dependencia.nombre AS oficina,
-sys_bd_dependencia.cod_dependencia,
-clar_bd_evento_clar.objetivo,
-clar_bd_evento_clar.resultado AS resultado_esperado,
-sys_bd_componente_poa.codigo AS codigo_componente,
-sys_bd_componente_poa.nombre AS nombre_componente,
-sys_bd_subactividad_poa.codigo AS codigo_poa,
-sys_bd_subactividad_poa.nombre AS nombre_poa,
-sys_bd_categoria_poa.codigo AS codigo_categoria,
-sys_bd_categoria_poa.nombre AS nombre_categoria,
-clar_bd_rinde_clar.f_rendicion,
-clar_bd_rinde_clar.resultado,
-clar_bd_rinde_clar.problema,
-clar_bd_rinde_clar.cod_dj,
-clar_bd_rinde_clar.otro_monto,
-clar_bd_rinde_clar.devolucion
-FROM
-clar_bd_evento_clar
-INNER JOIN sys_bd_tipo_iniciativa ON sys_bd_tipo_iniciativa.cod_tipo_iniciativa = clar_bd_evento_clar.cod_tipo_iniciativa
-INNER JOIN sys_bd_departamento ON sys_bd_departamento.cod = clar_bd_evento_clar.cod_dep
-INNER JOIN sys_bd_provincia ON sys_bd_provincia.cod = clar_bd_evento_clar.cod_prov
-INNER JOIN sys_bd_distrito ON sys_bd_distrito.cod = clar_bd_evento_clar.cod_dist
-INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = clar_bd_evento_clar.cod_dependencia
-INNER JOIN sys_bd_componente_poa ON sys_bd_componente_poa.cod = clar_bd_evento_clar.cod_componente
-INNER JOIN sys_bd_subactividad_poa ON sys_bd_subactividad_poa.cod = clar_bd_evento_clar.cod_subatividad
-INNER JOIN sys_bd_categoria_poa ON sys_bd_categoria_poa.cod = sys_bd_subactividad_poa.cod_categoria_poa
-INNER JOIN clar_bd_rinde_clar ON clar_bd_rinde_clar.cod_clar = clar_bd_evento_clar.cod_clar
-WHERE
-clar_bd_rinde_clar.cod_rinde_clar='$cod'";
+$sql="SELECT clar_bd_evento_clar.cod_clar, 
+	sys_bd_tipo_iniciativa.codigo_iniciativa, 
+	clar_bd_evento_clar.nombre AS evento, 
+	clar_bd_evento_clar.f_evento, 
+	sys_bd_departamento.nombre AS departamento, 
+	sys_bd_provincia.nombre AS provincia, 
+	sys_bd_distrito.nombre AS distrito, 
+	clar_bd_evento_clar.lugar, 
+	sys_bd_dependencia.nombre AS oficina, 
+	sys_bd_dependencia.cod_dependencia, 
+	clar_bd_evento_clar.objetivo, 
+	clar_bd_evento_clar.resultado AS resultado_esperado, 
+	sys_bd_componente_poa.codigo AS codigo_componente, 
+	sys_bd_componente_poa.nombre AS nombre_componente, 
+	sys_bd_subactividad_poa.codigo AS codigo_poa, 
+	sys_bd_subactividad_poa.nombre AS nombre_poa, 
+	sys_bd_categoria_poa.codigo AS codigo_categoria, 
+	sys_bd_categoria_poa.nombre AS nombre_categoria, 
+	clar_bd_rinde_clar.f_rendicion, 
+	clar_bd_rinde_clar.resultado, 
+	clar_bd_rinde_clar.problema, 
+	clar_bd_rinde_clar.cod_dj, 
+	clar_bd_rinde_clar.otro_monto, 
+	clar_bd_rinde_clar.devolucion, 
+	clar_bd_rinde_clar.recibio_dinero
+FROM clar_bd_evento_clar INNER JOIN sys_bd_tipo_iniciativa ON sys_bd_tipo_iniciativa.cod_tipo_iniciativa = clar_bd_evento_clar.cod_tipo_iniciativa
+	 INNER JOIN sys_bd_departamento ON sys_bd_departamento.cod = clar_bd_evento_clar.cod_dep
+	 INNER JOIN sys_bd_provincia ON sys_bd_provincia.cod = clar_bd_evento_clar.cod_prov
+	 INNER JOIN sys_bd_distrito ON sys_bd_distrito.cod = clar_bd_evento_clar.cod_dist
+	 INNER JOIN sys_bd_dependencia ON sys_bd_dependencia.cod_dependencia = clar_bd_evento_clar.cod_dependencia
+	 INNER JOIN sys_bd_componente_poa ON sys_bd_componente_poa.cod = clar_bd_evento_clar.cod_componente
+	 INNER JOIN sys_bd_subactividad_poa ON sys_bd_subactividad_poa.cod = clar_bd_evento_clar.cod_subatividad
+	 INNER JOIN sys_bd_categoria_poa ON sys_bd_categoria_poa.cod = sys_bd_subactividad_poa.cod_categoria_poa
+	 INNER JOIN clar_bd_rinde_clar ON clar_bd_rinde_clar.cod_clar = clar_bd_evento_clar.cod_clar
+WHERE clar_bd_rinde_clar.cod_rinde_clar='$cod'";
 $result=mysql_query($sql) or die (mysql_error());
 $row=mysql_fetch_array($result);
 
@@ -1025,7 +1022,7 @@ $f15=mysql_fetch_array($result);
   <tr>
     <td class="mini">TOTAL ENTREGADO POR ADMINISTRACION</td>
     <td align="center" class="txt_titulo">S/.</td>
-    <td align="right" class="mini"><? echo number_format($i2['costo_clar'],2);?></td>
+    <td align="right" class="mini"><? if ($row['recibio_dinero']<>0)  echo number_format($i2['costo_clar'],2); else echo "0.00";?></td>
   </tr>
   <tr>
     <td class="mini">TOTAL DEVUELTO SEGUN VOUCHER</td>
@@ -1038,7 +1035,15 @@ $f15=mysql_fetch_array($result);
     <td align="right" class="mini">
 	<? 
 	$aporte_a=$row['devolucion']+$total_ejecutado_pdss;
-	$aporte_b=$i2['costo_clar'];
+	if ($row['recibio_dinero']==0)
+	{
+		$aporte_b=0;
+	}
+	else
+	{
+		$aporte_b=$i2['costo_clar'];
+	}
+	
 	$diferencia=$aporte_b-$aporte_a;
 	
 	echo number_format($diferencia,2);?></td>

@@ -43,7 +43,7 @@ if ($action==ADD)
 	$result=mysql_query($sql) or die (mysql_error());
 
 	//3.-Ingreso los datos a la tabla
-	$sql="INSERT INTO gcac_bd_ruta VALUES('','11','".$_POST['tipo_ruta']."',UPPER('".$_POST['otro']."'),UPPER('".$_POST['evento']."'),'".$_POST['f_inicio']."','".$_POST['f_termino']."',UPPER('".$_POST['objetivo']."'),'$tipo_documento','$n_documento','008','','$n_contrato','".$_POST['f_contrato']."','$n_atf','$n_solicitud','".$_POST['aporte_pdss']."','".$_POST['aporte_org']."','".$_POST['aporte_otro']."','".$_POST['poa']."','".$_POST['fte_fto']."','','','','','','','','','','','','','','','','005')";
+	$sql="INSERT INTO gcac_bd_ruta VALUES('','11','".$_POST['tipo_ruta']."',UPPER('".$_POST['otro']."'),UPPER('".$_POST['evento']."'),'".$_POST['f_inicio']."','".$_POST['f_termino']."',UPPER('".$_POST['objetivo']."'),'$tipo_documento','$n_documento','008','','$n_contrato','".$_POST['f_contrato']."','$n_atf','$n_solicitud','".$_POST['aporte_pdss']."','".$_POST['aporte_org']."','".$_POST['aporte_otro']."','".$_POST['poa']."','".$_POST['fte_fto']."','".$_POST['ifi']."','".$_POST['n_cuenta']."','','','','','','','','','','','','','','','','005')";
 	$result=mysql_query($sql) or die (mysql_error());
 
 	//4.- obtengo el ultimo registro generado
@@ -89,7 +89,7 @@ elseif($action==UPDATE)
 {
 //1.- Actualizamos la informacion de la ruta de aprendizaje
 
-	$sql="UPDATE gcac_bd_ruta SET cod_tipo_ruta='".$_POST['tipo_ruta']."',otro_ruta=UPPER('".$_POST['otro']."'),nombre=UPPER('".$_POST['evento']."'),f_inicio='".$_POST['f_inicio']."',f_termino='".$_POST['f_termino']."',objetivo=UPPER('".$_POST['objetivo']."'),f_contrato='".$_POST['f_contrato']."',aporte_pdss='".$_POST['aporte_pdss']."',aporte_org='".$_POST['aporte_org']."',aporte_otro='".$_POST['aporte_otro']."',cod_poa='".$_POST['poa']."',cod_fte_fto='".$_POST['fte_fto']."' WHERE cod_ruta='".$_POST['codigo']."'";
+	$sql="UPDATE gcac_bd_ruta SET cod_tipo_ruta='".$_POST['tipo_ruta']."',otro_ruta=UPPER('".$_POST['otro']."'),nombre=UPPER('".$_POST['evento']."'),f_inicio='".$_POST['f_inicio']."',f_termino='".$_POST['f_termino']."',objetivo=UPPER('".$_POST['objetivo']."'),f_contrato='".$_POST['f_contrato']."',aporte_pdss='".$_POST['aporte_pdss']."',aporte_org='".$_POST['aporte_org']."',aporte_otro='".$_POST['aporte_otro']."',cod_poa='".$_POST['poa']."',cod_fte_fto='".$_POST['fte_fto']."',cod_ifi='".$_POST['ifi']."',n_cuenta='".$_POST['n_cuenta']."' WHERE cod_ruta='".$_POST['codigo']."'";
 	$result=mysql_query($sql) or die (mysql_error());
 
 //2.- Actualizamos el itinerario si fuera el caso

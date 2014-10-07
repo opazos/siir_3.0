@@ -118,7 +118,7 @@ while($fila=mysql_fetch_array($result))
     <td><input type="text" name="unidad[<? echo $cad;?>]" value="<? echo $fila['unidad'];?>" readonly="readonly"></td>
     <td><input type="text" name="meta[<? echo $cad;?>]" class="number" value="<? echo $fila['meta'];?>" readonly="readonly"></td>
     <td><input type="text" name="ejec[<? echo $cad;?>]" class="number" value="<? echo $fila['avance_fn'];?>"></td>
-    <td><a href="gestor_idl.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&id=<? echo $id;?>&cod=<? echo $fila['cod_meta'];?>&action=DELETE_META"><img src="../images/Delete.png" border="0" width="48" height="48"></a></td>
+    <td><a href="gestor_idl.php?SES=<? echo $SES;?>&anio=<? echo $anio;?>&id=<? echo $id;?>&cod=<? echo $fila['cod_meta'];?>&action=DELETE_META" class="tiny alert button">Quitar</a></td>
   </tr>
 <?
 }

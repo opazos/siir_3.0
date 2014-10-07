@@ -35,6 +35,9 @@ $alert=$_GET['alert'];
 
 switch ($alert) 
 {
+case 'success_insert':
+	echo "<div class='alert-box success'>Los datos han sido ingresados correctamente.<a href='' class='close'>&times;</a></div>";
+	break;
 case 'success_change':
 	echo "<div class='alert-box success'>Los datos han sido actualizados correctamente.<a href='' class='close'>&times;</a></div>";
 	break;

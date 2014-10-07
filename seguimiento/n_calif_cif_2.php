@@ -69,8 +69,9 @@ $r1=mysql_fetch_array($result);
 <div class="row">
 <div class="twelve columns" align="center"><h6>FICHA DE REGISTRO Y VALORIZACIÓN DE ACTIVOS CONCURSO INTERFAMILIAR N. <? echo numeracion($r1['n_concurso']);?> - <? echo periodo($r1['f_concurso']);?><br/> DEL PGRN: <? echo $r1['nombre'];?></h6></div>
 <div class="twelve columns"><hr/></div>
-
 <div class="twelve columns"> 
+
+<!-- Generamos las TAB's o pestañas -->
 <dl class="tabs">
 <?php
 if($r1['actividad_1']<>0)
@@ -94,13 +95,11 @@ if($r1['actividad_3']<>0)
 ?>
 </dl>
 
-
 <!-- ========================================== Pestaña para la Primera Actividad ========================================== -->
 <ul class="tabs-content">
 <?php
 if($r1['actividad_1']<>0)
 {
-
   $sql="SELECT cif_bd_ficha_cif.cod_ficha_cif
   FROM cif_bd_ficha_cif
   WHERE cif_bd_ficha_cif.cod_concurso_cif='$cod' AND
@@ -138,8 +137,10 @@ if($r1['actividad_1']<>0)
 </thead>
 
 <tbody>
+
 <!-- Aqui coloco los datos de las personas que ya registraron información -->
 <?php
+
   $num=0;
   $sql="SELECT org_ficha_usuario.nombre, 
   org_ficha_usuario.paterno, 
@@ -232,12 +233,6 @@ ORDER BY org_ficha_usuario.nombre ASC, org_ficha_usuario.paterno ASC, org_ficha_
 </div>
 </form>
 </li>
-
-
-
-
-
-
 
 <!-- ========================================== Pestaña para la Segunda Actividad ========================================== -->
 <?
@@ -376,13 +371,6 @@ ORDER BY org_ficha_usuario.nombre ASC, org_ficha_usuario.paterno ASC, org_ficha_
 </div>    
 </form>
 </li>
-
-
-
-
-
-
-
 <!-- ========================================== Pestaña para la Tercera Actividad ========================================== -->
 <?
 }
